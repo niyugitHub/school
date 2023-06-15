@@ -3,7 +3,7 @@
 #include "Map.h"
 #include "DxLib.h"
 #include "WorldSprite.h"
-#include "Stage.h"
+#include "PlatinumDataLoader.h"
 
 const int Map::Stage1Data[StageData1ColNum][StageData1RowNum] =
 {
@@ -53,6 +53,7 @@ Map::Map()
 	: chipGraph(-1)
 {
 	currentData.clear();
+	stage = new PlatinumDataLoader;
 }
 
 /// <summary>
@@ -75,6 +76,13 @@ Map::~Map()
 /// </summary>
 void Map::Load(int stageNo)
 {
+	stage->Load("data/stage1.fmf");
+	int width = 0;
+	int height = 0;
+
+	stage->GetMapSize(width, height);
+
+	currentData = stage->GetMapData();
 	//////////////////////////////////////////////////////
 	// 外部からのint値入力で、Stage1Dataを使うかStage2Dataを使うか切り替える
 	// 言い換えると、可変データであるcurrentDataに
@@ -82,9 +90,21 @@ void Map::Load(int stageNo)
 	// ここを外部ファイル「外部ファイルの内容を読み取って代入する」形にすれば
 	// 外部データ化は完了
 	//////////////////////////////////////////////////////
-	currentData.clear();
+	/*currentData.clear();*/
 	std::vector<int> newColData;
-	switch (stageNo)
+
+	/*for (int i = 0; i < height; i++)
+	{
+		newColData.clear();
+		for (int j = 0; j < width; j++)
+		{
+			newColData.push_back(stageData[i][j]);
+		}
+		currentData.push_back(newColData);
+	}*/
+
+
+	/*switch (stageNo)
 	{
 	case 0:
 		dataColNum = StageData1ColNum;
@@ -112,20 +132,21 @@ void Map::Load(int stageNo)
 			currentData.push_back(newColData);
 		}
 		break;
-	}
+	}*/
 	//////////////////////////////////////////////////////
 
 	// とりあえずマップロード
 	chipGraph = LoadGraph("data/map.png");
 
 	// WorldSprite実体設定と位置初期化
-	VECTOR chipLeftTopPos = VGet(0, dataColNum * ChipSize, 0);			// マップの描画開始位置（左上）
-	for (int i = 0; i < dataColNum; i++)
+	VECTOR chipLeftTopPos = VGet(0, height * ChipSize, 0);			// マップの描画開始位置（左上）
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0; j < dataRowNum; j++)
+		for (int j = 0; j < width; j++)
 		{
+			/*int MapData = stage->GetChipId(0, j, i);*/
 			auto sprite = new WorldSprite();
-			sprite->Initialize(chipGraph, ChipPixelSize, currentData[i][j]);
+			sprite->Initialize(chipGraph, ChipPixelSize, currentData[0][i + j * height]);
 			VECTOR chipHalfOffset = VGet(-Map::ChipSize * 0.5f, -Map::ChipSize * 0.5f, 0);					// マップチップの半分サイズ左下にずらすオフセット
 			VECTOR chipPos = VAdd(VGet(j * Map::ChipSize,  (-i - 1) * Map::ChipSize, 0), chipHalfOffset);	// 真ん中ピボットなのでマップチップ半分サイズずらす+地面なので一つ下に
 			chipPos = VAdd(chipPos, chipLeftTopPos);

@@ -10,6 +10,9 @@
 /// </summary>
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) 
 {
+
+	
+
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)		
 	{

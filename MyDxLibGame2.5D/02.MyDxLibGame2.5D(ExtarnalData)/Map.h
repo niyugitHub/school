@@ -3,6 +3,7 @@
 #include <vector>
 
 class WorldSprite;
+class PlatinumDataLoader;
 
 /// <summary>
 /// 2Dの背景マップ
@@ -29,10 +30,11 @@ private:
 	static const int	StageData2RowNum = 18;		// マップ列
 	static const int	Stage2Data[StageData2ColNum][StageData2RowNum];
 	
-	std::vector<std::vector<int>> currentData;
+	std::vector < std::vector<unsigned char>> currentData;
 	int dataColNum = 0;
 	int dataRowNum = 0;
 	std::vector<WorldSprite*> sprites;
 	int chipGraph;
+	PlatinumDataLoader* stage;
 };
 
