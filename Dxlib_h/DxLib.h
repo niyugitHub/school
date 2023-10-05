@@ -2,19 +2,19 @@
 // 
 // 		ＤＸライブラリ		ヘッダファイル
 // 
-// 				Ver 3.19d
+// 				Ver 3.24b
 // 
 // -------------------------------------------------------------------------------
 
-#ifndef __DXLIB
-#define __DXLIB
+#ifndef DX_LIB_H
+#define DX_LIB_H
 
 #include "DxCompileConfig.h"
 
 // ＤＸライブラリのバージョン
-#define DXLIB_VERSION 0x319d
-#define DXLIB_VERSION_STR_T _T( "3.19d" )
-#define DXLIB_VERSION_STR_W    L"3.19d"
+#define DXLIB_VERSION 0x324b
+#define DXLIB_VERSION_STR_T _T( "3.24b" )
+#define DXLIB_VERSION_STR_W    L"3.24b"
 
 // 設定 -----------------------------------------------------------------------
 
@@ -23,12 +23,12 @@
 // コメントを外してください
 //#define DX_LIB_NOT_DEFAULTPATH
 
-#ifndef __DX_MAKE
+#ifndef DX_MAKE
 
 // 描画関連の関数を一切使用されない場合は以下のコメントを外して下さい
 //#define DX_NOTUSE_DRAWFUNCTION
 
-#endif // __DX_MAKE
+#endif // DX_MAKE
 
 
 // 定義---------------------------------------------------------------------------
@@ -43,30 +43,51 @@
 
 #define DX_DEFINE_START
 
-#define MAX_IMAGE_NUM								(32768)				// 同時に持てるグラフィックハンドルの最大数( ハンドルエラーチェックのマスクに使用しているので 65536 以下の 2 のべき乗にして下さい )
-#define MAX_2DSURFACE_NUM							(32768)				// ２Ｄサーフェスデータの最大数( ハンドルエラーチェックのマスクに使用しているので 65536 以下の 2 のべき乗にして下さい )
-#define MAX_3DSURFACE_NUM							(65536)				// ３Ｄサーフェスデータの最大数( ハンドルエラーチェックのマスクに使用しているので 65536 以下の 2 のべき乗にして下さい )
+#define MAX_IMAGE_NUM								(0x40000)			// 同時に持てるグラフィックハンドルの最大数( ハンドルエラーチェックのマスクに使用しているので 0x40000 以下の 2 のべき乗にして下さい )
 #define MAX_IMAGE_DIVNUM							(64)				// 画像分割の最大数
-#define MAX_SURFACE_NUM								(65536)				// サーフェスデータの最大数
 #define MAX_SHADOWMAP_NUM							(8192)				// シャドウマップデータの最大数
-#define MAX_SOFTIMAGE_NUM							(8192)				// 同時に持てるソフトイメージハンドルの最大数( ハンドルエラーチェックのマスクに使用しているので 65536 以下の 2 のべき乗にして下さい )
+#define MAX_SOFTIMAGE_NUM							(8192)				// 同時に持てるソフトイメージハンドルの最大数( ハンドルエラーチェックのマスクに使用しているので 0x40000 以下の 2 のべき乗にして下さい )
 
 #define MAX_SOUND_NUM								(32768)				// 同時に持てるサウンドハンドルの最大数
 #define MAX_SOFTSOUND_NUM							(8192)				// 同時に持てるソフトウエアサウンドハンドルの最大数
 #define MAX_MUSIC_NUM								(256)				// 同時に持てるミュージックハンドルの最大数
 #define MAX_MOVIE_NUM								(100)				// 同時に持てるムービーハンドルの最大数
 #define MAX_MASK_NUM								(32768)				// 同時に持てるマスクハンドルの最大数
-#define MAX_FONT_NUM								(40)				// 同時に持てるフォントハンドルの最大数
+#define MAX_FONT_NUM								(256)				// 同時に持てるフォントハンドルの最大数
 #define MAX_INPUT_NUM								(256)				// 同時に持てる文字列入力ハンドルの最大数
 #define MAX_SOCKET_NUM								(8192)				// 同時に持てる通信ハンドルの最大数
 #define MAX_LIGHT_NUM								(4096)				// 同時に持てるライトハンドルの最大数
 #define MAX_SHADER_NUM								(4096)				// 同時に持てるシェーダーハンドルの最大数
-#define MAX_CONSTANT_BUFFER_NUM						(8192)				// 同時に持てる定数バッファハンドルの最大数
+#define MAX_CONSTANT_BUFFER_NUM						(32768)				// 同時に持てる定数バッファハンドルの最大数
 #define MAX_MODEL_BASE_NUM							(32768)				// 同時に持てる３Ｄモデル基本データハンドルの最大数
 #define MAX_MODEL_NUM								(32768)				// 同時に持てる３Ｄモデルデータハンドルの最大数
 #define MAX_VERTEX_BUFFER_NUM						(16384)				// 同時に持てる頂点バッファハンドルの最大数
 #define MAX_INDEX_BUFFER_NUM						(16384)				// 同時に持てるインデックスバッファの最大数
 #define MAX_FILE_NUM								(32768)				// 同時に持てるファイルハンドルの最大数
+#define MAX_LIVE2D_CUBISM4_MODEL_NUM				(32768)				// 同時に持てる Live2D Cubism 4 Model ハンドルの最大数
+
+// ハンドルタイプ定義
+#define DX_HANDLETYPE_NONE							(0)					// ハンドルタイプ０は未使用
+#define DX_HANDLETYPE_GRAPH							(1)					// グラフィックハンドル
+#define DX_HANDLETYPE_SOFTIMAGE						(2)					// ソフトウエアで扱うイメージハンドル
+#define DX_HANDLETYPE_SOUND							(3)					// サウンドハンドル
+#define DX_HANDLETYPE_SOFTSOUND						(4)					// ソフトサウンドハンドル
+#define DX_HANDLETYPE_MUSIC							(5)					// ミュージックハンドル
+#define DX_HANDLETYPE_MOVIE							(6)					// ムービーハンドル
+#define DX_HANDLETYPE_GMASK							(7)					// マスクハンドル
+#define DX_HANDLETYPE_FONT							(8)					// フォントハンドル
+#define DX_HANDLETYPE_KEYINPUT						(9)					// 文字列入力ハンドル
+#define DX_HANDLETYPE_NETWORK						(10)				// ネットワークハンドル
+#define DX_HANDLETYPE_LIGHT							(11)				// ライト
+#define DX_HANDLETYPE_SHADER						(12)				// シェーダーハンドル
+#define DX_HANDLETYPE_MODEL_BASE					(13)				// ３Ｄモデル基本データ
+#define DX_HANDLETYPE_MODEL							(14)				// ３Ｄモデル
+#define DX_HANDLETYPE_VERTEX_BUFFER					(15)				// 頂点バッファハンドル
+#define DX_HANDLETYPE_INDEX_BUFFER					(16)				// インデックスバッファハンドル
+#define DX_HANDLETYPE_FILE							(17)				// ファイルハンドル
+#define DX_HANDLETYPE_SHADOWMAP						(18)				// シャドウマップハンドル
+#define DX_HANDLETYPE_SHADER_CONSTANT_BUFFER		(19)				// シェーダー用定数バッファハンドル
+#define DX_HANDLETYPE_LIVE2D_CUBISM4_MODEL			(20)				// Live2D Cubism 4 モデルハンドル
 
 #define MAX_JOYPAD_NUM								(16)				// ジョイパッドの最大数
 
@@ -103,6 +124,7 @@
 #define DX_WINDOWSVERSION_8							(0x10A)
 #define DX_WINDOWSVERSION_8_1						(0x10B)
 #define DX_WINDOWSVERSION_10						(0x10C)
+#define DX_WINDOWSVERSION_11						(0x10D)
 #define DX_WINDOWSVERSION_NT_TYPE					(0x100)
 
 // DirectXのバージョン
@@ -178,9 +200,11 @@
 #define DX_FONTTYPE_ANTIALIASING					(0x02)			// アンチエイリアスフォント( 標準機能アンチエイリアス )
 #define DX_FONTTYPE_ANTIALIASING_4X4				(0x12)			// アンチエイリアスフォント( 4x4サンプリング )
 #define DX_FONTTYPE_ANTIALIASING_8X8				(0x22)			// アンチエイリアスフォント( 8x8サンプリング )
+#define DX_FONTTYPE_ANTIALIASING_16X16				(0x32)			// アンチエイリアスフォント( 16x16サンプリング )
 #define DX_FONTTYPE_ANTIALIASING_EDGE				(0x03)			// アンチエイリアス＆エッジ付きフォント( 標準機能アンチエイリアス )
 #define DX_FONTTYPE_ANTIALIASING_EDGE_4X4			(0x13)			// アンチエイリアス＆エッジ付きフォント( 4x4サンプリング )
 #define DX_FONTTYPE_ANTIALIASING_EDGE_8X8			(0x23)			// アンチエイリアス＆エッジ付きフォント( 8x8サンプリング )
+#define DX_FONTTYPE_ANTIALIASING_EDGE_16X16			(0x33)			// アンチエイリアス＆エッジ付きフォント( 16x16サンプリング )
 
 // フォント画像の階調ビット数
 #define DX_FONTIMAGE_BIT_1							(0)
@@ -212,7 +236,41 @@
 #define DX_BLENDMODE_PMA_INVSRC						(20)			// 乗算済みαブレンドモードの描画元の色を反転する
 #define DX_BLENDMODE_PMA_ALPHA_X4					(21)			// 乗算済みαブレンドモードのαブレンドの描画元の輝度を最大４倍にできるモード
 #define DX_BLENDMODE_PMA_ADD_X4						(22)			// 乗算済みαブレンドモードの加算ブレンドの描画元の輝度を最大４倍にできるモード
-#define DX_BLENDMODE_NUM							(23)			// ブレンドモードの数
+#define DX_BLENDMODE_LIVE2D_ZERO					(23)			// Live2D のブレンドモード Zero 用
+#define DX_BLENDMODE_LIVE2D_NORMAL					(24)			// Live2D のブレンドモード Normal 用
+#define DX_BLENDMODE_LIVE2D_ADD						(25)			// Live2D のブレンドモード Add 用
+#define DX_BLENDMODE_LIVE2D_MULT					(26)			// Live2D のブレンドモード Mult 用
+#define DX_BLENDMODE_LIVE2D_MASK					(27)			// Live2D のブレンドモード Mask 用
+#define DX_BLENDMODE_SPINE_NORMAL					(28)			// Spine のブレンドモード Normal 用
+#define DX_BLENDMODE_SPINE_ADDITIVE					(29)			// Spine のブレンドモード Additive 用
+#define DX_BLENDMODE_SPINE_MULTIPLY					(30)			// Spine のブレンドモード Multiply 用
+#define DX_BLENDMODE_SPINE_SCREEN					(31)			// Spine のブレンドモード Screen 用
+#define DX_BLENDMODE_CUSTOM							(32)			// カスタムブレンドモード
+#define DX_BLENDMODE_NUM							(33)			// ブレンドモードの数
+
+// カスタムブレンドモード用のブレンド要素タイプ
+// Rs = 描画元のR   Rg = 描画元のG   Rb = 描画元のB   Ra = 描画元のA
+// Rd = 描画先のR   Rd = 描画先のG   Rd = 描画先のB   Rd = 描画先のA
+#define DX_BLEND_ZERO								(0)				// R = 0         G = 0         B = 0         A = 0
+#define DX_BLEND_ONE								(1)				// R = 255       G = 255       B = 255       A = 255
+#define DX_BLEND_SRC_COLOR							(2)				// R = Rs        G = Gs        B = Gs        A = As
+#define DX_BLEND_INV_SRC_COLOR						(3)				// R = 255 - Rs  G = 255 - Gs  B = 255 - Gs  A = 255 - As
+#define DX_BLEND_SRC_ALPHA							(4)				// R = As        G = As        B = As        A = As
+#define DX_BLEND_INV_SRC_ALPHA						(5)				// R = 255 - As  G = 255 - As  B = 255 - As  A = 255 - As
+#define DX_BLEND_DEST_COLOR							(6)				// R = Rd        G = Gd        B = Bd        A = Ad
+#define DX_BLEND_INV_DEST_COLOR						(7)				// R = 255 - Rd  G = 255 - Gd  B = 255 - Bd  A = 255 - Ad
+#define DX_BLEND_DEST_ALPHA							(8)				// R = Ad        G = Ad        B = Ad        A = Ad
+#define DX_BLEND_INV_DEST_ALPHA						(9)				// R = 255 - Ad  G = 255 - Ad  B = 255 - Ad  A = 255 - Ad
+#define DX_BLEND_SRC_ALPHA_SAT						(10)			// R = f         G = f         B = f         A = 255        f = min( As, 255 - Ad )
+#define DX_BLEND_NUM								(11)			// ブレンド要素タイプの数
+
+// カスタムブレンドモード用のブレンド処理タイプ
+#define DX_BLENDOP_ADD								(0)				// ブレンドソース1とブレンドソース2を加算
+#define DX_BLENDOP_SUBTRACT							(1)				// ブレンドソース1からブレンドソース2を減算
+#define DX_BLENDOP_REV_SUBTRACT						(2)				// ブレンドソース2からブレンドソース2を減算
+#define DX_BLENDOP_MIX								(3)				// ブレンドソース1とブレンドソース2の最小値
+#define DX_BLENDOP_MAX								(4)				// ブレンドソース1とブレンドソース2の最大値
+#define DX_BLENDOP_NUM								(5)				// ブレンド処理タイプの数
 
 // DrawGraphF 等の浮動小数点値で座標を指定する関数における座標タイプ
 #define DX_DRAWFLOATCOORDTYPE_DIRECT3D9				(0)				// Direct3D9タイプ( -0.5f の補正を行わないとテクスチャのピクセルが綺麗にマップされないタイプ )
@@ -240,22 +298,26 @@
 #define DX_GRAPH_FILTER_LEVEL						(7)				// レベル補正フィルタ
 #define DX_GRAPH_FILTER_TWO_COLOR					(8)				// ２階調化フィルタ
 #define DX_GRAPH_FILTER_GRADIENT_MAP				(9)				// グラデーションマップフィルタ
-#define DX_GRAPH_FILTER_PREMUL_ALPHA				(10)			// 通常のアルファチャンネル付き画像を乗算済みアルファ画像に変換するフィルタ
-#define DX_GRAPH_FILTER_INTERP_ALPHA				(11)			// 乗算済みα画像を通常のアルファチャンネル付き画像に変換するフィルタ
-#define DX_GRAPH_FILTER_YUV_TO_RGB					(12)			// YUVカラーをRGBカラーに変換するフィルタ
-#define DX_GRAPH_FILTER_Y2UV1_TO_RGB				(13)			// YUVカラーをRGBカラーに変換するフィルタ( UV成分が Y成分の半分・又は４分の１( 横・縦片方若しくは両方 )の解像度しかない場合用 )
-#define DX_GRAPH_FILTER_YUV_TO_RGB_RRA				(14)			// YUVカラーをRGBカラーに変換するフィルタ( 且つ右側半分のRの値をアルファ値として扱う )
-#define DX_GRAPH_FILTER_Y2UV1_TO_RGB_RRA			(15)			// YUVカラーをRGBカラーに変換するフィルタ( UV成分が Y成分の半分・又は４分の１( 横・縦片方若しくは両方 )の解像度しかない場合用 )( 且つ右側半分のRの値をアルファ値として扱う )
-#define DX_GRAPH_FILTER_BICUBIC_SCALE				(16)			// バイキュービックを使用した拡大・縮小フィルタ
-#define DX_GRAPH_FILTER_LANCZOS3_SCALE				(17)			// Lanczos-3を使用した拡大・縮小フィルタ
-#define DX_GRAPH_FILTER_PMA_BRIGHT_CLIP				(18)			// 明るさクリップフィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_PMA_BRIGHT_SCALE			(19)			// 指定の明るさ領域を拡大するフィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_PMA_HSB						(20)			// 色相・彩度・明度フィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_PMA_INVERT					(21)			// 階調の反転フィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_PMA_LEVEL					(22)			// レベル補正フィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_PMA_TWO_COLOR				(23)			// ２階調化フィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_PMA_GRADIENT_MAP			(24)			// グラデーションマップフィルタ(乗算済みアルファ画像用)
-#define DX_GRAPH_FILTER_NUM							(25)
+#define DX_GRAPH_FILTER_REPLACEMENT					(10)			// 色の置換
+#define DX_GRAPH_FILTER_PREMUL_ALPHA				(11)			// 通常のアルファチャンネル付き画像を乗算済みアルファ画像に変換するフィルタ
+#define DX_GRAPH_FILTER_INTERP_ALPHA				(12)			// 乗算済みα画像を通常のアルファチャンネル付き画像に変換するフィルタ
+#define DX_GRAPH_FILTER_YUV_TO_RGB					(13)			// YUVカラーをRGBカラーに変換するフィルタ
+#define DX_GRAPH_FILTER_Y2UV1_TO_RGB				(14)			// YUVカラーをRGBカラーに変換するフィルタ( UV成分が Y成分の半分・又は４分の１( 横・縦片方若しくは両方 )の解像度しかない場合用 )
+#define DX_GRAPH_FILTER_YUV_TO_RGB_RRA				(15)			// YUVカラーをRGBカラーに変換するフィルタ( 且つ右側半分のRの値をアルファ値として扱う )
+#define DX_GRAPH_FILTER_Y2UV1_TO_RGB_RRA			(16)			// YUVカラーをRGBカラーに変換するフィルタ( UV成分が Y成分の半分・又は４分の１( 横・縦片方若しくは両方 )の解像度しかない場合用 )( 且つ右側半分のRの値をアルファ値として扱う )
+#define DX_GRAPH_FILTER_BICUBIC_SCALE				(17)			// バイキュービックを使用した拡大・縮小フィルタ
+#define DX_GRAPH_FILTER_LANCZOS3_SCALE				(18)			// Lanczos-3を使用した拡大・縮小フィルタ
+#define DX_GRAPH_FILTER_SSAO						(19)			// Screen-Space Ambient Occlusionフィルタ
+#define DX_GRAPH_FILTER_FLOAT_COLOR_SCALE			(20)			// float型の色のスケーリング
+#define DX_GRAPH_FILTER_PMA_BRIGHT_CLIP				(21)			// 明るさクリップフィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_BRIGHT_SCALE			(22)			// 指定の明るさ領域を拡大するフィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_HSB						(23)			// 色相・彩度・明度フィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_INVERT					(24)			// 階調の反転フィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_LEVEL					(25)			// レベル補正フィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_TWO_COLOR				(26)			// ２階調化フィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_GRADIENT_MAP			(27)			// グラデーションマップフィルタ(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_PMA_REPLACEMENT				(28)			// 色の置換(乗算済みアルファ画像用)
+#define DX_GRAPH_FILTER_NUM							(29)
 
 // グラフィックブレンドタイプ
 #define DX_GRAPH_BLEND_NORMAL						(0)				// 通常
@@ -303,6 +365,14 @@
 #define DX_RGBA_SELECT_BLEND_G						(5)				// ブレンド画像の緑成分
 #define DX_RGBA_SELECT_BLEND_B						(6)				// ブレンド画像の青成分
 #define DX_RGBA_SELECT_BLEND_A						(7)				// ブレンド画像のα成分
+#define DX_RGBA_SELECT_SRC_INV_R					(8)				// 元画像の赤成分を反転したもの
+#define DX_RGBA_SELECT_SRC_INV_G					(9)				// 元画像の緑成分を反転したもの
+#define DX_RGBA_SELECT_SRC_INV_B					(10)			// 元画像の青成分を反転したもの
+#define DX_RGBA_SELECT_SRC_INV_A					(11)			// 元画像のα成分を反転したもの
+#define DX_RGBA_SELECT_BLEND_INV_R					(12)			// ブレンド画像の赤成分を反転したもの
+#define DX_RGBA_SELECT_BLEND_INV_G					(13)			// ブレンド画像の緑成分を反転したもの
+#define DX_RGBA_SELECT_BLEND_INV_B					(14)			// ブレンド画像の青成分を反転したもの
+#define DX_RGBA_SELECT_BLEND_INV_A					(15)			// ブレンド画像のα成分を反転したもの
 
 // フィルモード
 #define DX_FILL_WIREFRAME							(2)				// ワイヤーフレーム
@@ -322,6 +392,10 @@
 #define DX_CAMERACLIP_BACK							(0x10)			// 画面後方向にクリップ
 #define DX_CAMERACLIP_FRONT							(0x20)			// 画面前方向にクリップ
 
+// MV1モデルの描画モード
+#define DX_MV1_DRAWMODE_NORMAL						(0)				// 通常描画
+#define DX_MV1_DRAWMODE_NORMAL_DEPTH				(1)				// 法線と深度を描画
+
 // MV1モデルの頂点タイプ
 #define DX_MV1_VERTEX_TYPE_1FRAME					(0)				// １フレームの影響を受ける頂点
 #define DX_MV1_VERTEX_TYPE_4FRAME					(1)				// １～４フレームの影響を受ける頂点
@@ -338,6 +412,10 @@
 #define DX_MV1_MESHCATEGORY_OUTLINE					(1)				// 輪郭線描画用メッシュ
 #define DX_MV1_MESHCATEGORY_OUTLINE_ORIG_SHADER		(2)				// 輪郭線描画用メッシュ( オリジナルシェーダーでの描画用 )
 #define DX_MV1_MESHCATEGORY_NUM						(3)				// メッシュの種類の数
+
+// シェイプ率の適用タイプ
+#define DX_MV1_SHAPERATE_ADD						(0)				// 元の値に加算
+#define DX_MV1_SHAPERATE_OVERWRITE					(1)				// 元の値に上書き
 
 // MV1ファイルの保存タイプ
 #define MV1_SAVETYPE_MESH							(0x0001)		// メッシュ情報のみ保存
@@ -417,6 +495,10 @@
 #define DX_SOUNDDATATYPE_MEMNOPRESS_PLUS			(1)				// 圧縮された全データはシステムメモリに格納され、再生しながら逐次解凍され、最終的にすべてサウンドメモリに格納される(その後システムメモリに存在する圧縮データは破棄される)
 #define DX_SOUNDDATATYPE_MEMPRESS					(2)				// 圧縮された全データはシステムメモリに格納され、再生する部分だけ逐次解凍しながらサウンドメモリに格納する(鳴らし終わると解凍したデータは破棄されるので何度も解凍処理が行われる)
 #define DX_SOUNDDATATYPE_FILE						(3)				// 圧縮されたデータの再生する部分だけファイルから逐次読み込み解凍され、サウンドメモリに格納される(鳴らし終わると解凍したデータは破棄されるので何度も解凍処理が行われる)
+
+// サウンドの取得する再生時間タイプ
+#define DX_SOUNDCURRENTTIME_TYPE_LOW_LEVEL			(0)				// 低レベルAPIを使用してより正確な再生時間を取得する
+#define DX_SOUNDCURRENTTIME_TYPE_SOFT				(1)				// APIは使用せず、ソフトウェア処理レベルでの再生時間を取得する
 
 // 読み込み処理のタイプ
 #define DX_READSOUNDFUNCTION_PCM					(1 << 0)		// PCM の読み込み処理
@@ -582,6 +664,19 @@
 #define DX_LIGHTTYPE_SPOT							(2)				// D_D3DLIGHT_SPOT
 #define DX_LIGHTTYPE_DIRECTIONAL					(3)				// D_D3DLIGHT_DIRECTIONAL
 
+// Live2D のシェーダー
+#define DX_LIVE2D_SHADER_SETUP_MASK_VERTEX								(0)				// マスク画像生成用頂点シェーダー
+#define DX_LIVE2D_SHADER_SETUP_MASK_PIXEL								(1)				// マスク画像生成用ピクセルシェーダー
+#define DX_LIVE2D_SHADER_NORMAL_VERTEX									(2)				// 標準の頂点シェーダー
+#define DX_LIVE2D_SHADER_NORMAL_VERTEX_MASKED							(3)				// 標準の頂点シェーダー + マスク画像
+#define DX_LIVE2D_SHADER_NORMAL_PIXEL									(4)				// 標準のピクセルシェーダー
+#define DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED							(5)				// 標準のピクセルシェーダー + マスク画像
+#define DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED_INVERTED					(6)				// 標準のピクセルシェーダー + マスク画像( マスク画像の値を反転して使用 )
+#define DX_LIVE2D_SHADER_NORMAL_PIXEL_PREMULALPHA						(7)				// 標準のピクセルシェーダー + テクスチャ画像が乗算済みアルファ
+#define DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED_PREMULALPHA				(8)				// 標準のピクセルシェーダー + テクスチャ画像が乗算済みアルファ + マスク画像
+#define DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED_INVERTEX_PREMULALPHA		(9)				// 標準のピクセルシェーダー + テクスチャ画像が乗算済みアルファ + マスク画像( マスク画像の値を反転して使用 )
+#define DX_LIVE2D_SHADER_NUM											(10)			// シェーダーの数
+
 // グラフィックイメージフォーマットの定義
 #define DX_GRAPHICSIMAGE_FORMAT_3D_PAL4						(0)		// １６色パレットカラー標準
 #define DX_GRAPHICSIMAGE_FORMAT_3D_PAL8						(1)		// ２５６色パレットカラー標準
@@ -595,49 +690,51 @@
 #define DX_GRAPHICSIMAGE_FORMAT_3D_ALPHA_RGB32				(9)		// αチャンネル付き３２ビットカラー
 #define DX_GRAPHICSIMAGE_FORMAT_3D_ALPHATEST_RGB16			(10)	// αテスト付き１６ビットカラー
 #define DX_GRAPHICSIMAGE_FORMAT_3D_ALPHATEST_RGB32			(11)	// αテスト付き３２ビットカラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT1						(12)	// ＤＸＴ１
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT2						(13)	// ＤＸＴ２
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT3						(14)	// ＤＸＴ３
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT4						(15)	// ＤＸＴ４
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT5 					(16)	// ＤＸＴ５
-#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM0				(17)	// プラットフォーム依存フォーマット０
-#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM1				(18)	// プラットフォーム依存フォーマット１
-#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM2				(19)	// プラットフォーム依存フォーマット２
-#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM3				(20)	// プラットフォーム依存フォーマット３
-#define DX_GRAPHICSIMAGE_FORMAT_3D_YUV	 					(21)	// ＹＵＶフォーマット
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ABGR_I16					(22)	// ARGB整数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ABGR_F16					(23)	// ARGB浮動小数点16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ABGR_F32					(24)	// ARGB浮動小数点32ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_I8					(25)	// １チャンネル整数8ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_I16					(26)	// １チャンネル整数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_F16					(27)	// １チャンネル浮動少数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_F32					(28)	// １チャンネル浮動少数32ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_I8					(29)	// ２チャンネル整数8ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_I16					(30)	// ２チャンネル整数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_F16					(31)	// ２チャンネル浮動少数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_F32					(32)	// ２チャンネル浮動少数32ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_RGB16			(33)	// 描画可能１６ビットカラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_RGB32			(34)	// 描画可能３２ビットカラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ALPHA_RGB32	(35)	// 描画可能α付き３２ビットカラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ABGR_I16		(36)	// 描画可能ARGB整数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ABGR_F16		(37)	// 描画可能ARGB浮動小数点16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ABGR_F32		(38)	// 描画可能ARGB浮動小数点32ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_I8			(39)	// 描画可能１チャンネル整数8ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_I16		(40)	// 描画可能１チャンネル整数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_F16		(41)	// 描画可能１チャンネル浮動少数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_F32		(42)	// 描画可能１チャンネル浮動少数32ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_I8			(43)	// 描画可能２チャンネル整数8ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_I16		(44)	// 描画可能２チャンネル整数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_F16		(45)	// 描画可能２チャンネル浮動少数16ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_F32		(46)	// 描画可能２チャンネル浮動少数32ビット型カラー
-#define DX_GRAPHICSIMAGE_FORMAT_3D_NUM						(47)
-#define DX_GRAPHICSIMAGE_FORMAT_2D							(48)	// 標準( DirectDrawSurface の場合はこれのみ )
-#define DX_GRAPHICSIMAGE_FORMAT_R5G6B5						(49)	// R5G6B5( MEMIMG 用 )
-#define DX_GRAPHICSIMAGE_FORMAT_X8A8R5G6B5					(50)	// X8A8R5G6B5( MEMIMG 用 )
-#define DX_GRAPHICSIMAGE_FORMAT_X8R8G8B8					(51)	// X8R8G8B8( MEMIMG 用 )
-#define DX_GRAPHICSIMAGE_FORMAT_A8R8G8B8					(52)	// A8R8G8B8( MEMIMG 用 )
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT1						(12)	// DXT1
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT2						(13)	// DXT2
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT3						(14)	// DXT3
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT4						(15)	// DXT4
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DXT5 					(16)	// DXT5
+#define DX_GRAPHICSIMAGE_FORMAT_3D_BC7_UNORM 				(17)	// BC7 UNORM
+#define DX_GRAPHICSIMAGE_FORMAT_3D_BC7_UNORM_SRGB			(18)	// BC7 UNORM SRGB
+#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM0				(19)	// プラットフォーム依存フォーマット０
+#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM1				(20)	// プラットフォーム依存フォーマット１
+#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM2				(21)	// プラットフォーム依存フォーマット２
+#define DX_GRAPHICSIMAGE_FORMAT_3D_PLATFORM3				(22)	// プラットフォーム依存フォーマット３
+#define DX_GRAPHICSIMAGE_FORMAT_3D_YUV	 					(23)	// ＹＵＶフォーマット
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ABGR_I16					(24)	// ARGB整数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ABGR_F16					(25)	// ARGB浮動小数点16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ABGR_F32					(26)	// ARGB浮動小数点32ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_I8					(27)	// １チャンネル整数8ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_I16					(28)	// １チャンネル整数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_F16					(29)	// １チャンネル浮動少数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_ONE_F32					(30)	// １チャンネル浮動少数32ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_I8					(31)	// ２チャンネル整数8ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_I16					(32)	// ２チャンネル整数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_F16					(33)	// ２チャンネル浮動少数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_TWO_F32					(34)	// ２チャンネル浮動少数32ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_RGB16			(35)	// 描画可能１６ビットカラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_RGB32			(36)	// 描画可能３２ビットカラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ALPHA_RGB32	(37)	// 描画可能α付き３２ビットカラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ABGR_I16		(38)	// 描画可能ARGB整数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ABGR_F16		(39)	// 描画可能ARGB浮動小数点16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ABGR_F32		(40)	// 描画可能ARGB浮動小数点32ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_I8			(41)	// 描画可能１チャンネル整数8ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_I16		(42)	// 描画可能１チャンネル整数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_F16		(43)	// 描画可能１チャンネル浮動少数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_ONE_F32		(44)	// 描画可能１チャンネル浮動少数32ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_I8			(45)	// 描画可能２チャンネル整数8ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_I16		(46)	// 描画可能２チャンネル整数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_F16		(47)	// 描画可能２チャンネル浮動少数16ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_DRAWVALID_TWO_F32		(48)	// 描画可能２チャンネル浮動少数32ビット型カラー
+#define DX_GRAPHICSIMAGE_FORMAT_3D_NUM						(49)
+#define DX_GRAPHICSIMAGE_FORMAT_2D							(50)	// 標準( DirectDrawSurface の場合はこれのみ )
+#define DX_GRAPHICSIMAGE_FORMAT_R5G6B5						(51)	// R5G6B5( MEMIMG 用 )
+#define DX_GRAPHICSIMAGE_FORMAT_X8A8R5G6B5					(52)	// X8A8R5G6B5( MEMIMG 用 )
+#define DX_GRAPHICSIMAGE_FORMAT_X8R8G8B8					(53)	// X8R8G8B8( MEMIMG 用 )
+#define DX_GRAPHICSIMAGE_FORMAT_A8R8G8B8					(54)	// A8R8G8B8( MEMIMG 用 )
 
-#define DX_GRAPHICSIMAGE_FORMAT_NUM							(53)	// グラフィックフォーマットの種類の数
+#define DX_GRAPHICSIMAGE_FORMAT_NUM							(55)	// グラフィックフォーマットの種類の数
 
 // 基本イメージのピクセルフォーマット
 #define DX_BASEIMAGE_FORMAT_NORMAL					(0)				// 普通の画像
@@ -646,16 +743,26 @@
 #define DX_BASEIMAGE_FORMAT_DXT3					(3)				// ＤＸＴ３
 #define DX_BASEIMAGE_FORMAT_DXT4					(4)				// ＤＸＴ４
 #define DX_BASEIMAGE_FORMAT_DXT5					(5)				// ＤＸＴ５
-#define DX_BASEIMAGE_FORMAT_PLATFORM0				(6)				// プラットフォーム依存フォーマット０
-#define DX_BASEIMAGE_FORMAT_PLATFORM1				(7)				// プラットフォーム依存フォーマット１
-#define DX_BASEIMAGE_FORMAT_PLATFORM2				(8)				// プラットフォーム依存フォーマット２
-#define DX_BASEIMAGE_FORMAT_PLATFORM3				(9)				// プラットフォーム依存フォーマット３
-#define DX_BASEIMAGE_FORMAT_YUV						(10)			// ＹＵＶ
+#define DX_BASEIMAGE_FORMAT_BC7_UNORM				(6)				// ＢＣ７ UNORM
+#define DX_BASEIMAGE_FORMAT_BC7_UNORM_SRGB			(7)				// ＢＣ７ UNORM SRGB
+#define DX_BASEIMAGE_FORMAT_PLATFORM0				(8)				// プラットフォーム依存フォーマット０
+#define DX_BASEIMAGE_FORMAT_PLATFORM1				(9)				// プラットフォーム依存フォーマット１
+#define DX_BASEIMAGE_FORMAT_PLATFORM2				(10)			// プラットフォーム依存フォーマット２
+#define DX_BASEIMAGE_FORMAT_PLATFORM3				(11)			// プラットフォーム依存フォーマット３
+#define DX_BASEIMAGE_FORMAT_YUV						(12)			// ＹＵＶ
 
 // ムービーのサーフェスモード
 #define DX_MOVIESURFACE_NORMAL						(0)
 #define DX_MOVIESURFACE_OVERLAY						(1)
 #define DX_MOVIESURFACE_FULLCOLOR					(2)
+
+// SetUserScreenImage で渡す画面のピクセルフォーマット
+#define DX_USER_SCREEN_PIXEL_FORMAT_R5G6B5			(0)				// R5G6B5( ＤＸライブラリの描画関数も使用できます( ソフトウェアレンダリングモード相当 ) )
+#define DX_USER_SCREEN_PIXEL_FORMAT_R5G5B5X1		(1)				// R5G5B5X1( ＤＸライブラリの描画関数は使用できなくなります )
+#define DX_USER_SCREEN_PIXEL_FORMAT_X1R5G5B5		(2)				// X1R5G5B5( ＤＸライブラリの描画関数は使用できなくなります )
+#define DX_USER_SCREEN_PIXEL_FORMAT_X8B8G8R8		(3)				// X8B8G8R8( ＤＸライブラリの描画関数は使用できなくなります )
+#define DX_USER_SCREEN_PIXEL_FORMAT_X8R8G8B8		(4)				// X8R8G8B8( ＤＸライブラリの描画関数も使用できます( ソフトウェアレンダリングモード相当 ) )
+#define DX_USER_SCREEN_PIXEL_FORMAT_NUM				(5)
 
 // ウインドウの奥行き位置設定タイプ
 #define DX_WIN_ZTYPE_NORMAL							(0)				// 通常設定
@@ -720,6 +827,19 @@
 #define DX_INPUT_PAD15								(0x000f)		// パッド１５入力
 #define DX_INPUT_PAD16								(0x0010)		// パッド１６入力
 #define DX_INPUT_KEY								(0x1000)		// キー入力
+
+// ゲームコントローラータイプ
+#define DX_PADTYPE_OTHER							(0)
+#define DX_PADTYPE_XBOX_360							(1)
+#define DX_PADTYPE_XBOX_ONE							(2)
+#define DX_PADTYPE_DUAL_SHOCK_3						(3)
+#define DX_PADTYPE_DUAL_SHOCK_4						(4)
+#define DX_PADTYPE_DUAL_SENSE						(5)
+#define DX_PADTYPE_SWITCH_JOY_CON_L					(6)
+#define DX_PADTYPE_SWITCH_JOY_CON_R					(7)
+#define DX_PADTYPE_SWITCH_PRO_CTRL					(8)
+#define DX_PADTYPE_SWITCH_HORI_PAD					(9)
+#define DX_PADTYPE_NUM								(10)
 
 // タッチの同時接触検出対応最大数
 #define TOUCHINPUTPOINT_MAX							(16)
@@ -991,10 +1111,18 @@
 #define DX_KEYINPSTR_ENDCHARAMODE_OVERWRITE				(0)			// 文字数が限界に達している状態で文字列の末端で文字が入力された場合は、最後の文字を上書き( デフォルト )
 #define DX_KEYINPSTR_ENDCHARAMODE_NOTCHANGE				(1)			// 文字数が限界に達している状態で文字列の末端で文字が入力された場合は、何も変化しない
 
+// タッチパネルデータのツールタイプ
+#define DX_TOUCHINPUT_TOOL_TYPE_UNKNOWN					(0)			// 不明
+#define DX_TOUCHINPUT_TOOL_TYPE_FINGER					(1)			// 指
+#define DX_TOUCHINPUT_TOOL_TYPE_STYLUS					(2)			// スタイラスペン
+#define DX_TOUCHINPUT_TOOL_TYPE_MOUSE					(3)			// マウス
+#define DX_TOUCHINPUT_TOOL_TYPE_ERASER					(4)			// 消しゴム
+
 // フルスクリーン解像度モード定義
-#define DX_FSRESOLUTIONMODE_DESKTOP					(0)				// モニターの画面モードをデスクトップ画面と同じにしてＤＸライブラリ画面を拡大して表示するモード
-#define DX_FSRESOLUTIONMODE_NATIVE					(1)				// モニターの解像度をＤＸライブラリ画面の解像度に合わせるモード
-#define DX_FSRESOLUTIONMODE_MAXIMUM					(2)				// モニターの解像度を最大にしてＤＸライブラリ画面を拡大して表示するモード
+#define DX_FSRESOLUTIONMODE_BORDERLESS_WINDOW		(0)				// 仮想フルスクリーンモード( 実際にはフルスクリーンモードにせず、ボーダーレスウィンドウをデスクトップ画面いっぱいに拡大して仮想的にフルスクリーンモードを実現するモード )
+#define DX_FSRESOLUTIONMODE_DESKTOP					(1)				// モニターの画面モードをデスクトップ画面と同じにしてＤＸライブラリ画面を拡大して表示するモード
+#define DX_FSRESOLUTIONMODE_NATIVE					(2)				// モニターの解像度をＤＸライブラリ画面の解像度に合わせるモード
+#define DX_FSRESOLUTIONMODE_MAXIMUM					(3)				// モニターの解像度を最大にしてＤＸライブラリ画面を拡大して表示するモード
 
 // フルスクリーン拡大モード定義
 #define DX_FSSCALINGMODE_BILINEAR					(0)				// バイリニアモード( ピクセルが滲んでピクセルとピクセルの区切りがはっきりしない )
@@ -1047,11 +1175,15 @@
 
 // データ型定義-------------------------------------------------------------------
 
+#if defined( __cplusplus ) && defined( DX_COMPILE_TYPE_C_LANGUAGE )
+extern "C" {
+#endif
+
 // WAVEFORMATEX の定義
 #ifndef _WAVEFORMATEX_
 #define _WAVEFORMATEX_
 
-struct tWAVEFORMATEX
+typedef struct tWAVEFORMATEX
 {
 	WORD					wFormatTag ;					// フォーマット( WAVE_FORMAT_PCM( 値は 1 ) 等 )
 	WORD					nChannels ;						// チャンネル数
@@ -1060,25 +1192,21 @@ struct tWAVEFORMATEX
 	WORD					nBlockAlign ;					// 全チャンネルの１サンプルを合わせたバイト数( wBitsPerSample / 8 * nChannels )
 	WORD					wBitsPerSample ;				// １サンプル辺りのビット数
 	WORD					cbSize ;						// 拡張情報のバイト数( 拡張情報が無い場合は 0 )
-} ;
-
-typedef tWAVEFORMATEX	WAVEFORMATEX, *PWAVEFORMATEX, NEAR *NPWAVEFORMATEX, FAR *LPWAVEFORMATEX ;
+} WAVEFORMATEX, *PWAVEFORMATEX, NEAR *NPWAVEFORMATEX, FAR *LPWAVEFORMATEX ;
 
 #endif // _WAVEFORMATEX_
 
 // WAVEFORMAT の定義
 #ifndef WAVE_FORMAT_PCM
 
-struct waveformat_tag
+typedef struct waveformat_tag
 {
 	WORD					wFormatTag ;					// フォーマット( WAVE_FORMAT_PCM( 値は 1 ) 等 )
 	WORD					nChannels ;						// チャンネル数
 	DWORD					nSamplesPerSec ;				// １秒辺りのサンプル数
 	DWORD					nAvgBytesPerSec ;				// １秒辺りのバイト数( PCMの場合 nSamplesPerSec * nBlockAlign )
 	WORD					nBlockAlign ;					// 全チャンネルの１サンプルを合わせたバイト数( wBitsPerSample / 8 * nChannels )
-} ;
-
-typedef waveformat_tag	WAVEFORMAT, *PWAVEFORMAT, NEAR *NPWAVEFORMAT, FAR *LPWAVEFORMAT ;
+} WAVEFORMAT, *PWAVEFORMAT, NEAR *NPWAVEFORMAT, FAR *LPWAVEFORMAT ;
 
 #define WAVE_FORMAT_PCM		1
 
@@ -1121,8 +1249,8 @@ typedef struct tagIMEINPUTDATA
 // 描画文字列一文字の情報
 typedef struct tagDRAWCHARINFO
 {
-	TCHAR					Char[ 13 ] ;					// 文字
-	BYTE					Bytes ;							// 文字のバイト数
+	TCHAR					Char[ 14 ] ;					// 文字
+	WORD					Bytes ;							// 文字のバイト数
 	float					DrawX, DrawY ;					// 描画位置
 	float					SizeX, SizeY ;					// 描画サイズ
 } DRAWCHARINFO, *LPDRAWCHARINFO ;
@@ -1448,11 +1576,13 @@ typedef struct tagMV1_COLL_RESULT_POLY
 	VECTOR					HitPosition ;					// ( MV1CollCheck_Line でのみ有効 )ヒット座標
 
 	int						FrameIndex ;					// 当たったポリゴンが含まれるフレームの番号
+	int						MeshIndex ;						// 当たったポリゴンが含まれるメッシュの番号( メッシュ単位で判定した場合のみ有効 )
 	int						PolygonIndex ;					// 当たったポリゴンの番号
 	int						MaterialIndex ;					// 当たったポリゴンが使用しているマテリアルの番号
 	VECTOR					Position[ 3 ] ;					// 当たったポリゴンを形成する三点の座標
 	VECTOR					Normal ;						// 当たったポリゴンの法線
 	float					PositionWeight[ 3 ] ;			// 当たった座標は、当たったポリゴンの三点それぞれどの割合で影響しているか、の値( 当たった座標 = Position[ 0 ] * PositionWeight[ 0 ] + Position[ 1 ] * PositionWeight[ 1 ] + Position[ 2 ] * PositionWeight[ 2 ] )
+	int						PosMaxWeightFrameIndex[ 3 ] ;	// 当たったポリゴンの座標がそれぞれ最も影響を受けているフレームの番号
 } MV1_COLL_RESULT_POLY ;
 
 // コリジョン結果代入用ポリゴン配列
@@ -1470,14 +1600,16 @@ typedef struct tagMV1_REF_VERTEX
 	FLOAT2					TexCoord[ 2 ] ;					// テクスチャ座標
 	COLOR_U8				DiffuseColor ;					// ディフューズカラー
 	COLOR_U8				SpecularColor ;					// スペキュラカラー
+	int						MaxWeightFrameIndex ;			// 最も大きな影響を与えているフレーム( スキニングメッシュ用 )
 } MV1_REF_VERTEX ;
 
 // 参照用ポリゴン構造体
 typedef struct tagMV1_REF_POLYGON
 {
 	unsigned short			FrameIndex ;					// このポリゴンが属しているフレーム
+	unsigned short			MeshIndex ;						// このポリゴンが属しているメッシュ
 	unsigned short			MaterialIndex ;					// 使用しているマテリアル
-	int						VIndexTarget ;					// VIndex が指すインデックスの参照先( 1:フレーム  0:モデル全体 )
+	unsigned short			VIndexTarget ;					// VIndex が指すインデックスの参照先( 1:フレーム  0:モデル全体 )
 	int						VIndex[ 3 ] ;					// ３角形ポリゴンを成す参照頂点のインデックス
 	VECTOR					MinPosition ;					// ポリゴンを成す頂点座標の最小値
 	VECTOR					MaxPosition ;					// ポリゴンを成す頂点座標の最大値
@@ -1583,6 +1715,7 @@ typedef struct tagSTREAMDATASHREDTYPE2W
 	size_t					(*Read		)( void *Buffer, size_t BlockSize, size_t DataNum, DWORD_PTR Handle ) ;
 	int						(*Eof		)( DWORD_PTR Handle ) ;
 	int						(*IdleCheck	)( DWORD_PTR Handle ) ;
+	int						(*IsDXA		)( DWORD_PTR Handle ) ;									// 戻り値: -1=エラー  0=ＤＸアーカイブファイル内のファイルではない  1=ＤＸアーカイブファイル内のファイル
 	int						(*ChDir		)( const wchar_t *Path ) ;
 	int						(*GetDir	)( wchar_t *Buffer ) ;
 	int						(*GetDirS	)( wchar_t *Buffer, size_t BufferSize ) ;
@@ -1594,20 +1727,20 @@ typedef struct tagSTREAMDATASHREDTYPE2W
 // ストリームデータ制御用関数ポインタ構造体
 typedef struct tagSTREAMDATASHRED
 {
-	LONGLONG				(*Tell		)( void *StreamDataPoint ) ;
-	int						(*Seek		)( void *StreamDataPoint, LONGLONG SeekPoint, int SeekType ) ;
-	size_t					(*Read		)( void *Buffer, size_t BlockSize, size_t DataNum, void *StreamDataPoint ) ;
-//	size_t					(*Write		)( void *Buffer, size_t BlockSize, size_t DataNum, void *StreamDataPoint ) ;
-	int						(*Eof		)( void *StreamDataPoint ) ;
-	int						(*IdleCheck	)( void *StreamDataPoint ) ;
-	int						(*Close		)( void *StreamDataPoint ) ;
+	LONGLONG				(*Tell		)( DWORD_PTR StreamDataPoint ) ;
+	int						(*Seek		)( DWORD_PTR StreamDataPoint, LONGLONG SeekPoint, int SeekType ) ;
+	size_t					(*Read		)( void *Buffer, size_t BlockSize, size_t DataNum, DWORD_PTR StreamDataPoint ) ;
+//	size_t					(*Write		)( void *Buffer, size_t BlockSize, size_t DataNum, DWORD_PTR StreamDataPoint ) ;
+	int						(*Eof		)( DWORD_PTR StreamDataPoint ) ;
+	int						(*IdleCheck	)( DWORD_PTR StreamDataPoint ) ;
+	int						(*Close		)( DWORD_PTR StreamDataPoint ) ;
 } STREAMDATASHRED, *LPSTREAMDATASHRED ;
 
 // ストリームデータ制御用データ構造体
 typedef struct tagSTREAMDATA
 {
 	STREAMDATASHRED			ReadShred ;
-	void					*DataPoint ;
+	DWORD_PTR				DataPoint ;
 } STREAMDATA ;
 
 
@@ -1656,6 +1789,14 @@ typedef struct tagBASEIMAGE
 	int						GraphDataCount ;				// グラフィックイメージの数
 } BASEIMAGE, GRAPHIMAGE, *LPGRAPHIMAGE ;
 
+// 矩形データ型
+typedef struct tagRECTDATA
+{
+	int						x1, y1, x2, y2 ;				// 座標
+	unsigned int			color ;							// 色
+	int						pal ;							// パラメータ
+} RECTDATA, *LPRECTDATA ;
+
 // ラインデータ型
 typedef struct tagLINEDATA
 {
@@ -1671,6 +1812,15 @@ typedef struct tagPOINTDATA
 	unsigned int			color ;							// 色
 	int						pal ;							// パラメータ
 } POINTDATA, *LPPOINTDATA ;
+
+// 立方体データ型
+typedef struct tagCUBEDATA
+{
+	VECTOR					Pos1 ;							// 座標1
+	VECTOR					Pos2 ;							// 座標2
+	COLOR_U8				DifColor ;						// ディフューズカラー
+	COLOR_U8				SpcColor ;						// スペキュラカラー
+} CUBEDATA, *LPCUBEDATA ;
 
 #ifndef DX_NOTUSE_DRAWFUNCTION
 
@@ -1735,6 +1885,10 @@ typedef struct tagTOUCHINPUTPOINT
 	DWORD					ID ;							// タッチを判別するためのＩＤ
 	int						PositionX ;						// タッチされた座標X
 	int						PositionY ;						// タッチされた座標Y
+	float					Pressure ;						// 圧力
+	float					Orientation ;					// 画面の上端に対する接点の方位角
+	float					Tilt ;							// 画面の垂線に対する接点の高度角
+	int						ToolType ;						// ツールタイプ( DX_TOUCHINPUT_TOOL_TYPE_UNKNOWN など )
 } TOUCHINPUTPOINT ;
 
 // タッチパネルのタッチの情報
@@ -1742,6 +1896,7 @@ typedef struct tagTOUCHINPUTDATA
 {
 	LONGLONG				Time ;							// 情報の時間
 
+	unsigned int			Source ;
 	int						PointNum ;						// 有効なタッチ情報の数
 	TOUCHINPUTPOINT			Point[ TOUCHINPUTPOINT_MAX ] ;	// タッチ情報
 } TOUCHINPUTDATA ;
@@ -1764,6 +1919,7 @@ typedef struct tagIPDATA_IPv6
 		unsigned char			Byte[ 16 ] ;
 		unsigned short			Word[ 8 ] ;
 	} ;
+	unsigned long				ScopeID ;
 } IPDATA_IPv6 ;
 
 #define DX_STRUCT_END
@@ -1777,9 +1933,9 @@ typedef struct tagIPDATA_IPv6
 
 // 関数プロトタイプ宣言------------------------------------------------------------------
 
-#ifdef __WINDOWS__
+#ifdef WINDOWS_DESKTOP_OS
 #include "DxFunctionWin.h"
-#endif
+#endif // WINDOWS_DESKTOP_OS
 
 #ifdef __ANDROID__
 #include "DxFunctionAndroid.h"
@@ -1829,15 +1985,37 @@ extern	int			WaitTimer( int WaitTime ) ;												// 指定の時間だけ処�
 #ifndef DX_NON_INPUT
 extern	int			WaitKey( void ) ;														// キーの入力待ちを行う
 #endif // DX_NON_INPUT
+extern	int			SleepThread( int WaitTime ) ;											// 指定の時間だけスレッドを眠らせる
 
 // カウンタ及び時刻取得系関数
-extern	int			GetNowCount(				int UseRDTSCFlag = FALSE ) ;				// ミリ秒単位の精度を持つカウンタの現在値を得る
-extern	LONGLONG	GetNowHiPerformanceCount(	int UseRDTSCFlag = FALSE ) ;				// GetNowCountの高精度バージョン
-extern	int			GetDateTime(				DATEDATA *DateBuf ) ;						// 現在時刻を取得する 
+extern	int			GetNowCount(							int UseRDTSCFlag DEFAULTPARAM( = FALSE ) ) ;	// ミリ秒単位の精度を持つカウンタの現在の値を得る
+extern	LONGLONG	GetNowHiPerformanceCount(				int UseRDTSCFlag DEFAULTPARAM( = FALSE ) ) ;	// GetNowCountの高精度バージョン( μ秒単位の精度を持つカウンタの現在の値を得る )
+extern	ULONGLONG	GetNowSysPerformanceCount(				void ) ;						// OSが提供する高精度カウンタの現在の値を得る
+extern	ULONGLONG	GetSysPerformanceFrequency(				void ) ;						// OSが提供する高精度カウンタの周波数( 1秒辺りのカウント数 )を得る
+extern	ULONGLONG	ConvSysPerformanceCountToSeconds(		ULONGLONG Count ) ;				// OSが提供する高精度カウンタの値を秒の値に変換する
+extern	ULONGLONG	ConvSysPerformanceCountToMilliSeconds(	ULONGLONG Count ) ;				// OSが提供する高精度カウンタの値をミリ秒の値に変換する
+extern	ULONGLONG	ConvSysPerformanceCountToMicroSeconds(	ULONGLONG Count ) ;				// OSが提供する高精度カウンタの値をマイクロ秒の値に変換する
+extern	ULONGLONG	ConvSysPerformanceCountToNanoSeconds(	ULONGLONG Count ) ;				// OSが提供する高精度カウンタの値をナノ秒の値に変換する
+extern	ULONGLONG	ConvSecondsToSysPerformanceCount(		ULONGLONG Seconds ) ;			// 秒の値をOSが提供する高精度カウンタの値に変換する
+extern	ULONGLONG	ConvMilliSecondsToSysPerformanceCount(	ULONGLONG MilliSeconds ) ;		// ミリ秒の値をOSが提供する高精度カウンタの値に変換する
+extern	ULONGLONG	ConvMicroSecondsToSysPerformanceCount(	ULONGLONG MicroSeconds ) ;		// マイクロ秒の値をOSが提供する高精度カウンタの値に変換する
+extern	ULONGLONG	ConvNanoSecondsToSysPerformanceCount(	ULONGLONG NanoSeconds ) ;		// ナノ秒の値をOSが提供する高精度カウンタの値に変換する
+extern	int			GetDateTime(							DATEDATA *DateBuf ) ;			// 現在時刻を取得する 
 
 // 乱数取得
 extern	int			GetRand( int RandMax ) ;												// 乱数を取得する( RandMax : 返って来る値の最大値 )
 extern	int			SRand(	 int Seed ) ;													// 乱数の初期値を設定する
+
+#ifndef DX_NON_MERSENNE_TWISTER
+extern	DWORD		GetMersenneTwisterRand( void ) ;										// メルセンヌ・ツイスターアルゴリズムで生成された乱数値を無加工で取得する
+
+extern	DWORD_PTR	CreateRandHandle( int Seed DEFAULTPARAM( = -1 ) ) ;						// 乱数ハンドルを作成する( 戻り値　0以外:乱数ハンドル　0:エラー )
+extern	int			DeleteRandHandle( DWORD_PTR RandHandle ) ;								// 乱数ハンドルを削除する
+extern	int			SRandHandle( DWORD_PTR RandHandle, int Seed ) ;							// 乱数ハンドルの初期値を再設定する
+extern	int			GetRandHandle( DWORD_PTR RandHandle, int RandMax ) ;					// 乱数ハンドルを使用して乱数を取得する( RandMax : 返って来る値の最大値 )
+extern	DWORD		GetMersenneTwisterRandHandle( DWORD_PTR RandHandle ) ;					// 乱数ハンドルを使用してメルセンヌ・ツイスターアルゴリズムで生成された乱数値を無加工で取得する
+
+#endif // DX_NON_MERSENNE_TWISTER
 
 // バッテリー関連
 extern	int			GetBatteryLifePercent( void ) ;											// 電池の残量を % で取得する( 戻り値： 100=フル充電状態  0=充電残量無し )
@@ -1847,6 +2025,28 @@ extern	int			GetClipboardText(			TCHAR *DestBuffer ) ;						// クリップボ�
 extern	int			SetClipboardText(			const TCHAR *Text                    ) ;	// クリップボードにテキストデータを格納する
 extern	int			SetClipboardTextWithStrLen(	const TCHAR *Text, size_t TextLength ) ;	// クリップボードにテキストデータを格納する
 
+// iniファイル関係
+extern	int			GetPrivateProfileStringDx(                 const TCHAR *AppName,                       const TCHAR *KeyName,                       const TCHAR *Default,                       TCHAR *ReturnedStringBuffer, size_t ReturnedStringBufferBytes, const TCHAR *IniFilePath,                           int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileString のＤＸライブラリ版
+extern	int			GetPrivateProfileStringDxWithStrLen(       const TCHAR *AppName, size_t AppNameLength, const TCHAR *KeyName, size_t KeyNameLength, const TCHAR *Default, size_t DefaultLength, TCHAR *ReturnedStringBuffer, size_t ReturnedStringBufferBytes, const TCHAR *IniFilePath, size_t IniFilePathLength, int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileString のＤＸライブラリ版
+extern	int			GetPrivateProfileIntDx(                    const TCHAR *AppName,                       const TCHAR *KeyName,                       int          Default,                                                                                      const TCHAR *IniFilePath,                           int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileInt のＤＸライブラリ版
+extern	int			GetPrivateProfileIntDxWithStrLen(          const TCHAR *AppName, size_t AppNameLength, const TCHAR *KeyName, size_t KeyNameLength, int          Default,                                                                                      const TCHAR *IniFilePath, size_t IniFilePathLength, int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileInt のＤＸライブラリ版
+extern	int			GetPrivateProfileStringDxForMem(           const TCHAR *AppName,                       const TCHAR *KeyName,                       const TCHAR *Default,                       TCHAR *ReturnedStringBuffer, size_t ReturnedStringBufferBytes, const void *IniFileImage, size_t IniFileImageBytes, int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileStringDx のメモリから読み込む版
+extern	int			GetPrivateProfileStringDxForMemWithStrLen( const TCHAR *AppName, size_t AppNameLength, const TCHAR *KeyName, size_t KeyNameLength, const TCHAR *Default, size_t DefaultLength, TCHAR *ReturnedStringBuffer, size_t ReturnedStringBufferBytes, const void *IniFileImage, size_t IniFileImageBytes, int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileStringDx のメモリから読み込む版
+extern	int			GetPrivateProfileIntDxForMem(              const TCHAR *AppName,                       const TCHAR *KeyName,                       int          Default,                                                                                      const void *IniFileImage, size_t IniFileImageBytes, int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileIntDx のメモリから読み込む版
+extern	int			GetPrivateProfileIntDxForMemWithStrLen(    const TCHAR *AppName, size_t AppNameLength, const TCHAR *KeyName, size_t KeyNameLength, int          Default,                                                                                      const void *IniFileImage, size_t IniFileImageBytes, int IniFileCharCodeFormat DEFAULTPARAM( = -1 ) /* DX_CHARCODEFORMAT_SHIFTJIS 等、-1 でデフォルト */ ) ;		// GetPrivateProfileIntDx のメモリから読み込む版
+
+#if defined( __APPLE__ ) || defined( __ANDROID__ )
+
+// メールアプリを送信メール編集状態で起動する
+// MailAddr    : 宛先( NULL で無効 )、メールアドレスが複数ある場合はカンマ『,』で区切ってください
+// MailCCAddr  : CC の宛先( NULL で無効 )、メールアドレスが複数ある場合はカンマ『,』で区切ってください
+// MailBCCAddr : BCC の宛先( NULL で無効 )、メールアドレスが複数ある場合はカンマ『,』で区切ってください
+// Subject     : タイトル( NULL で無効 )、メールアドレスが複数ある場合はカンマ『,』で区切ってください
+// Text        : 本文( NULL で無効 )、メールアドレスが複数ある場合はカンマ『,』で区切ってください
+extern	int			MailApp_Send(           const TCHAR *MailAddr DEFAULTPARAM( = NULL ) ,                                             const TCHAR *MailCCAddr DEFAULTPARAM( = NULL ) ,                                               const TCHAR *MailBCCAddr DEFAULTPARAM( = NULL ) ,                                                const TCHAR *Subject DEFAULTPARAM( = NULL ) ,                                            const TCHAR *Text DEFAULTPARAM( = NULL )                                         ) ;
+extern	int			MailApp_SendWithStrLen( const TCHAR *MailAddr DEFAULTPARAM( = NULL ) , size_t MailAddrLength DEFAULTPARAM( = 0 ) , const TCHAR *MailCCAddr DEFAULTPARAM( = NULL ) , size_t MailCCAddrLength DEFAULTPARAM( = 0 ) , const TCHAR *MailBCCAddr DEFAULTPARAM( = NULL ) , size_t MailBCCAddrLength DEFAULTPARAM( = 0 ) , const TCHAR *Subject DEFAULTPARAM( = NULL ) , size_t SubjectLength DEFAULTPARAM( = 0 ) , const TCHAR *Text DEFAULTPARAM( = NULL ) , size_t TextLength DEFAULTPARAM( = 0 ) ) ;
+
+#endif // defined( __APPLE__ ) || defined( __ANDROID__ )
 
 
 
@@ -1876,6 +2076,7 @@ extern 	int			AppLogAdd(				const TCHAR *String , ... ) ;					// LogFileFmtAdd �
 
 // ログ出力設定関数
 extern	int			SetOutApplicationLogValidFlag(	          int Flag ) ;													// ログファイル( Log.txt ) を作成するかどうかを設定する( TRUE:作成する( デフォルト )  FALSE:作成しない )、DxLib_Init の前でのみ使用可能　
+extern	int			SetOutApplicationSystemLogValidFlag(      int Flag ) ;													// ログファイル( Log.txt ) にＤＸライブラリ内部のログ出力を行うかどうか設定する( TRUE:ＤＸライブラリ内部のログ出力を行う( デフォルト )  FALSE:ＤＸライブラリ内部のログ出力を行わない )
 extern	int			SetApplicationLogFileName(                const TCHAR *FileName ) ;										// ログファイルの名前を設定する( Log.txt 以外にしたい場合に使用 )
 extern	int			SetApplicationLogFileNameWithStrLen(      const TCHAR *FileName, size_t FileNameLength ) ;				// ログファイルの名前を設定する( Log.txt 以外にしたい場合に使用 )
 extern	int			SetApplicationLogSaveDirectory(	          const TCHAR *DirectoryPath ) ;								// ログファイル( Log.txt ) を保存するディレクトリパスを設定する
@@ -1892,10 +2093,11 @@ extern	int			SetLogFontHandle(	 int FontHandle ) ;									// printfDx の結果
 extern	int			SetLogDrawArea(		 int x1, int y1, int x2, int y2 ) ;					// printfDx の結果を画面に出力する際の描画する領域を設定する
 
 // 簡易画面出力関数
-extern 	int			printfDx(			 const TCHAR *FormatString , ... ) ;								// printf と同じ引数で画面に文字列を表示するための関数
-extern	int			putsDx(				 const TCHAR *String, int NewLine = TRUE ) ;						// puts と同じ引数で画面に文字列を表示するための関数
-extern	int			putsDxWithStrLen(	 const TCHAR *String, size_t StringLength, int NewLine = TRUE ) ;	// puts と同じ引数で画面に文字列を表示するための関数
-extern	int			clsDx(				 void ) ;															// printfDx の結果をリセットするための関数
+extern 	int			printfDx(			 const TCHAR *FormatString , ... ) ;												// printf と同じ引数で画面に文字列を表示するための関数
+extern	int			putsDx(				 const TCHAR *String, int NewLine DEFAULTPARAM( = TRUE ) ) ;						// puts と同じ引数で画面に文字列を表示するための関数
+extern	int			putsDxWithStrLen(	 const TCHAR *String, size_t StringLength, int NewLine DEFAULTPARAM( = TRUE ) ) ;	// puts と同じ引数で画面に文字列を表示するための関数
+extern	int			clsDx(				 void ) ;																			// printfDx の結果をリセットするための関数
+extern	int			setPrintColorDx(     int Color, int EdgeColor DEFAULTPARAM( = 0 ) ) ;													// printf や puts で表示する文字列の色を指定する
 #endif // DX_NON_PRINTF_DX
 
 #endif // DX_NON_LOG
@@ -1916,12 +2118,16 @@ extern	int			clsDx(				 void ) ;															// printfDx の結果をリセッ
 // DxASyncLoad.cpp関数プロトタイプ宣言
 
 // 非同期読み込み関係
-extern	int			SetUseASyncLoadFlag(			int Flag ) ;								// 読み込み処理系の関数で非同期読み込みを行うかどうかを設定する( 非同期読み込みに対応している関数のみ有効 )( TRUE:非同期読み込みを行う  FALSE:非同期読み込みを行わない( デフォルト ) )
-extern	int			CheckHandleASyncLoad(			int Handle ) ;								// ハンドルの非同期読み込みが完了しているかどうかを取得する( TRUE:まだ完了していない  FALSE:完了している  -1:エラー )
-extern	int			GetHandleASyncLoadResult(		int Handle ) ;								// ハンドルの非同期読み込み処理の戻り値を取得する( 非同期読み込み中の場合は一つ前の非同期読み込み処理の戻り値が返ってきます )
-extern	int			SetASyncLoadFinishDeleteFlag(	int Handle ) ;								// ハンドルの非同期読み込み処理が完了したらハンドルを削除するフラグを立てる
-extern	int			GetASyncLoadNum(				void ) ;									// 非同期読み込み中の処理の数を取得する
-extern	int			SetASyncLoadThreadNum(			int ThreadNum ) ;							// 非同期読み込み処理を行うスレッドの数を設定する( ThreadNum に指定できる数は 1 ～ 32 )
+extern	int			SetUseASyncLoadFlag(			int Flag ) ;										// 読み込み処理系の関数で非同期読み込みを行うかどうかを設定する( 非同期読み込みに対応している関数のみ有効 )( TRUE:非同期読み込みを行う  FALSE:非同期読み込みを行わない( デフォルト ) )
+extern	int			GetUseASyncLoadFlag(			void ) ;											// 読み込み処理系の関数で非同期読み込みを行うかどうかを取得する( 非同期読み込みに対応している関数のみ有効 )( TRUE:非同期読み込みを行う  FALSE:非同期読み込みを行わない( デフォルト ) )
+extern	int			CheckHandleASyncLoad(			int Handle ) ;										// ハンドルの非同期読み込みが完了しているかどうかを取得する( TRUE:まだ完了していない  FALSE:完了している  -1:エラー )
+extern	int			GetHandleASyncLoadResult(		int Handle ) ;										// ハンドルの非同期読み込み処理の戻り値を取得する( 非同期読み込み中の場合は一つ前の非同期読み込み処理の戻り値が返ってきます )
+extern	int			SetASyncLoadFinishDeleteFlag(	int Handle ) ;										// ハンドルの非同期読み込み処理が完了したらハンドルを削除するフラグを立てる
+extern	int			SetASyncLoadFinishCallback(		int Handle, void ( *Callback )( int Handle, void *Data ), void *Data ) ;	// ハンドルの非同期読み込み処理が完了したら呼ばれる関数をセットする
+extern	int			WaitHandleASyncLoad(			int Handle ) ;										// 指定のハンドルの非同期読み込み処理が終了するまで待つ
+extern	int			WaitHandleASyncLoadAll(			void ) ;											// 全ての非同期読み込みデータが読み込み終わるまで待つ
+extern	int			GetASyncLoadNum(				void ) ;											// 非同期読み込み中の処理の数を取得する
+extern	int			SetASyncLoadThreadNum(			int ThreadNum ) ;									// 非同期読み込み処理を行うスレッドの数を設定する( ThreadNum に指定できる数は 1 ～ 32 )
 
 #endif // DX_NON_ASYNCLOAD
 
@@ -1937,8 +2143,10 @@ extern	int			SetASyncLoadThreadNum(			int ThreadNum ) ;							// 非同期読み
 
 // DxHandle.cpp関数プロトタイプ宣言
 
-extern	int			SetDeleteHandleFlag(		int Handle, int *DeleteFlag ) ;				// ハンドルが削除されたときに－１が設定される変数を登録する
-
+extern	int			SetDeleteHandleFlag(		int Handle, int *DeleteFlag ) ;							// ハンドルが削除されたときに－１が設定される変数を登録する
+extern	int			GetHandleNum(				int HandleType /* DX_HANDLETYPE_GRAPH等 */ ) ;			// 指定のタイプのハンドルの数を取得する
+extern	int			GetMaxHandleNum(			int HandleType /* DX_HANDLETYPE_GRAPH等 */ ) ;			// 指定のタイプのハンドルが最大で幾つ作成できるかを取得する
+extern	int			DumpHandleInfo(				int HandleType /* DX_HANDLETYPE_GRAPH等 */ ) ;			// 指定のタイプの全ハンドルの情報をログに出力する
 
 
 
@@ -1955,16 +2163,17 @@ extern	int			SetDeleteHandleFlag(		int Handle, int *DeleteFlag ) ;				// ハン�
 
 // マウス関係関数
 extern	int			SetMouseDispFlag(		int DispFlag ) ;												// マウスポインタの表示状態を設定する( DispFlag:マウスポインタを表示するかどうか( TRUE:表示する  FALSE:表示しない )
+extern	int			SetMouseDispIgnoreMenuFlag(	int IgnoreMenuFlag ) ;										// マウスポインタの表示状態についてメニューの表示状態を無視するかどうかを設定する( TRUE:メニューの表示状態を無視する  FALSE:メニューの表示状態を考慮する( デフォルト ) )
 #ifndef DX_NON_INPUT
 extern	int			GetMousePoint(			int *XBuf, int *YBuf ) ;										// マウスポインタの位置を取得する
 extern	int			SetMousePoint(			int PointX, int PointY ) ;										// マウスポインタの位置を設定する
 extern	int			GetMouseInput(			void ) ;														// マウスのボタンの押下状態を取得する
-extern	int			GetMouseWheelRotVol(	int CounterReset = TRUE ) ;										// 垂直マウスホイールの回転量を取得する
-extern	int			GetMouseHWheelRotVol(	int CounterReset = TRUE ) ;										// 水平マウスホイールの回転量を取得する
-extern	float		GetMouseWheelRotVolF(	int CounterReset = TRUE ) ;										// 垂直マウスホイールの回転量を取得する( 戻り値が float 型 )
-extern	float		GetMouseHWheelRotVolF(	int CounterReset = TRUE ) ;										// 水平マウスホイールの回転量を取得する( 戻り値が float 型 )
-extern	int			GetMouseInputLog(		int *Button, int *ClickX, int *ClickY, int LogDelete = TRUE ) ;					// マウスのボタンを押した情報を一つ取得する( Button:押されたボタン( MOUSE_INPUT_LEFT 等 )を格納する変数のアドレス  ClickX:押された時のＸ座標を格納する変数のアドレス  ClickY:押された時のＹ座標を格納する変数のアドレス   LogDelete:取得した押下情報一つ分をログから削除するかどうか( TRUE:削除する  FALSE:削除しない、つまり次にこの関数が呼ばれたときに同じ値を取得することになる )　　戻り値  0:押された情報取得できた　-1:押された情報が無かった、つまり前回の呼び出し( または起動時から最初の呼び出し )の間に一度もマウスのボタンが押されなかった )
-extern	int			GetMouseInputLog2(		int *Button, int *ClickX, int *ClickY, int *LogType, int LogDelete = TRUE ) ;	// マウスのボタンを押したり離したりした情報を一つ取得する( Button:押されたり離されたりしたボタン( MOUSE_INPUT_LEFT 等 )を格納する変数のアドレス  ClickX:押されたり離されたりした時のＸ座標を格納する変数のアドレス  ClickY:押されたり離されたりした時のＹ座標を格納する変数のアドレス   LogDelete:取得した押されたり離されたりした情報一つ分をログから削除するかどうか( TRUE:削除する  FALSE:削除しない、つまり次にこの関数が呼ばれたときに同じ値を取得することになる )　　戻り値  0:押されたり離されたりした情報取得できた　-1:押されたり離されたりした情報が無かった、つまり前回の呼び出し( または起動時から最初の呼び出し )の間に一度もマウスのボタンが押されたり離されたりしなかった )
+extern	int			GetMouseWheelRotVol(	int CounterReset DEFAULTPARAM( = TRUE ) ) ;						// 垂直マウスホイールの回転量を取得する
+extern	int			GetMouseHWheelRotVol(	int CounterReset DEFAULTPARAM( = TRUE ) ) ;						// 水平マウスホイールの回転量を取得する
+extern	float		GetMouseWheelRotVolF(	int CounterReset DEFAULTPARAM( = TRUE ) ) ;						// 垂直マウスホイールの回転量を取得する( 戻り値が float 型 )
+extern	float		GetMouseHWheelRotVolF(	int CounterReset DEFAULTPARAM( = TRUE ) ) ;						// 水平マウスホイールの回転量を取得する( 戻り値が float 型 )
+extern	int			GetMouseInputLog(		int *Button, int *ClickX, int *ClickY, int LogDelete DEFAULTPARAM( = TRUE ) ) ;					// マウスのボタンを押した情報を一つ取得する( Button:押されたボタン( MOUSE_INPUT_LEFT 等 )を格納する変数のアドレス  ClickX:押された時のＸ座標を格納する変数のアドレス  ClickY:押された時のＹ座標を格納する変数のアドレス   LogDelete:取得した押下情報一つ分をログから削除するかどうか( TRUE:削除する  FALSE:削除しない、つまり次にこの関数が呼ばれたときに同じ値を取得することになる )　　戻り値  0:押された情報取得できた　-1:押された情報が無かった、つまり前回の呼び出し( または起動時から最初の呼び出し )の間に一度もマウスのボタンが押されなかった )
+extern	int			GetMouseInputLog2(		int *Button, int *ClickX, int *ClickY, int *LogType, int LogDelete DEFAULTPARAM( = TRUE ) ) ;	// マウスのボタンを押したり離したりした情報を一つ取得する( Button:押されたり離されたりしたボタン( MOUSE_INPUT_LEFT 等 )を格納する変数のアドレス  ClickX:押されたり離されたりした時のＸ座標を格納する変数のアドレス  ClickY:押されたり離されたりした時のＹ座標を格納する変数のアドレス  LogType：押されたのか( MOUSE_INPUT_LOG_DOWN )離されたのか( MOUSE_INPUT_LOG_UP )、等の情報を格納する変数のアドレス  LogDelete:取得した押されたり離されたりした情報一つ分をログから削除するかどうか( TRUE:削除する  FALSE:削除しない、つまり次にこの関数が呼ばれたときに同じ値を取得することになる )　　戻り値  0:押されたり離されたりした情報取得できた　-1:押されたり離されたりした情報が無かった、つまり前回の呼び出し( または起動時から最初の呼び出し )の間に一度もマウスのボタンが押されたり離されたりしなかった )
 #endif // DX_NON_INPUT
 
 
@@ -1980,23 +2189,23 @@ extern	int			GetMouseInputLog2(		int *Button, int *ClickX, int *ClickY, int *Log
 
 // タッチパネル入力関係関数
 #ifndef DX_NON_INPUT
-extern	int				GetTouchInputNum( void ) ;																// タッチされている数を取得する
-extern	int				GetTouchInput( int InputNo, int *PositionX, int *PositionY, int *ID = NULL , int *Device = NULL ) ;		// タッチの情報を取得する
+extern	int				GetTouchInputNum( void ) ;																				// タッチされている数を取得する
+extern	int				GetTouchInput( int InputNo, int *PositionX, int *PositionY, int *ID DEFAULTPARAM( = NULL ) , int *Device DEFAULTPARAM( = NULL ) , float *Pressure DEFAULTPARAM( = NULL ) ) ;		// タッチの情報を取得する
 
-extern	int				GetTouchInputLogNum( void ) ;															// ストックされているタッチ情報の数を取得する
-extern	int				ClearTouchInputLog( void ) ;															// ストックされているタッチ情報をクリアする
-extern	TOUCHINPUTDATA	GetTouchInputLogOne( int PeekFlag = FALSE ) ;											// ストックされているタッチ情報から一番古い情報をひとつ取得する
-extern	int				GetTouchInputLog( TOUCHINPUTDATA *TouchData, int GetNum, int PeekFlag = FALSE ) ;		// ストックされているタッチ情報から古い順に指定数バッファに取得する( 戻り値  -1:エラー  0以上:取得した情報の数 )
+extern	int				GetTouchInputLogNum( void ) ;																			// ストックされているタッチ情報の数を取得する
+extern	int				ClearTouchInputLog( void ) ;																			// ストックされているタッチ情報をクリアする
+extern	TOUCHINPUTDATA	GetTouchInputLogOne( int PeekFlag DEFAULTPARAM( = FALSE ) ) ;											// ストックされているタッチ情報から一番古い情報をひとつ取得する
+extern	int				GetTouchInputLog( TOUCHINPUTDATA *TouchData, int GetNum, int PeekFlag DEFAULTPARAM( = FALSE ) ) ;		// ストックされているタッチ情報から古い順に指定数バッファに取得する( 戻り値  -1:エラー  0以上:取得した情報の数 )
 
-extern	int				GetTouchInputDownLogNum( void ) ;														// ストックされているタッチされ始めた情報の数を取得する
-extern	int				ClearTouchInputDownLog( void ) ;														// ストックされているタッチされ始めた情報をクリアする
-extern	TOUCHINPUTPOINT	GetTouchInputDownLogOne( int PeekFlag = FALSE ) ;										// ストックされているタッチされ始めた情報から一番古い情報をひとつ取得する
-extern	int				GetTouchInputDownLog( TOUCHINPUTPOINT *PointData, int GetNum, int PeekFlag = FALSE ) ;	// ストックされているタッチされ始めた情報から古い順に指定数バッファに取得する( 戻り値  -1:エラー  0以上:取得した情報の数 )
+extern	int				GetTouchInputDownLogNum( void ) ;																		// ストックされているタッチされ始めた情報の数を取得する
+extern	int				ClearTouchInputDownLog( void ) ;																		// ストックされているタッチされ始めた情報をクリアする
+extern	TOUCHINPUTPOINT	GetTouchInputDownLogOne( int PeekFlag DEFAULTPARAM( = FALSE ) ) ;										// ストックされているタッチされ始めた情報から一番古い情報をひとつ取得する
+extern	int				GetTouchInputDownLog( TOUCHINPUTPOINT *PointData, int GetNum, int PeekFlag DEFAULTPARAM( = FALSE ) ) ;	// ストックされているタッチされ始めた情報から古い順に指定数バッファに取得する( 戻り値  -1:エラー  0以上:取得した情報の数 )
 
-extern	int				GetTouchInputUpLogNum( void ) ;															// ストックされているタッチが離された情報の数を取得する
-extern	int				ClearTouchInputUpLog( void ) ;															// ストックされているタッチが離された情報をクリアする
-extern	TOUCHINPUTPOINT	GetTouchInputUpLogOne( int PeekFlag = FALSE ) ;											// ストックされているタッチが離された情報から一番古い情報をひとつ取得する
-extern	int				GetTouchInputUpLog( TOUCHINPUTPOINT *PointData, int GetNum, int PeekFlag = FALSE ) ;	// ストックされているタッチが離された情報から古い順に指定数バッファに取得する( 戻り値  -1:エラー  0以上:取得した情報の数 )
+extern	int				GetTouchInputUpLogNum( void ) ;																			// ストックされているタッチが離された情報の数を取得する
+extern	int				ClearTouchInputUpLog( void ) ;																			// ストックされているタッチが離された情報をクリアする
+extern	TOUCHINPUTPOINT	GetTouchInputUpLogOne( int PeekFlag DEFAULTPARAM( = FALSE ) ) ;											// ストックされているタッチが離された情報から一番古い情報をひとつ取得する
+extern	int				GetTouchInputUpLog( TOUCHINPUTPOINT *PointData, int GetNum, int PeekFlag DEFAULTPARAM( = FALSE ) ) ;	// ストックされているタッチが離された情報から古い順に指定数バッファに取得する( 戻り値  -1:エラー  0以上:取得した情報の数 )
 
 #endif // DX_NON_INPUT
 
@@ -2017,19 +2226,22 @@ extern	int				GetTouchInputUpLog( TOUCHINPUTPOINT *PointData, int GetNum, int Pe
 // DxMemory.cpp関数プロトタイプ宣言
 
 // メモリ確保系関数
-extern	void*		DxAlloc(						size_t AllocSize , const char *File = NULL , int Line = -1 ) ;					// 指定のサイズのメモリを確保する( AllocSize:確保するメモリのサイズ( 単位:byte )  File:DxAllocを呼んだソースファイル名( デバッグ用 )  Line:DxAllocを呼んだソースファイル中の行番号( デバッグ用 )　　戻り値  NULL:メモリの確保失敗   NULL以外:確保したメモリ領域の先頭アドレス )
-extern	void*		DxCalloc(						size_t AllocSize , const char *File = NULL , int Line = -1 ) ;					// 指定のサイズのメモリを確保して、０で埋める、初期化後に０で埋める以外は DxAlloc と動作は同じ
-extern	void*		DxRealloc(						void *Memory , size_t AllocSize , const char *File = NULL , int Line = -1 ) ;	// メモリの再確保を行う( Memory:再確保を行うメモリ領域の先頭アドレス( DxAlloc の戻り値 )  AllocSize:新しい確保サイズ　FileとLine の説明は DxAlloc の注釈の通り 　戻り値 NULL:メモリの再確保失敗　NULL以外:再確保した新しいメモリ領域の先頭アドレス　)
-extern	void		DxFree(							void *Memory ) ;																// メモリを解放する( Memory:解放するメモリ領域の先頭アドレス( DxAlloc の戻り値 ) )
-extern	size_t		DxSetAllocSizeTrap(				size_t Size ) ;																	// 列挙対象にするメモリの確保容量をセットする
-extern	int			DxSetAllocPrintFlag(			int Flag ) ;																	// ＤＸライブラリ内でメモリ確保が行われる時に情報を出力するかどうかをセットする
-extern	size_t		DxGetAllocSize(					void ) ;																		// DxAlloc や DxCalloc で確保しているメモリサイズを取得する
-extern	int			DxGetAllocNum(					void ) ;																		// DxAlloc や DxCalloc で確保しているメモリの数を取得する
-extern	void		DxDumpAlloc(					void ) ;																		// DxAlloc や DxCalloc で確保しているメモリを列挙する
-extern	void		DxDrawAlloc(					int x, int y, int Width, int Height ) ;											// DxAlloc や DxCalloc で確保しているメモリの状況を描画する
-extern	int			DxErrorCheckAlloc(				void ) ;																		// 確保したメモリ情報が破壊されていないか調べる( -1:破壊あり  0:なし )
-extern	int			DxSetAllocSizeOutFlag(			int Flag ) ;																	// メモリが確保、解放が行われる度に確保しているメモリの容量を出力するかどうかのフラグをセットする
-extern	int			DxSetAllocMemoryErrorCheckFlag(	int Flag ) ;																	// メモリの確保、解放が行われる度に確保しているメモリ確保情報が破損していないか調べるかどうかのフラグをセットする
+extern	void*		DxAlloc(						               size_t AllocSize ,                    const char *File DEFAULTPARAM( = NULL ) , int Line DEFAULTPARAM( = -1 ) ) ;	// 指定のサイズのメモリを確保する( AllocSize:確保するメモリのサイズ( 単位:byte )  File:DxAllocを呼んだソースファイル名( デバッグ用 )  Line:DxAllocを呼んだソースファイル中の行番号( デバッグ用 )　　戻り値  NULL:メモリの確保失敗   NULL以外:確保したメモリ領域の先頭アドレス )
+extern	void*		DxAllocAligned(					               size_t AllocSize , size_t Alignment , const char *File DEFAULTPARAM( = NULL ) , int Line DEFAULTPARAM( = -1 ) ) ;	// 指定のサイズのメモリを確保する( アライン指定版 )( AllocSize:確保するメモリのサイズ( 単位:byte )  Alignment:確保するメモリ領域のアドレス値の倍数  File:DxAllocを呼んだソースファイル名( デバッグ用 )  Line:DxAllocを呼んだソースファイル中の行番号( デバッグ用 )　　戻り値  NULL:メモリの確保失敗   NULL以外:確保したメモリ領域の先頭アドレス )
+extern	void*		DxCalloc(						               size_t AllocSize ,                    const char *File DEFAULTPARAM( = NULL ) , int Line DEFAULTPARAM( = -1 ) ) ;	// 指定のサイズのメモリを確保して、０で埋める、初期化後に０で埋める以外は DxAlloc と動作は同じ
+extern	void*		DxCallocAligned(				               size_t AllocSize , size_t Alignment , const char *File DEFAULTPARAM( = NULL ) , int Line DEFAULTPARAM( = -1 ) ) ;	// 指定のサイズのメモリを確保して、０で埋める、初期化後に０で埋める以外は DxAllocAligned と動作は同じ
+extern	void*		DxRealloc(						void *Memory , size_t AllocSize ,                    const char *File DEFAULTPARAM( = NULL ) , int Line DEFAULTPARAM( = -1 ) ) ;	// メモリの再確保を行う( Memory:再確保を行うメモリ領域の先頭アドレス( DxAlloc の戻り値 )  AllocSize:新しい確保サイズ　FileとLine の説明は DxAlloc の注釈の通り 　戻り値 NULL:メモリの再確保失敗　NULL以外:再確保した新しいメモリ領域の先頭アドレス　)
+extern	void*		DxReallocAligned(				void *Memory , size_t AllocSize , size_t Alignment , const char *File DEFAULTPARAM( = NULL ) , int Line DEFAULTPARAM( = -1 ) ) ;	// メモリの再確保を行う( アライン指定版 )( Memory:再確保を行うメモリ領域の先頭アドレス( DxAlloc の戻り値 )  AllocSize:新しい確保サイズ   Alignment:新しく確保するメモリ領域のアドレス値の倍数　FileとLine の説明は DxAlloc の注釈の通り 　戻り値 NULL:メモリの再確保失敗　NULL以外:再確保した新しいメモリ領域の先頭アドレス　)
+extern	void		DxFree(							void *Memory ) ;																				// メモリを解放する( Memory:解放するメモリ領域の先頭アドレス( DxAlloc の戻り値 ) )
+extern	size_t		DxSetAllocSizeTrap(				size_t Size ) ;																					// 列挙対象にするメモリの確保容量をセットする
+extern	int			DxSetAllocPrintFlag(			int Flag ) ;																					// ＤＸライブラリ内でメモリ確保が行われる時に情報を出力するかどうかをセットする
+extern	size_t		DxGetAllocSize(					void ) ;																						// DxAlloc や DxCalloc で確保しているメモリサイズを取得する
+extern	int			DxGetAllocNum(					void ) ;																						// DxAlloc や DxCalloc で確保しているメモリの数を取得する
+extern	void		DxDumpAlloc(					void ) ;																						// DxAlloc や DxCalloc で確保しているメモリを列挙する
+extern	void		DxDrawAlloc(					int x, int y, int Width, int Height ) ;															// DxAlloc や DxCalloc で確保しているメモリの状況を描画する
+extern	int			DxErrorCheckAlloc(				void ) ;																						// 確保したメモリ情報が破壊されていないか調べる( -1:破壊あり  0:なし )
+extern	int			DxSetAllocSizeOutFlag(			int Flag ) ;																					// メモリが確保、解放が行われる度に確保しているメモリの容量を出力するかどうかのフラグをセットする
+extern	int			DxSetAllocMemoryErrorCheckFlag(	int Flag ) ;																					// メモリの確保、解放が行われる度に確保しているメモリ確保情報が破損していないか調べるかどうかのフラグをセットする
 
 
 
@@ -2050,6 +2262,7 @@ extern	int			DxSetAllocMemoryErrorCheckFlag(	int Flag ) ;																	// メ
 extern	int				GetCharBytes( int CharCodeFormat /* DX_CHARCODEFORMAT_SHIFTJIS 等 */ , const void *String ) ;	// 文字列の先頭の文字のバイト数を取得する
 extern	int				ConvertStringCharCodeFormat( int SrcCharCodeFormat /* DX_CHARCODEFORMAT_SHIFTJIS 等 */ , const void *SrcString, int DestCharCodeFormat /* DX_CHARCODEFORMAT_SHIFTJIS 等 */ , void *DestStringBuffer ) ;		// 文字列の文字コード形式を別の文字コード形式に変換する
 extern	int				SetUseCharCodeFormat( int CharCodeFormat /* DX_CHARCODEFORMAT_SHIFTJIS 等 */ ) ;		// 文字列の引数の文字コード形式を設定する( 文字列描画系関数とその他一部関数を除く )( UNICODE版では無効 )
+extern	int				GetUseCharCodeFormat( void ) ;															// 文字列の引数の文字コード形式を取得する( 戻り値：文字コード形式( DX_CHARCODEFORMAT_SHIFTJIS 等 ) )( UNICODE版では無効 )
 extern	int				Get_wchar_t_CharCodeFormat( void ) ;													// wchar_t型の文字コード形式を取得する( 戻り値： DX_CHARCODEFORMAT_UTF16LE など )
 
 // 文字列関係
@@ -2081,8 +2294,8 @@ extern	int				strncmpDx(     const TCHAR *Str1, const TCHAR *Str2, int Num ) ;		
 extern	int				strncmp2Dx(    const TCHAR *Str1, const TCHAR *Str2, int Num ) ;				// strncmp の Num が文字数( 全角文字も 1 扱い )になったもの( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
 extern	int				strpncmpDx(    const TCHAR *Str1, const TCHAR *Str2, int Pos, int Num ) ;		// strncmp の比較開始位置指定版、Pos が Str1 の比較開始位置、Num が文字数( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
 extern	int				strpncmp2Dx(   const TCHAR *Str1, const TCHAR *Str2, int Pos, int Num ) ;		// strncmp の比較開始位置指定版、Pos が Str1 の比較開始位置( 全角文字も 1 扱い )、Num が文字数( 全角文字も 1 扱い )( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
-extern	DWORD			strgetchrDx(   const TCHAR *Str, int Pos, int *CharNums = NULL ) ;				// 文字列の指定の位置の文字コードを取得する、Pos は取得する位置、CharNums は文字数を代入する変数のアドレス、戻り値は文字コード( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
-extern	DWORD			strgetchr2Dx(  const TCHAR *Str, int Pos, int *CharNums = NULL ) ;				// 文字列の指定の位置の文字コードを取得する、Pos は取得する位置( 全角文字も 1 扱い )、CharNums は文字数を代入する変数のアドレス、戻り値は文字コード( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
+extern	DWORD			strgetchrDx(   const TCHAR *Str, int Pos, int *CharNums DEFAULTPARAM( = NULL ) ) ;	// 文字列の指定の位置の文字コードを取得する、Pos は取得する位置、CharNums は文字数を代入する変数のアドレス、戻り値は文字コード( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
+extern	DWORD			strgetchr2Dx(  const TCHAR *Str, int Pos, int *CharNums DEFAULTPARAM( = NULL ) ) ;	// 文字列の指定の位置の文字コードを取得する、Pos は取得する位置( 全角文字も 1 扱い )、CharNums は文字数を代入する変数のアドレス、戻り値は文字コード( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
 extern	int				strputchrDx(   TCHAR *Str, int Pos, DWORD CharCode ) ;							// 文字列の指定の位置に文字コードを書き込む、Pos は書き込む位置、CharCode は文字コード、戻り値は書き込んだ文字数( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
 extern	int				strputchr2Dx(  TCHAR *Str, int Pos, DWORD CharCode ) ;							// 文字列の指定の位置に文字コードを書き込む、Pos は書き込む位置( 全角文字も 1 扱い )、CharCode は文字コード、戻り値は書き込んだ文字数( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
 extern	const TCHAR *	strposDx(      const TCHAR *Str, int Pos ) ;									// 文字列の指定の位置のアドレスを取得する、Pos は取得する位置　( マルチバイト文字列版では文字コード形式として SetUseCharCodeFormat で設定した形式が使用されます )
@@ -2129,18 +2342,18 @@ extern	int				sscanfDx(      const TCHAR *String, const TCHAR *FormatString, ...
 #ifndef DX_NON_NETWORK
 
 // 通信関係
-extern	int			ProcessNetMessage(				int RunReleaseProcess = FALSE ) ;														// 通信メッセージの処理をする関数
+extern	int			ProcessNetMessage(				int RunReleaseProcess DEFAULTPARAM( = FALSE ) ) ;										// 通信メッセージの処理をする関数
 
-extern	int			GetHostIPbyName(				const TCHAR *HostName,							IPDATA      *IPDataBuf ) ;				// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv4版 )
-extern	int			GetHostIPbyNameWithStrLen(		const TCHAR *HostName, size_t HostNameLength,	IPDATA      *IPDataBuf ) ;				// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv4版 )
-extern	int			GetHostIPbyName_IPv6(			const TCHAR *HostName,							IPDATA_IPv6 *IPDataBuf ) ;				// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv6版 )
-extern	int			GetHostIPbyName_IPv6WithStrLen(	const TCHAR *HostName, size_t HostNameLength,	IPDATA_IPv6 *IPDataBuf ) ;				// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv6版 )
-extern 	int			ConnectNetWork(					IPDATA      IPData, int Port = -1 ) ;													// 他マシンに接続する( IPv4版 )
-extern	int			ConnectNetWork_IPv6(			IPDATA_IPv6 IPData, int Port = -1 ) ;													// 他マシンに接続する( IPv6版 )
-extern 	int			ConnectNetWork_ASync(			IPDATA      IPData, int Port = -1 ) ;													// 他マシンに接続する( IPv4版 )、非同期版
-extern	int			ConnectNetWork_IPv6_ASync(		IPDATA_IPv6 IPData, int Port = -1 ) ;													// 他マシンに接続する( IPv6版 )、非同期版
-extern 	int			PreparationListenNetWork(		int Port = -1 ) ;																		// 接続を受けられる状態にする( IPv4版 )
-extern 	int			PreparationListenNetWork_IPv6(	int Port = -1 ) ;																		// 接続を受けられる状態にする( IPv6版 )
+extern	int			GetHostIPbyName(				const TCHAR *HostName,							IPDATA      *IPDataBuf, int IPDataBufLength DEFAULTPARAM( = 1 ) , int *IPDataGetNum DEFAULTPARAM( = NULL ) ) ;		// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv4版 )
+extern	int			GetHostIPbyNameWithStrLen(		const TCHAR *HostName, size_t HostNameLength,	IPDATA      *IPDataBuf, int IPDataBufLength DEFAULTPARAM( = 1 ) , int *IPDataGetNum DEFAULTPARAM( = NULL ) ) ;		// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv4版 )
+extern	int			GetHostIPbyName_IPv6(			const TCHAR *HostName,							IPDATA_IPv6 *IPDataBuf, int IPDataBufLength DEFAULTPARAM( = 1 ) , int *IPDataGetNum DEFAULTPARAM( = NULL ) ) ;		// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv6版 )
+extern	int			GetHostIPbyName_IPv6WithStrLen(	const TCHAR *HostName, size_t HostNameLength,	IPDATA_IPv6 *IPDataBuf, int IPDataBufLength DEFAULTPARAM( = 1 ) , int *IPDataGetNum DEFAULTPARAM( = NULL ) ) ;		// ＤＮＳサーバーを使ってホスト名からＩＰアドレスを取得する( IPv6版 )
+extern 	int			ConnectNetWork(					IPDATA      IPData, int Port DEFAULTPARAM( = -1 ) ) ;									// 他マシンに接続する( IPv4版 )
+extern	int			ConnectNetWork_IPv6(			IPDATA_IPv6 IPData, int Port DEFAULTPARAM( = -1 ) ) ;									// 他マシンに接続する( IPv6版 )
+extern 	int			ConnectNetWork_ASync(			IPDATA      IPData, int Port DEFAULTPARAM( = -1 ) ) ;									// 他マシンに接続する( IPv4版 )、非同期版
+extern	int			ConnectNetWork_IPv6_ASync(		IPDATA_IPv6 IPData, int Port DEFAULTPARAM( = -1 ) ) ;									// 他マシンに接続する( IPv6版 )、非同期版
+extern 	int			PreparationListenNetWork(		int Port DEFAULTPARAM( = -1 ) ) ;														// 接続を受けられる状態にする( IPv4版 )
+extern 	int			PreparationListenNetWork_IPv6(	int Port DEFAULTPARAM( = -1 ) ) ;														// 接続を受けられる状態にする( IPv6版 )
 extern 	int			StopListenNetWork(				void ) ;																				// 接続を受けつけ状態の解除
 extern 	int			CloseNetWork(					int NetHandle ) ;																		// 接続を終了する
 
@@ -2151,7 +2364,8 @@ extern 	int			GetNewAcceptNetWork(			void ) ;																				// 新たに接
 extern 	int			GetLostNetWork(					void ) ;																				// 接続を切断された通信回線を得る
 extern 	int			GetNetWorkIP(					int NetHandle, IPDATA      *IpBuf ) ;													// 接続先のＩＰを得る( IPv4版 )
 extern 	int			GetNetWorkIP_IPv6(				int NetHandle, IPDATA_IPv6 *IpBuf ) ;													// 接続先のＩＰを得る( IPv6版 )
-extern	int			GetMyIPAddress(					IPDATA *IpBuf, int IpBufLength = 1 , int *IpNum = NULL ) ;								// 自分のＩＰを得る
+extern	int			GetMyIPAddress(					IPDATA      *IpBuf, int IpBufLength DEFAULTPARAM( = 1 ) , int *IpNum DEFAULTPARAM( = NULL ) ) ;			// 自分のIPv4を得る
+extern	int			GetMyIPAddress_IPv6(			IPDATA_IPv6 *IpBuf, int IpBufLength DEFAULTPARAM( = 1 ) , int *IpNum DEFAULTPARAM( = NULL ) ) ;			// 自分のIPv6を得る
 extern	int			SetConnectTimeOutWait(			int Time ) ;																			// 接続のタイムアウトまでの時間を設定する
 extern	int			SetUseDXNetWorkProtocol(		int Flag ) ;																			// ＤＸライブラリの通信形態を使うかどうかをセットする
 extern	int			GetUseDXNetWorkProtocol(		void ) ; 																				// ＤＸライブラリの通信形態を使うかどうかを取得する
@@ -2168,8 +2382,8 @@ extern	int			NetWorkRecvToPeek(		int NetHandle, void *Buffer, int Length ) ;				
 extern	int			NetWorkRecvBufferClear(	int NetHandle ) ;																				// 受信したデータをクリアする
 extern 	int			NetWorkSend(			int NetHandle, const void *Buffer, int Length ) ;												// データを送信する
 
-extern	int			MakeUDPSocket(			int RecvPort = -1 ) ;																			// UDPを使用した通信を行うソケットハンドルを作成する( RecvPort を -1 にすると送信専用のソケットハンドルになります )
-extern	int			MakeUDPSocket_IPv6(		int RecvPort = -1 ) ;																			// UDPを使用した通信を行うソケットハンドルを作成する( RecvPort を -1 にすると送信専用のソケットハンドルになります )( IPv6版 )
+extern	int			MakeUDPSocket(			int RecvPort DEFAULTPARAM( = -1 ) ) ;															// UDPを使用した通信を行うソケットハンドルを作成する( RecvPort を -1 にすると送信専用のソケットハンドルになります )
+extern	int			MakeUDPSocket_IPv6(		int RecvPort DEFAULTPARAM( = -1 ) ) ;															// UDPを使用した通信を行うソケットハンドルを作成する( RecvPort を -1 にすると送信専用のソケットハンドルになります )( IPv6版 )
 extern	int			DeleteUDPSocket(		int NetUDPHandle ) ;																			// UDPを使用した通信を行うソケットハンドルを削除する
 extern	int			NetWorkSendUDP(			int NetUDPHandle, IPDATA       SendIP, int SendPort,  const void *Buffer, int Length ) ;			// UDPを使用した通信で指定のＩＰにデータを送信する、Length は最大65507、SendPort を -1 にすると MakeUDPSocket に RecvPort で渡したポートが使用されます( 戻り値  0以上;送信できたデータサイズ  -1:エラー  -2:送信データが大きすぎる  -3:送信準備ができていない  )
 extern	int			NetWorkSendUDP_IPv6(	int NetUDPHandle, IPDATA_IPv6  SendIP, int SendPort,  const void *Buffer, int Length ) ;			// UDPを使用した通信で指定のＩＰにデータを送信する、Length は最大65507、SendPort を -1 にすると MakeUDPSocket に RecvPort で渡したポートが使用されます( 戻り値  0以上;送信できたデータサイズ  -1:エラー  -2:送信データが大きすぎる  -3:送信準備ができていない  )( IPv6版 )
@@ -2179,10 +2393,10 @@ extern	int			NetWorkRecvUDP_IPv6(	int NetUDPHandle, IPDATA_IPv6 *RecvIP, int *Re
 extern	int			CheckNetWorkRecvUDP(	int NetUDPHandle ) ;																			// UDPを使用した通信で新たな受信データが存在するかどうかを調べる( 戻り値  -1:エラー  TRUE:受信データあり  FALSE:受信データなし )
 
 /*	使用不可
-extern	int			HTTP_FileDownload(			const char *FileURL, const char *SavePath = NULL , void **SaveBufferP = NULL , int *FileSize = NULL , char **ParamList = NULL ) ;						// HTTP を使用してネットワーク上のファイルをダウンロードする
+extern	int			HTTP_FileDownload(			const char *FileURL, const char *SavePath DEFAULTPARAM( = NULL ) , void **SaveBufferP DEFAULTPARAM( = NULL ) , int *FileSize DEFAULTPARAM( = NULL ) , char **ParamList DEFAULTPARAM( = NULL ) ) ;						// HTTP を使用してネットワーク上のファイルをダウンロードする
 extern	int			HTTP_GetFileSize(			const char *FileURL ) ;																		// HTTP を使用してネットワーク上のファイルのサイズを得る
 
-extern	int			HTTP_StartFileDownload(		const char *FileURL, const char *SavePath, void **SaveBufferP = NULL , char **ParamList = NULL ) ;	// HTTP を使用したネットワーク上のファイルをダウンロードする処理を開始する
+extern	int			HTTP_StartFileDownload(		const char *FileURL, const char *SavePath, void **SaveBufferP DEFAULTPARAM( = NULL ) , char **ParamList DEFAULTPARAM( = NULL ) ) ;	// HTTP を使用したネットワーク上のファイルをダウンロードする処理を開始する
 extern	int			HTTP_StartGetFileSize(		const char *FileURL ) ;																		// HTTP を使用したネットワーク上のファイルのサイズを得る処理を開始する
 extern	int			HTTP_Close(					int HttpHandle ) ;																			// HTTP の処理を終了し、ハンドルを解放する
 extern	int			HTTP_CloseAll(				void ) ;																					// 全てのハンドルに対して HTTP_Close を行う
@@ -2192,8 +2406,8 @@ extern	int			HTTP_GetDownloadFileSize(	int HttpHandle ) ;																			// H
 extern	int			HTTP_GetDownloadedFileSize( int HttpHandle ) ;																			// HTTP 処理で既にダウンロードしたファイルのサイズを取得する
 
 extern	int			fgetsForNetHandle(			int NetHandle, char *strbuffer ) ;															// fgets のネットワークハンドル版( -1:取得できず 0:取得できた )
-extern	int			URLAnalys(					const char *URL, char *HostBuf = NULL , char *PathBuf = NULL , char *FileNameBuf = NULL , int *PortBuf = NULL ) ;	// ＵＲＬを解析する
-extern	int			URLConvert(					char *URL, int ParamConvert = TRUE , int NonConvert = FALSE ) ;								// HTTP に渡せない記号が使われた文字列を渡せるような文字列に変換する( 戻り値: -1 = エラー  0以上 = 変換後の文字列のサイズ )
+extern	int			URLAnalys(					const char *URL, char *HostBuf DEFAULTPARAM( = NULL ) , char *PathBuf DEFAULTPARAM( = NULL ) , char *FileNameBuf DEFAULTPARAM( = NULL ) , int *PortBuf DEFAULTPARAM( = NULL ) ) ;	// ＵＲＬを解析する
+extern	int			URLConvert(					char *URL, int ParamConvert DEFAULTPARAM( = TRUE ) , int NonConvert DEFAULTPARAM( = FALSE ) ) ;				// HTTP に渡せない記号が使われた文字列を渡せるような文字列に変換する( 戻り値: -1 = エラー  0以上 = 変換後の文字列のサイズ )
 extern	int			URLParamAnalysis(			char **ParamList, char **ParamStringP ) ;													// HTTP 用パラメータリストから一つのパラメータ文字列を作成する( 戻り値:  -1 = エラー  0以上 = パラメータの文字列の長さ )
 */
 
@@ -2232,7 +2446,8 @@ extern	int			GetCtrlCodeCmp(		TCHAR Char ) ;									// 指定の文字コード
 
 #ifndef DX_NON_KEYEX
 
-extern	int			DrawIMEInputString(				int x, int y, int SelectStringNum , int DrawCandidateList = TRUE ) ;	// 画面上に入力中の文字列を描画する
+extern	int			DrawIMEInputString(				int x, int y,                                 int SelectStringNum , int DrawCandidateList DEFAULTPARAM( = TRUE ) ) ;	// 画面上に入力中の文字列を描画する
+extern	int			DrawIMEInputExtendString(		int x, int y, double ExRateX, double ExRateY, int SelectStringNum , int DrawCandidateList DEFAULTPARAM( = TRUE ) ) ;	// 画面上に入力中の文字列を描画する( 拡大率付き )
 extern	int			SetUseIMEFlag(					int UseFlag ) ;							// ＩＭＥを使用するかどうかを設定する
 extern	int			GetUseIMEFlag(					void ) ;								// ＩＭＥを使用するかどうかの設定を取得する
 extern	int			SetInputStringMaxLengthIMESync(	int Flag ) ;							// ＩＭＥで入力できる最大文字数を MakeKeyInput の設定に合わせるかどうかをセットする( TRUE:あわせる  FALSE:あわせない(デフォルト) )
@@ -2247,18 +2462,18 @@ extern	int			GetStringPoint2WithStrLen(	const TCHAR *String, size_t StringLength
 extern	int			GetStringLength(			const TCHAR *String ) ;										// 全角文字、半角文字入り乱れる中から文字数を取得する
 
 #ifndef DX_NON_FONT
-extern	int			DrawObtainsString(						int x, int y, int AddY, const TCHAR *String,                      unsigned int StrColor, unsigned int StrEdgeColor = 0 , int FontHandle = -1 , unsigned int SelectBackColor = 0xffffffff , unsigned int SelectStrColor = 0 , unsigned int SelectStrEdgeColor = 0xffffffff , int SelectStart = -1 , int SelectEnd = -1 ) ;		// 描画可能領域に収まるように改行しながら文字列を描画
-extern	int			DrawObtainsNString(						int x, int y, int AddY, const TCHAR *String, size_t StringLength, unsigned int StrColor, unsigned int StrEdgeColor = 0 , int FontHandle = -1 , unsigned int SelectBackColor = 0xffffffff , unsigned int SelectStrColor = 0 , unsigned int SelectStrEdgeColor = 0xffffffff , int SelectStart = -1 , int SelectEnd = -1 ) ;		// 描画可能領域に収まるように改行しながら文字列を描画
-extern	int			DrawObtainsString_CharClip(				int x, int y, int AddY, const TCHAR *String,                      unsigned int StrColor, unsigned int StrEdgeColor = 0 , int FontHandle = -1 , unsigned int SelectBackColor = 0xffffffff , unsigned int SelectStrColor = 0 , unsigned int SelectStrEdgeColor = 0xffffffff , int SelectStart = -1 , int SelectEnd = -1 ) ;		// 描画可能領域に収まるように改行しながら文字列を描画( クリップが文字単位 )
-extern	int			DrawObtainsNString_CharClip(			int x, int y, int AddY, const TCHAR *String, size_t StringLength, unsigned int StrColor, unsigned int StrEdgeColor = 0 , int FontHandle = -1 , unsigned int SelectBackColor = 0xffffffff , unsigned int SelectStrColor = 0 , unsigned int SelectStrEdgeColor = 0xffffffff , int SelectStart = -1 , int SelectEnd = -1 ) ;		// 描画可能領域に収まるように改行しながら文字列を描画( クリップが文字単位 )
-extern	int			GetObtainsStringCharPosition(			int x, int y, int AddY, const TCHAR *String, int StrLen, int *PosX, int *PosY, int FontHandle = -1 ) ;		// 描画可能領域に収まるように改行しながら文字列を描画した場合の文字列の末端の座標を取得する
-extern	int			GetObtainsStringCharPosition_CharClip(	int x, int y, int AddY, const TCHAR *String, int StrLen, int *PosX, int *PosY, int FontHandle = -1 ) ;		// 描画可能領域に収まるように改行しながら文字列を描画した場合の文字列の末端の座標を取得する( クリップが文字単位 )
+extern	int			DrawObtainsString(						int x, int y, int AddY, const TCHAR *String,                      unsigned int StrColor, unsigned int StrEdgeColor DEFAULTPARAM( = 0 ) , int FontHandle DEFAULTPARAM( = -1 ) , unsigned int SelectBackColor DEFAULTPARAM( = 0xffffffff ) , unsigned int SelectStrColor DEFAULTPARAM( = 0 ) , unsigned int SelectStrEdgeColor DEFAULTPARAM( = 0xffffffff ) , int SelectStart DEFAULTPARAM( = -1 ) , int SelectEnd DEFAULTPARAM( = -1 ) ) ;		// 描画可能領域に収まるように改行しながら文字列を描画
+extern	int			DrawObtainsNString(						int x, int y, int AddY, const TCHAR *String, size_t StringLength, unsigned int StrColor, unsigned int StrEdgeColor DEFAULTPARAM( = 0 ) , int FontHandle DEFAULTPARAM( = -1 ) , unsigned int SelectBackColor DEFAULTPARAM( = 0xffffffff ) , unsigned int SelectStrColor DEFAULTPARAM( = 0 ) , unsigned int SelectStrEdgeColor DEFAULTPARAM( = 0xffffffff ) , int SelectStart DEFAULTPARAM( = -1 ) , int SelectEnd DEFAULTPARAM( = -1 ) ) ;		// 描画可能領域に収まるように改行しながら文字列を描画
+extern	int			DrawObtainsString_CharClip(				int x, int y, int AddY, const TCHAR *String,                      unsigned int StrColor, unsigned int StrEdgeColor DEFAULTPARAM( = 0 ) , int FontHandle DEFAULTPARAM( = -1 ) , unsigned int SelectBackColor DEFAULTPARAM( = 0xffffffff ) , unsigned int SelectStrColor DEFAULTPARAM( = 0 ) , unsigned int SelectStrEdgeColor DEFAULTPARAM( = 0xffffffff ) , int SelectStart DEFAULTPARAM( = -1 ) , int SelectEnd DEFAULTPARAM( = -1 ) ) ;		// 描画可能領域に収まるように改行しながら文字列を描画( クリップが文字単位 )
+extern	int			DrawObtainsNString_CharClip(			int x, int y, int AddY, const TCHAR *String, size_t StringLength, unsigned int StrColor, unsigned int StrEdgeColor DEFAULTPARAM( = 0 ) , int FontHandle DEFAULTPARAM( = -1 ) , unsigned int SelectBackColor DEFAULTPARAM( = 0xffffffff ) , unsigned int SelectStrColor DEFAULTPARAM( = 0 ) , unsigned int SelectStrEdgeColor DEFAULTPARAM( = 0xffffffff ) , int SelectStart DEFAULTPARAM( = -1 ) , int SelectEnd DEFAULTPARAM( = -1 ) ) ;		// 描画可能領域に収まるように改行しながら文字列を描画( クリップが文字単位 )
+extern	int			GetObtainsStringCharPosition(			int x, int y, int AddY, const TCHAR *String, int StrLen, int *PosX, int *PosY, int FontHandle DEFAULTPARAM( = -1 ) ) ;		// 描画可能領域に収まるように改行しながら文字列を描画した場合の文字列の末端の座標を取得する
+extern	int			GetObtainsStringCharPosition_CharClip(	int x, int y, int AddY, const TCHAR *String, int StrLen, int *PosX, int *PosY, int FontHandle DEFAULTPARAM( = -1 ) ) ;		// 描画可能領域に収まるように改行しながら文字列を描画した場合の文字列の末端の座標を取得する( クリップが文字単位 )
 #endif // DX_NON_FONT
 extern	int			DrawObtainsBox(					int x1, int y1, int x2, int y2, int AddY, unsigned int Color, int FillFlag ) ;																																										// 描画可能領域に収まるように補正を加えながら矩形を描画
 
 #ifndef DX_NON_KEYEX
 
-extern	int			InputStringToCustom(			int x, int y, size_t BufLength, TCHAR *StrBuffer, int CancelValidFlag, int SingleCharOnlyFlag, int NumCharOnlyFlag, int DoubleCharOnlyFlag = FALSE , int EnableNewLineFlag = FALSE , int DisplayCandidateList = TRUE ) ;		// 文字列の入力取得
+extern	int			InputStringToCustom(			int x, int y, size_t BufLength, TCHAR *StrBuffer, int CancelValidFlag, int SingleCharOnlyFlag, int NumCharOnlyFlag, int DoubleCharOnlyFlag DEFAULTPARAM( = FALSE ) , int EnableNewLineFlag DEFAULTPARAM( = FALSE ) , int DisplayCandidateList DEFAULTPARAM( = TRUE ) ) ;		// 文字列の入力取得
 
 extern	int			KeyInputString(					int x, int y, size_t CharMaxLength, TCHAR *StrBuffer, int CancelValidFlag ) ;													// 文字列の入力取得
 extern	int			KeyInputSingleCharString(		int x, int y, size_t CharMaxLength, TCHAR *StrBuffer, int CancelValidFlag ) ;													// 半角文字列のみの入力取得
@@ -2266,7 +2481,9 @@ extern	int			KeyInputNumber(					int x, int y, int MaxNum, int MinNum, int Cance
 
 extern	int			GetIMEInputModeStr(				TCHAR *GetBuffer ) ;																											// IMEの入力モード文字列を取得する
 extern	const IMEINPUTDATA* GetIMEInputData(		void ) ;																														// IMEで入力中の文字列の情報を取得する
-extern	int			SetKeyInputStringColor(			ULONGLONG NmlStr, ULONGLONG NmlCur, ULONGLONG IMEStrBack, ULONGLONG IMECur, ULONGLONG IMELine, ULONGLONG IMESelectStr, ULONGLONG IMEModeStr , ULONGLONG NmlStrE = 0 , ULONGLONG IMESelectStrE = 0 , ULONGLONG IMEModeStrE = 0 , ULONGLONG IMESelectWinE = ULL_PARAM( 0xffffffffffffffff ) ,	ULONGLONG IMESelectWinF = ULL_PARAM( 0xffffffffffffffff ) , ULONGLONG SelectStrBackColor = ULL_PARAM( 0xffffffffffffffff ) , ULONGLONG SelectStrColor = ULL_PARAM( 0xffffffffffffffff ) , ULONGLONG SelectStrEdgeColor = ULL_PARAM( 0xffffffffffffffff ), ULONGLONG IMEStr = ULL_PARAM( 0xffffffffffffffff ), ULONGLONG IMEStrE = ULL_PARAM( 0xffffffffffffffff )  ) ;	// ( SetKeyInputStringColor2 の旧関数 )InputString関数使用時の文字の各色を変更する
+extern	int			SetIMEInputString(				const TCHAR *String ) ;																											// IMEで入力中の文字列を変更する( IMEで文字列を入力中ではなかった場合は何も起こりません )
+extern	int			SetIMEInputStringWithStrLen(	const TCHAR *String, size_t StringLength ) ;																					// IMEで入力中の文字列を変更する( IMEで文字列を入力中ではなかった場合は何も起こりません )
+extern	int			SetKeyInputStringColor(			ULONGLONG NmlStr, ULONGLONG NmlCur, ULONGLONG IMEStrBack, ULONGLONG IMECur, ULONGLONG IMELine, ULONGLONG IMESelectStr, ULONGLONG IMEModeStr , ULONGLONG NmlStrE DEFAULTPARAM( = 0 ) , ULONGLONG IMESelectStrE DEFAULTPARAM( = 0 ) , ULONGLONG IMEModeStrE DEFAULTPARAM( = 0 ) , ULONGLONG IMESelectWinE DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) ,	ULONGLONG IMESelectWinF DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) , ULONGLONG SelectStrBackColor DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) , ULONGLONG SelectStrColor DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) , ULONGLONG SelectStrEdgeColor DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) , ULONGLONG IMEStr DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) , ULONGLONG IMEStrE DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) ) ;	// ( SetKeyInputStringColor2 の旧関数 )InputString関数使用時の文字の各色を変更する
 extern	int			SetKeyInputStringColor2(		int TargetColor /* DX_KEYINPSTRCOLOR_NORMAL_STR 等 */ , unsigned int Color ) ;													// InputString関数使用時の文字の各色を変更する
 extern	int			ResetKeyInputStringColor2(		int TargetColor /* DX_KEYINPSTRCOLOR_NORMAL_STR 等 */ ) ;																		// SetKeyInputStringColor2 で設定した色をデフォルトに戻す
 extern	int			SetKeyInputStringFont(			int FontHandle ) ;																												// キー入力文字列描画関連で使用するフォントのハンドルを変更する(-1でデフォルトのフォントハンドル)
@@ -2274,14 +2491,15 @@ extern	int			SetKeyInputStringEndCharaMode(	int EndCharaMode /* DX_KEYINPSTR_END
 extern	int			DrawKeyInputModeString(			int x, int y ) ;																												// 入力モード文字列を描画する
 
 extern	int			InitKeyInput(					void ) ;																														// キー入力データ初期化
-extern	int			MakeKeyInput(					size_t MaxStrLength, int CancelValidFlag, int SingleCharOnlyFlag, int NumCharOnlyFlag, int DoubleCharOnlyFlag = FALSE , int EnableNewLineFlag = FALSE ) ;			// 新しいキー入力ハンドルの作成
+extern	int			MakeKeyInput(					size_t MaxStrLength, int CancelValidFlag, int SingleCharOnlyFlag, int NumCharOnlyFlag, int DoubleCharOnlyFlag DEFAULTPARAM( = FALSE ) , int EnableNewLineFlag DEFAULTPARAM( = FALSE ) ) ;			// 新しいキー入力ハンドルの作成
 extern	int			DeleteKeyInput(					int InputHandle ) ;																												// キー入力ハンドルの削除
 extern	int			SetActiveKeyInput(				int InputHandle ) ;																												// 指定のキー入力ハンドルをアクティブにする( -1 を指定するとアクティブなキー入力ハンドルが無い状態になります )
 extern	int			GetActiveKeyInput(				void ) ;																														// 現在アクティブになっているキー入力ハンドルを取得する
 extern	int			CheckKeyInput(					int InputHandle ) ;																												// キー入力ハンドルの入力が終了しているか取得する
 extern	int			ReStartKeyInput(				int InputHandle ) ;																												// 入力が完了したキー入力ハンドルを再度編集状態に戻す
 extern	int			ProcessActKeyInput(				void ) ;																														// キー入力ハンドル処理関数
-extern	int			DrawKeyInputString(				int x, int y, int InputHandle , int DrawCandidateList = TRUE ) ;																// キー入力ハンドルの入力中情報の描画
+extern	int			DrawKeyInputString(				int x, int y,                                 int InputHandle , int DrawCandidateList DEFAULTPARAM( = TRUE ) ) ;				// キー入力ハンドルの入力中情報の描画
+extern	int			DrawKeyInputExtendString(		int x, int y, double ExRateX, double ExRateY, int InputHandle , int DrawCandidateList DEFAULTPARAM( = TRUE ) ) ;				// キー入力ハンドルの入力中情報の描画( 拡大率指定付き )
 extern	int			SetKeyInputDrawArea(			int x1, int y1, int x2, int y2, int InputHandle ) ;																				// キー入力ハンドルの入力中文字列を描画する際の描画範囲を設定する
 
 extern	int			SetKeyInputSelectArea(			int  SelectStart, int  SelectEnd, int InputHandle ) ;																			// キー入力ハンドルの指定の領域を選択状態にする( SelectStart と SelectEnd に -1 を指定すると選択状態が解除されます )
@@ -2315,11 +2533,12 @@ extern	int			GetKeyInputCursorPosition(		int InputHandle ) ;																				
 // DxFile.cpp関数プロトタイプ宣言
 
 // ファイルアクセス関数
-extern	int			FileRead_open(						const TCHAR *FilePath,                        int ASync = FALSE ) ;	// ファイルを開く
-extern	int			FileRead_open_WithStrLen(			const TCHAR *FilePath, size_t FilePathLength, int ASync = FALSE ) ;	// ファイルを開く
+extern	int			FileRead_open(						const TCHAR *FilePath,                        int ASync DEFAULTPARAM( = FALSE ) ) ;	// ファイルを開く
+extern	int			FileRead_open_WithStrLen(			const TCHAR *FilePath, size_t FilePathLength, int ASync DEFAULTPARAM( = FALSE ) ) ;	// ファイルを開く
 extern	int			FileRead_open_mem(					const void *FileImage, size_t FileImageSize ) ;					// メモリに展開されたファイルを開く
 extern	LONGLONG	FileRead_size(						const TCHAR *FilePath ) ;										// ファイルのサイズを取得する
 extern	LONGLONG	FileRead_size_WithStrLen(			const TCHAR *FilePath, size_t FilePathLength ) ;				// ファイルのサイズを取得する
+extern	LONGLONG	FileRead_size_handle(				int FileHandle ) ;												// ファイルのサイズを取得する( ファイルハンドル使用版 )
 extern	int			FileRead_close(						int FileHandle ) ;												// ファイルを閉じる
 extern	LONGLONG	FileRead_tell(						int FileHandle ) ;												// ファイルポインタの読み込み位置を取得する
 extern	int			FileRead_seek(						int FileHandle , LONGLONG Offset , int Origin ) ;				// ファイルポインタの読み込み位置を変更する
@@ -2354,8 +2573,8 @@ extern	int			ChangeStreamFunction(				const STREAMDATASHREDTYPE2  *StreamThread 
 extern	int			ChangeStreamFunctionW(				const STREAMDATASHREDTYPE2W *StreamThreadW ) ;					// ＤＸライブラリでストリームデータアクセスに使用する関数を変更する( wchar_t 使用版 )
 
 // 補助関係関数
-extern int			ConvertFullPath(					const TCHAR *Src,                   TCHAR *Dest, const TCHAR *CurrentDir = NULL                              ) ;	// フルパスではないパス文字列をフルパスに変換する( CurrentDir はフルパスである必要がある(語尾に『\』があっても無くても良い) )( CurrentDir が NULL の場合は現在のカレントディレクトリを使用する )
-extern int			ConvertFullPathWithStrLen(			const TCHAR *Src, size_t SrcLength, TCHAR *Dest, const TCHAR *CurrentDir = NULL, size_t CurrentDirLength = 0 ) ;	// フルパスではないパス文字列をフルパスに変換する( CurrentDir はフルパスである必要がある(語尾に『\』があっても無くても良い) )( CurrentDir が NULL の場合は現在のカレントディレクトリを使用する )
+extern int			ConvertFullPath(					const TCHAR *Src,                   TCHAR *Dest, const TCHAR *CurrentDir DEFAULTPARAM( = NULL )                                              ) ;	// フルパスではないパス文字列をフルパスに変換する( CurrentDir はフルパスである必要がある(語尾に『\』があっても無くても良い) )( CurrentDir が NULL の場合は現在のカレントディレクトリを使用する )
+extern int			ConvertFullPathWithStrLen(			const TCHAR *Src, size_t SrcLength, TCHAR *Dest, const TCHAR *CurrentDir DEFAULTPARAM( = NULL ), size_t CurrentDirLength DEFAULTPARAM( = 0 ) ) ;
 
 
 
@@ -2374,22 +2593,28 @@ extern int			ConvertFullPathWithStrLen(			const TCHAR *Src, size_t SrcLength, TC
 
 // 入力状態取得関数
 extern	int			CheckHitKey(							int KeyCode ) ;															// キーボードの押下状態を取得する
-extern	int			CheckHitKeyAll(							int CheckType = DX_CHECKINPUT_ALL ) ;									// どれか一つでもキーが押されているかどうかを取得( 押されていたら戻り値が 0 以外になる )
+extern	int			CheckHitKeyAll(							int CheckType DEFAULTPARAM( = DX_CHECKINPUT_ALL ) ) ;					// どれか一つでもキーが押されているかどうかを取得( 押されていたら戻り値が 0 以外になる )
 extern	int			GetHitKeyStateAll(						DX_CHAR *KeyStateArray ) ;												// すべてのキーの押下状態を取得する( KeyStateBuf:char型256個分の配列の先頭アドレス )
+extern	int			GetHitKeyStateAllEx(					int *KeyStateArray ) ;													// すべてのキーの押下状態を取得する( KeyStateBuf:int型256個分の配列の先頭アドレス、初回は配列の全要素に 0 が代入されている必要があります、配列の各要素の状態　0:押されていない　1：押された１回め　2以上：押され続けている回数　-1：押されて離された１回め　-2以下：押されて離されてからの回数 )
 extern	int			GetJoypadNum(							void ) ;																// ジョイパッドが接続されている数を取得する
+extern	int			GetJoypadButtonNum(						int InputType ) ;														// ジョイパッドのボタンの数を取得する
 extern	int			GetJoypadInputState(					int InputType ) ;														// ジョイパッドの入力状態を取得する
 extern	int			GetJoypadAnalogInput(					int *XBuf, int *YBuf, int InputType ) ;									// ジョイパッドのアナログ的なスティック入力情報を得る
 extern	int			GetJoypadAnalogInputRight(				int *XBuf, int *YBuf, int InputType ) ;									// ( 使用非推奨 )ジョイパッドのアナログ的なスティック入力情報を得る(右スティック用)
 extern	int			GetJoypadDirectInputState(				int InputType, DINPUT_JOYSTATE *DInputState ) ;							// DirectInput から得られるジョイパッドの生のデータを取得する( DX_INPUT_KEY や DX_INPUT_KEY_PAD1 など、キーボードが絡むタイプを InputType に渡すとエラーとなり -1 を返す )
 extern	int			CheckJoypadXInput(						int InputType ) ;														// 指定の入力デバイスが XInput に対応しているかどうかを取得する( 戻り値  TRUE:XInput対応の入力デバイス  FALSE:XInput非対応の入力デバイス   -1:エラー )( DX_INPUT_KEY や DX_INPUT_KEY_PAD1 など、キーボードが絡むタイプを InputType に渡すとエラーとなり -1 を返す )
+extern	int			GetJoypadType(							int InputType ) ;														// ジョイパッドのタイプを取得する( 戻り値  -1:エラー  0以上:ジョイパッドタイプ( DX_PADTYPE_XBOX_360 など ) )
 extern	int			GetJoypadXInputState(					int InputType, XINPUT_STATE *XInputState ) ;							// XInput から得られる入力デバイス( Xbox360コントローラ等 )の生のデータを取得する( XInput非対応のパッドの場合はエラーとなり -1 を返す、DX_INPUT_KEY や DX_INPUT_KEY_PAD1 など、キーボードが絡むタイプを InputType に渡すとエラーとなり -1 を返す )
-extern	int			SetJoypadInputToKeyInput(				int InputType, int PadInput, int KeyInput1, int KeyInput2 = -1 , int KeyInput3 = -1 , int KeyInput4 = -1  ) ; // ジョイパッドの入力に対応したキーボードの入力を設定する( InputType:設定を変更するパッドの識別子( DX_INPUT_PAD1等 )　　PadInput:設定を変更するパッドボタンの識別子( PAD_INPUT_1 等 )　　KeyInput1:PadInput を押下したことにするキーコード( KEY_INPUT_A など )その１　　KeyInput2:その２、-1で設定なし　　KeyInput3:その３、-1で設定なし　　KeyInput4:その４、-1で設定なし )
+extern	int			SetJoypadInputToKeyInput(				int InputType, int PadInput, int KeyInput1, int KeyInput2 DEFAULTPARAM( = -1 ) , int KeyInput3 DEFAULTPARAM( = -1 ) , int KeyInput4 DEFAULTPARAM( = -1 )  ) ; // ジョイパッドの入力に対応したキーボードの入力を設定する( InputType:設定を変更するパッドの識別子( DX_INPUT_PAD1等 )　　PadInput:設定を変更するパッドボタンの識別子( PAD_INPUT_1 等 )　　KeyInput1:PadInput を押下したことにするキーコード( KEY_INPUT_A など )その１　　KeyInput2:その２、-1で設定なし　　KeyInput3:その３、-1で設定なし　　KeyInput4:その４、-1で設定なし )
 extern	int			SetJoypadDeadZone(						int InputType, double Zone ) ;											// ジョイパッドの無効ゾーンの設定を行う( InputType:設定を変更するパッドの識別子( DX_INPUT_PAD1等 )   Zone:新しい無効ゾーン( 0.0 ～ 1.0 )、デフォルト値は 0.35 )
-extern	double		GetJoypadDeadZone(						int InputType ) ;														// ジョイパッドの無効ゾーンの設定を取得する( InputType:設定を変更するパッドの識別子( DX_INPUT_PAD1等 )   戻り値:無効ゾーン( 0.0 ～ 1.0 )
-extern	int			StartJoypadVibration(					int InputType, int Power, int Time, int EffectIndex = -1 ) ;			// ジョイパッドの振動を開始する
-extern	int			StopJoypadVibration(					int InputType, int EffectIndex = -1 ) ;									// ジョイパッドの振動を停止する
+extern	double		GetJoypadDeadZone(						int InputType ) ;														// ジョイパッドの無効ゾーンの設定を取得する( InputType:設定を変更するパッドの識別子( DX_INPUT_PAD1等 )   戻り値:無効ゾーン( 0.0 ～ 1.0 ) )
+extern	int			SetJoypadDefaultDeadZoneAll(			double Zone ) ;															// ジョイパッドのデフォルトの無効ゾーンを設定する( Zone:新しい無効ゾーン( 0.0 ～ 1.0 )、デフォルト値は 0.35 )
+extern	double		GetJoypadDefaultDeadZoneAll(			void ) ;																// ジョイパッドのデフォルトの無効ゾーンを取得する( 戻り値:無効ゾーン( 0.0 ～ 1.0 ) )
+extern	int			StartJoypadVibration(					int InputType, int Power, int Time, int EffectIndex DEFAULTPARAM( = -1 ) ) ;	// ジョイパッドの振動を開始する
+extern	int			StopJoypadVibration(					int InputType, int EffectIndex DEFAULTPARAM( = -1 ) ) ;					// ジョイパッドの振動を停止する
 extern	int			GetJoypadPOVState(						int InputType, int POVNumber ) ;										// ジョイパッドのＰＯＶ入力の状態を得る( 戻り値　指定のPOVデータの角度、単位は角度の１００倍( 90度なら 9000 ) 中心位置にある場合は -1 が返る )
 extern	int			ReSetupJoypad(							void ) ;																// ジョイパッドの再セットアップを行う( 新たに接続されたジョイパッドがあったら検出される )
+extern	int			ReSetupInputSystem(						void ) ;																// 入力システムの再セットアップを行う( 戻り値  0:正常終了  -1:エラー発生 )
 
 extern	int			SetUseJoypadVibrationFlag(				int Flag ) ;															// ジョイパッドの振動機能を使用するかどうかを設定する( TRUE:使用する　　FALSE:使用しない )
 
@@ -2406,16 +2631,17 @@ extern	int			SetUseJoypadVibrationFlag(				int Flag ) ;															// ジョ�
 // 画像処理系関数プロトタイプ宣言
 
 // グラフィックハンドル作成関係関数
-extern	int			MakeGraph(							int SizeX, int SizeY, int NotUse3DFlag = FALSE ) ;							// 指定サイズのグラフィックハンドルを作成する
-extern	int			MakeScreen(							int SizeX, int SizeY, int UseAlphaChannel = FALSE ) ;						// SetDrawScreen で描画対象にできるグラフィックハンドルを作成する
+extern	int			MakeGraph(							int SizeX, int SizeY, int NotUse3DFlag DEFAULTPARAM( = FALSE ) ) ;			// 指定サイズのグラフィックハンドルを作成する
+extern	int			MakeScreen(							int SizeX, int SizeY, int UseAlphaChannel DEFAULTPARAM( = FALSE ) ) ;		// SetDrawScreen で描画対象にできるグラフィックハンドルを作成する
 extern	int			DerivationGraph(					int   SrcX, int   SrcY, int   Width, int   Height, int SrcGraphHandle ) ;	// 指定のグラフィックハンドルの指定部分だけを抜き出して新たなグラフィックハンドルを作成する
 extern	int			DerivationGraphF(					float SrcX, float SrcY, float Width, float Height, int SrcGraphHandle ) ;	// 指定のグラフィックハンドルの指定部分だけを抜き出して新たなグラフィックハンドルを作成する( float版 )
-extern	int			DeleteGraph(						int GrHandle, int LogOutFlag = FALSE ) ;									// グラフィックハンドルを削除する
+extern	int			DeleteGraph(						int GrHandle, int LogOutFlag DEFAULTPARAM( = FALSE ) ) ;					// グラフィックハンドルを削除する
 extern	int			DeleteSharingGraph(					int GrHandle ) ;															// 指定のグラフィックハンドルと、同じグラフィックハンドルから派生しているグラフィックハンドル( DerivationGraph で派生したハンドル、LoadDivGraph 読み込んで作成された複数のハンドル )を一度に削除する
 extern	int			GetGraphNum(						void ) ;																	// 有効なグラフィックハンドルの数を取得する
-extern	int			FillGraph(							int GrHandle, int Red, int Green, int Blue, int Alpha = 255 ) ;				// グラフィックハンドルを指定の色で塗りつぶす
+extern	int			FillGraph(							int GrHandle, int Red, int Green, int Blue, int Alpha DEFAULTPARAM( = 255 ) ) ;											// グラフィックハンドルを指定の色で塗りつぶす
+extern	int			FillRectGraph(						int GrHandle, int x, int y, int Width, int Height, int Red, int Green, int Blue, int Alpha DEFAULTPARAM( = 255 ) ) ;	// グラフィックハンドルの指定の範囲を指定の色で塗りつぶす
 extern	int			SetGraphLostFlag(					int GrHandle, int *LostFlag ) ;												// 指定のグラフィックハンドルが削除された際に 1 にする変数のアドレスを設定する
-extern	int			InitGraph(							int LogOutFlag = FALSE ) ;													// すべてのグラフィックハンドルを削除する
+extern	int			InitGraph(							int LogOutFlag DEFAULTPARAM( = FALSE ) ) ;									// すべてのグラフィックハンドルを削除する
 extern	int			ReloadFileGraphAll(					void ) ;																	// ファイルから画像を読み込んだ全てのグラフィックハンドルについて、再度ファイルから画像を読み込む
 
 // シャドウマップハンドル関係関数
@@ -2440,56 +2666,64 @@ extern	int			BltBmpOrGraphImageToDivGraph(		const COLORDATA *BmpColorData, HBITM
 extern	int			BltBmpOrGraphImageToDivGraphF(		const COLORDATA *BmpColorData, HBITMAP RgbBmp, HBITMAP AlphaBmp, int BmpFlag, const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float Width, float Height, const int *GrHandle, int ReverseFlag ) ;	// ＢＭＰ か BASEIMAGE を分割作成したグラフィックハンドルたちに転送( float型 )
 
 // 画像からグラフィックハンドルを作成する関数
-extern	int			LoadBmpToGraph(						const TCHAR *FileName,                        int TextureFlag, int ReverseFlag, int SurfaceMode = DX_MOVIESURFACE_NORMAL ) ;										// 画像ファイルからグラフィックハンドルを作成する
-extern	int			LoadBmpToGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int TextureFlag, int ReverseFlag, int SurfaceMode = DX_MOVIESURFACE_NORMAL ) ;										// 画像ファイルからグラフィックハンドルを作成する
-extern	int			LoadGraph(							const TCHAR *FileName,                        int NotUse3DFlag = FALSE ) ;																							// 画像ファイルからグラフィックハンドルを作成する
-extern	int			LoadGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int NotUse3DFlag = FALSE ) ;																							// 画像ファイルからグラフィックハンドルを作成する
-extern	int			LoadReverseGraph(					const TCHAR *FileName,                        int NotUse3DFlag = FALSE ) ;																							// 画像ファイルを反転したものでグラフィックハンドルを作成する
-extern	int			LoadReverseGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int NotUse3DFlag = FALSE ) ;																							// 画像ファイルを反転したものでグラフィックハンドルを作成する
-extern	int			LoadDivGraph(						const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivGraphF(						const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivGraphFWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivBmpToGraph(					const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray, int TextureFlag, int ReverseFlag ) ;		// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivBmpToGraphWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray, int TextureFlag, int ReverseFlag ) ;		// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivBmpToGraphF(					const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray, int TextureFlag, int ReverseFlag ) ;		// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadDivBmpToGraphFWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray, int TextureFlag, int ReverseFlag ) ;		// 画像ファイルを分割してグラフィックハンドルを作成する
-extern	int			LoadReverseDivGraph(				const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
-extern	int			LoadReverseDivGraphWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
-extern	int			LoadReverseDivGraphF(				const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
-extern	int			LoadReverseDivGraphFWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag = FALSE ) ;				// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
-extern	int			LoadBlendGraph(						const TCHAR *FileName ) ;																																			// 画像ファイルからブレンド用グラフィックハンドルを作成する
-extern	int			LoadBlendGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength ) ;																													// 画像ファイルからブレンド用グラフィックハンドルを作成する
+extern	int			LoadBmpToGraph(						const TCHAR *FileName,                        int TextureFlag, int ReverseFlag, int SurfaceMode DEFAULTPARAM( = DX_MOVIESURFACE_NORMAL ) ) ;											// 画像ファイルからグラフィックハンドルを作成する
+extern	int			LoadBmpToGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int TextureFlag, int ReverseFlag, int SurfaceMode DEFAULTPARAM( = DX_MOVIESURFACE_NORMAL ) ) ;											// 画像ファイルからグラフィックハンドルを作成する
+extern	int			LoadGraph(							const TCHAR *FileName,                        int NotUse3DFlag DEFAULTPARAM( = FALSE ) ) ;																				// 画像ファイルからグラフィックハンドルを作成する
+extern	int			LoadGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int NotUse3DFlag DEFAULTPARAM( = FALSE ) ) ;																				// 画像ファイルからグラフィックハンドルを作成する
+extern	int			LoadReverseGraph(					const TCHAR *FileName,                        int NotUse3DFlag DEFAULTPARAM( = FALSE ) ) ;																				// 画像ファイルを反転したものでグラフィックハンドルを作成する
+extern	int			LoadReverseGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int NotUse3DFlag DEFAULTPARAM( = FALSE ) ) ;																				// 画像ファイルを反転したものでグラフィックハンドルを作成する
+extern	int			LoadDivGraph(						const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , int   XStride DEFAULTPARAM( = 0 ) , int   YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , int   XStride DEFAULTPARAM( = 0 ) , int   YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivGraphF(						const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , float XStride DEFAULTPARAM( = 0 ) , float YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivGraphFWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , float XStride DEFAULTPARAM( = 0 ) , float YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivBmpToGraph(					const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray, int TextureFlag, int ReverseFlag , int   XStride DEFAULTPARAM( = 0 ) , int   YStride DEFAULTPARAM( = 0 ) ) ;			// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivBmpToGraphWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray, int TextureFlag, int ReverseFlag , int   XStride DEFAULTPARAM( = 0 ) , int   YStride DEFAULTPARAM( = 0 ) ) ;			// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivBmpToGraphF(					const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray, int TextureFlag, int ReverseFlag , float XStride DEFAULTPARAM( = 0 ) , float YStride DEFAULTPARAM( = 0 ) ) ;			// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadDivBmpToGraphFWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray, int TextureFlag, int ReverseFlag , float XStride DEFAULTPARAM( = 0 ) , float YStride DEFAULTPARAM( = 0 ) ) ;			// 画像ファイルを分割してグラフィックハンドルを作成する
+extern	int			LoadReverseDivGraph(				const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , int   XStride DEFAULTPARAM( = 0 ) , int   YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
+extern	int			LoadReverseDivGraphWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , int   XStride DEFAULTPARAM( = 0 ) , int   YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
+extern	int			LoadReverseDivGraphF(				const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , float XStride DEFAULTPARAM( = 0 ) , float YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
+extern	int			LoadReverseDivGraphFWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray, int NotUse3DFlag DEFAULTPARAM( = FALSE ) , float XStride DEFAULTPARAM( = 0 ) , float YStride DEFAULTPARAM( = 0 ) ) ;	// 画像ファイルを反転したものを分割してグラフィックハンドルを作成する
+extern	int			LoadBlendGraph(						const TCHAR *FileName ) ;																																				// 画像ファイルからブレンド用グラフィックハンドルを作成する
+extern	int			LoadBlendGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength ) ;																														// 画像ファイルからブレンド用グラフィックハンドルを作成する
 
-extern	int			CreateGraphFromMem(					const void *RGBFileImage, int RGBFileImageSize,               const void *AlphaFileImage = NULL , int AlphaFileImageSize = 0 ,                  int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																			// メモリ上の画像イメージからグラフィックハンドルを作成する
-extern	int			ReCreateGraphFromMem(				const void *RGBFileImage, int RGBFileImageSize, int GrHandle, const void *AlphaFileImage = NULL , int AlphaFileImageSize = 0 ,                  int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																			// メモリ上の画像イメージから既存のグラフィックハンドルにデータを転送する
-extern	int			CreateDivGraphFromMem(				const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray,               int TextureFlag = TRUE , int ReverseFlag = FALSE , const void *AlphaFileImage = NULL , int AlphaFileImageSize = 0 ) ;			// メモリ上の画像イメージから分割グラフィックハンドルを作成する
-extern	int			CreateDivGraphFFromMem(				const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray,               int TextureFlag = TRUE , int ReverseFlag = FALSE , const void *AlphaFileImage = NULL , int AlphaFileImageSize = 0 ) ;			// メモリ上の画像イメージから分割グラフィックハンドルを作成する( float版 )
-extern	int			ReCreateDivGraphFromMem(			const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray,               int TextureFlag = TRUE , int ReverseFlag = FALSE , const void *AlphaFileImage = NULL , int AlphaFileImageSize = 0 ) ;			// メモリ上の画像イメージから既存の分割グラフィックハンドルにデータを転送する
-extern	int			ReCreateDivGraphFFromMem(			const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray,               int TextureFlag = TRUE , int ReverseFlag = FALSE , const void *AlphaFileImage = NULL , int AlphaFileImageSize = 0 ) ;			// メモリ上の画像イメージから既存の分割グラフィックハンドルにデータを転送する( float版 )
-extern	int			CreateGraphFromBmp(					const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage,               const BITMAPINFO *AlphaBmpInfo = NULL , const void *AlphaBmpImage = NULL , int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																			// ビットマップデータからグラフィックハンドルを作成する
-extern	int			ReCreateGraphFromBmp(				const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int GrHandle, const BITMAPINFO *AlphaBmpInfo = NULL , const void *AlphaBmpImage = NULL , int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																			// ビットマップデータから既存のグラフィックハンドルにデータを転送する
-extern	int			CreateDivGraphFromBmp(				const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray,        int TextureFlag = TRUE , int ReverseFlag = FALSE , const BITMAPINFO *AlphaBmpInfo = NULL , const void *AlphaBmpImage = NULL ) ;	// ビットマップデータから分割グラフィックハンドルを作成する
-extern	int			CreateDivGraphFFromBmp(				const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray,        int TextureFlag = TRUE , int ReverseFlag = FALSE , const BITMAPINFO *AlphaBmpInfo = NULL , const void *AlphaBmpImage = NULL ) ;	// ビットマップデータから分割グラフィックハンドルを作成する( float版 )
-extern	int			ReCreateDivGraphFromBmp(			const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray,        int TextureFlag = TRUE , int ReverseFlag = FALSE , const BITMAPINFO *AlphaBmpInfo = NULL , const void *AlphaBmpImage = NULL ) ;	// ビットマップデータから既存の分割グラフィックハンドルにデータを転送する
-extern	int			ReCreateDivGraphFFromBmp(			const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray,        int TextureFlag = TRUE , int ReverseFlag = FALSE , const BITMAPINFO *AlphaBmpInfo = NULL , const void *AlphaBmpImage = NULL ) ;	// ビットマップデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
+extern	int			CreateGraphFromMem(					const void *RGBFileImage, int RGBFileImageSize,               const void *AlphaFileImage DEFAULTPARAM( = NULL ) , int AlphaFileImageSize DEFAULTPARAM( = 0 ) ,                  int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																			// メモリ上の画像イメージからグラフィックハンドルを作成する
+extern	int			ReCreateGraphFromMem(				const void *RGBFileImage, int RGBFileImageSize, int GrHandle, const void *AlphaFileImage DEFAULTPARAM( = NULL ) , int AlphaFileImageSize DEFAULTPARAM( = 0 ) ,                  int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																			// メモリ上の画像イメージから既存のグラフィックハンドルにデータを転送する
+extern	int			CreateDivGraphFromMem(				const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray,               int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const void *AlphaFileImage DEFAULTPARAM( = NULL ) , int AlphaFileImageSize DEFAULTPARAM( = 0 ) ) ;			// メモリ上の画像イメージから分割グラフィックハンドルを作成する
+extern	int			CreateDivGraphFFromMem(				const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray,               int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const void *AlphaFileImage DEFAULTPARAM( = NULL ) , int AlphaFileImageSize DEFAULTPARAM( = 0 ) ) ;			// メモリ上の画像イメージから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateDivGraphFromMem(			const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray,               int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const void *AlphaFileImage DEFAULTPARAM( = NULL ) , int AlphaFileImageSize DEFAULTPARAM( = 0 ) ) ;			// メモリ上の画像イメージから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromMem(			const void *RGBFileImage, int RGBFileImageSize, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray,               int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const void *AlphaFileImage DEFAULTPARAM( = NULL ) , int AlphaFileImageSize DEFAULTPARAM( = 0 ) ) ;			// メモリ上の画像イメージから既存の分割グラフィックハンドルにデータを転送する( float版 )
+extern	int			CreateGraphFromBmp(					const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage,               const BITMAPINFO *AlphaBmpInfo DEFAULTPARAM( = NULL ) , const void *AlphaBmpImage DEFAULTPARAM( = NULL ) , int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																			// ビットマップデータからグラフィックハンドルを作成する
+extern	int			ReCreateGraphFromBmp(				const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int GrHandle, const BITMAPINFO *AlphaBmpInfo DEFAULTPARAM( = NULL ) , const void *AlphaBmpImage DEFAULTPARAM( = NULL ) , int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																			// ビットマップデータから既存のグラフィックハンドルにデータを転送する
+extern	int			CreateDivGraphFromBmp(				const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray,        int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const BITMAPINFO *AlphaBmpInfo DEFAULTPARAM( = NULL ) , const void *AlphaBmpImage DEFAULTPARAM( = NULL ) ) ;	// ビットマップデータから分割グラフィックハンドルを作成する
+extern	int			CreateDivGraphFFromBmp(				const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray,        int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const BITMAPINFO *AlphaBmpInfo DEFAULTPARAM( = NULL ) , const void *AlphaBmpImage DEFAULTPARAM( = NULL ) ) ;	// ビットマップデータから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateDivGraphFromBmp(			const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray,        int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const BITMAPINFO *AlphaBmpInfo DEFAULTPARAM( = NULL ) , const void *AlphaBmpImage DEFAULTPARAM( = NULL ) ) ;	// ビットマップデータから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromBmp(			const BITMAPINFO *RGBBmpInfo, const void *RGBBmpImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray,        int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) , const BITMAPINFO *AlphaBmpInfo DEFAULTPARAM( = NULL ) , const void *AlphaBmpImage DEFAULTPARAM( = NULL ) ) ;	// ビットマップデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
 extern	int			CreateDXGraph(						const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage,                                                                                 int TextureFlag ) ;																									// 基本イメージデータからサイズを割り出し、それに合ったグラフィックハンドルを作成する
-extern	int			CreateGraphFromGraphImage(			const BASEIMAGE *RgbBaseImage,                                                                                                                  int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータからグラフィックハンドルを作成する
-extern	int			CreateGraphFromGraphImage(			const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage,                                                                                 int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータからグラフィックハンドルを作成する
-extern	int			ReCreateGraphFromGraphImage(		const BASEIMAGE *RgbBaseImage,                                  int GrHandle,                                                                   int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから既存のグラフィックハンドルにデータを転送する
-extern	int			ReCreateGraphFromGraphImage(		const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int GrHandle,                                                                   int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから既存のグラフィックハンドルにデータを転送する
-extern	int			CreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する
-extern	int			CreateDivGraphFFromGraphImage(		      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する( float版 )
-extern	int			CreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する
-extern	int			CreateDivGraphFFromGraphImage(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する( float版 )
-extern	int			ReCreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する
-extern	int			ReCreateDivGraphFFromGraphImage(	      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
-extern	int			ReCreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する
-extern	int			ReCreateDivGraphFFromGraphImage(	      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray, int TextureFlag = TRUE , int ReverseFlag = FALSE ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
-extern	int			CreateGraph(						int Width, int Height, int Pitch, const void *RGBImage, const void *AlphaImage = NULL , int GrHandle = -1 ) ;																																						// メモリ上のビットマップイメージからグラフィックハンドルを作成する
-extern	int			CreateDivGraph(						int Width, int Height, int Pitch, const void *RGBImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray, const void *AlphaImage = NULL ) ;																								// メモリ上のビットマップイメージから分割グラフィックハンドルを作成する
-extern	int			CreateDivGraphF(					int Width, int Height, int Pitch, const void *RGBImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray, const void *AlphaImage = NULL ) ;																								// メモリ上のビットマップイメージから分割グラフィックハンドルを作成する( float版 )
-extern	int			ReCreateGraph(						int Width, int Height, int Pitch, const void *RGBImage, int GrHandle, const void *AlphaImage = NULL ) ;																																								// メモリ上のビットマップイメージからグラフィックハンドルを再作成する
+extern	int			CreateGraphFromGraphImage(			const BASEIMAGE *RgbBaseImage,                                                                                                                  int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータからグラフィックハンドルを作成する
+extern	int			ReCreateGraphFromGraphImage(		const BASEIMAGE *RgbBaseImage,                                  int GrHandle,                                                                   int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存のグラフィックハンドルにデータを転送する
+extern	int			CreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する
+extern	int			CreateDivGraphFFromGraphImage(		      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromGraphImage(	      BASEIMAGE *RgbBaseImage,                                  int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			CreateGraphFromGraphImage(			const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage,                                                                                 int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータからグラフィックハンドルを作成する
+extern	int			ReCreateGraphFromGraphImage(		const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int GrHandle,                                                                   int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存のグラフィックハンドルにデータを転送する
+extern	int			CreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する
+extern	int			CreateDivGraphFFromGraphImage(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateDivGraphFromGraphImage(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromGraphImage(	      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			CreateGraphFromGraphImage2(			const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage,                                                                                 int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータからグラフィックハンドルを作成する
+extern	int			ReCreateGraphFromGraphImage2(		const BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int GrHandle,                                                                   int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存のグラフィックハンドルにデータを転送する
+extern	int			CreateDivGraphFromGraphImage2(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY,       int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する
+extern	int			CreateDivGraphFFromGraphImage2(		      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY,       int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateDivGraphFromGraphImage2(	      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromGraphImage2(	      BASEIMAGE *RgbBaseImage, const BASEIMAGE *AlphaBaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray, int TextureFlag DEFAULTPARAM( = TRUE ) , int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
+extern	int			CreateGraph(						int Width, int Height, int Pitch, const void *RGBImage, const void *AlphaImage DEFAULTPARAM( = NULL ) , int GrHandle DEFAULTPARAM( = -1 ) ) ;																																		// メモリ上のビットマップイメージからグラフィックハンドルを作成する
+extern	int			CreateDivGraph(						int Width, int Height, int Pitch, const void *RGBImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray, const void *AlphaImage DEFAULTPARAM( = NULL ) ) ;																								// メモリ上のビットマップイメージから分割グラフィックハンドルを作成する
+extern	int			CreateDivGraphF(					int Width, int Height, int Pitch, const void *RGBImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray, const void *AlphaImage DEFAULTPARAM( = NULL ) ) ;																								// メモリ上のビットマップイメージから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateGraph(						int Width, int Height, int Pitch, const void *RGBImage, int GrHandle, const void *AlphaImage DEFAULTPARAM( = NULL ) ) ;																																								// メモリ上のビットマップイメージからグラフィックハンドルを再作成する
 #ifndef DX_NON_SOFTIMAGE
 extern	int			CreateBlendGraphFromSoftImage(		int SIHandle ) ;																														// ソフトウエアで扱うイメージからブレンド用画像グラフィックハンドルを作成する( -1:エラー  -1以外:ブレンド用グラフィックハンドル )
 extern	int			CreateGraphFromSoftImage(			int SIHandle ) ;																														// ソフトウエアで扱うイメージからグラフィックハンドルを作成する( -1:エラー  -1以外:グラフィックハンドル )
@@ -2498,6 +2732,8 @@ extern	int			ReCreateGraphFromSoftImage(			int SIHandle, int GrHandle ) ;							
 extern	int			ReCreateGraphFromRectSoftImage(		int SIHandle, int x, int y, int SizeX, int SizeY, int GrHandle ) ;																		// ソフトウエアで扱うイメージから既存のグラフィックハンドルに画像データを転送する
 extern	int			CreateDivGraphFromSoftImage(		int SIHandle, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray ) ;											// ソフトウエアで扱うイメージから分割グラフィックハンドルを作成する
 extern	int			CreateDivGraphFFromSoftImage(		int SIHandle, int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray ) ;											// ソフトウエアで扱うイメージから分割グラフィックハンドルを作成する( float版 )
+extern	int			ReCreateDivGraphFromSoftImage(		int SIHandle, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray ) ;										// ソフトウエアで扱うイメージから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromSoftImage(	    int SIHandle, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray ) ;										// ソフトウエアで扱うイメージから既存の分割グラフィックハンドルにデータを転送する( float版 )
 #endif // DX_NON_SOFTIMAGE
 extern	int			CreateGraphFromBaseImage(			const BASEIMAGE *BaseImage ) ;																											// 基本イメージデータからグラフィックハンドルを作成する
 extern	int			CreateGraphFromRectBaseImage(		const BASEIMAGE *BaseImage, int x, int y, int SizeX, int SizeY ) ;																		// 基本イメージデータの指定の領域を使ってグラフィックハンドルを作成する
@@ -2505,12 +2741,14 @@ extern	int			ReCreateGraphFromBaseImage(			const BASEIMAGE *BaseImage,          
 extern	int			ReCreateGraphFromRectBaseImage(		const BASEIMAGE *BaseImage, int x, int y, int SizeX, int SizeY, int GrHandle ) ;														// 基本イメージデータの指定の領域を使って既存のグラフィックハンドルに画像データを転送する
 extern	int			CreateDivGraphFromBaseImage(		      BASEIMAGE *BaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, int *HandleArray ) ;								// 基本イメージデータから分割グラフィックハンドルを作成する
 extern	int			CreateDivGraphFFromBaseImage(		      BASEIMAGE *BaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, int *HandleArray ) ;								// 基本イメージデータから分割グラフィックハンドルを作成する( float版 )
-extern	int			ReloadGraph(						const TCHAR *FileName,                        int GrHandle, int ReverseFlag = FALSE ) ;																		// 画像ファイルからグラフィックハンドルへ画像データを転送する
-extern	int			ReloadGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int GrHandle, int ReverseFlag = FALSE ) ;																		// 画像ファイルからグラフィックハンドルへ画像データを転送する
-extern	int			ReloadDivGraph(						const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, const int *HandleArray, int ReverseFlag = FALSE ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する
-extern	int			ReloadDivGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, const int *HandleArray, int ReverseFlag = FALSE ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する
-extern	int			ReloadDivGraphF(					const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float XSize, float YSize, const int *HandleArray, int ReverseFlag = FALSE ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する( float版 )
-extern	int			ReloadDivGraphFWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float XSize, float YSize, const int *HandleArray, int ReverseFlag = FALSE ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する( float版 )
+extern	int			ReCreateDivGraphFromBaseImage(		      BASEIMAGE *BaseImage, int AllNum, int XNum, int YNum, int   SizeX, int   SizeY, const int *HandleArray ) ;						// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する
+extern	int			ReCreateDivGraphFFromBaseImage(	          BASEIMAGE *BaseImage, int AllNum, int XNum, int YNum, float SizeX, float SizeY, const int *HandleArray ) ;						// 基本イメージデータから既存の分割グラフィックハンドルにデータを転送する( float版 )
+extern	int			ReloadGraph(						const TCHAR *FileName,                        int GrHandle, int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																		// 画像ファイルからグラフィックハンドルへ画像データを転送する
+extern	int			ReloadGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int GrHandle, int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;																		// 画像ファイルからグラフィックハンドルへ画像データを転送する
+extern	int			ReloadDivGraph(						const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, const int *HandleArray, int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する
+extern	int			ReloadDivGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, const int *HandleArray, int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する
+extern	int			ReloadDivGraphF(					const TCHAR *FileName,                        int AllNum, int XNum, int YNum, float XSize, float YSize, const int *HandleArray, int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する( float版 )
+extern	int			ReloadDivGraphFWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int AllNum, int XNum, int YNum, float XSize, float YSize, const int *HandleArray, int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像ファイルからグラフィックハンドルたちへ画像データを分割転送する( float版 )
 extern	int			ReloadReverseGraph(					const TCHAR *FileName,                        int GrHandle ) ;																			// ReloadGraph の画像反転処理追加版
 extern	int			ReloadReverseGraphWithStrLen(		const TCHAR *FileName, size_t FileNameLength, int GrHandle ) ;																			// ReloadGraph の画像反転処理追加版
 extern	int			ReloadReverseDivGraph(				const TCHAR *FileName,                        int AllNum, int XNum, int YNum, int   XSize, int   YSize, const int *HandleArray ) ;		// ReloadDivGraph の画像反転処理追加版
@@ -2525,6 +2763,12 @@ extern	int			SetCreateGraphColorBitDepth(				int BitDepth ) ;								// 作成�
 extern	int			GetCreateGraphColorBitDepth(				void ) ;										// 作成するグラフィックハンドルの色深度を取得する
 extern	int			SetCreateGraphChannelBitDepth(				int BitDepth ) ;								// 作成するグラフィックハンドルの１チャンネル辺りのビット深度を設定する
 extern	int			GetCreateGraphChannelBitDepth(				void ) ;										// 作成するグラフィックハンドルの１チャンネル辺りのビット深度を取得する
+extern	int			SetCreateGraphInitGraphDelete(				int Flag ) ;									// 作成するグラフィックハンドルを InitGraph() で削除されるかを設定する( Flag  TRUE:InitGraphで削除される(デフォルト)  FALSE:InitGraphで削除されない )
+extern	int			GetCreateGraphInitGraphDelete(				void ) ;										// 作成するグラフィックハンドルを InitGraph() で削除されるかを取得する( Flag  TRUE:InitGraphで削除される(デフォルト)  FALSE:InitGraphで削除されない )
+extern	int			SetCreateGraphHandle(						int GrHandle ) ;								// 作成するグラフィックハンドルのハンドル値を設定する、０以下の値を渡すと設定解除( 存在しないグラフィックハンドルの値の場合のみ有効 )
+extern	int			GetCreateGraphHandle(						void ) ;										// 作成するグラフィックハンドルのハンドル値を取得する
+extern	int			SetCreateDivGraphHandle(					const int *HandleArray, int HandleNum ) ;		// 作成するグラフィックハンドルのハンドル値を設定する、LoadDivGraph 等の分割画像読み込み用、HandleArray に NULL を渡すと設定解除( 存在しないグラフィックハンドルの値の場合のみ有効 )
+extern	int			GetCreateDivGraphHandle(					int *HandleArray ) ;							// 作成するグラフィックハンドルのハンドル値を取得する、LoadDivGraph 等の分割画像読み込み用、戻り値は SetCreateDivGraphHandle の引数 HandleNum に渡した値、HandleArray を NULL にすることが可能
 extern	int			SetDrawValidGraphCreateFlag(				int Flag ) ;									// SetDrawScreen に引数として渡せる( 描画対象として使用できる )グラフィックハンドルを作成するかどうかを設定する( TRUE:描画可能グラフィックハンドルを作成する  FLASE:通常のグラフィックハンドルを作成する( デフォルト ) )
 extern	int			GetDrawValidGraphCreateFlag(				void ) ;										// SetDrawScreen に引数として渡せる( 描画対象として使用できる )グラフィックハンドルを作成するかどうかを設定を取得する
 extern	int			SetDrawValidFlagOf3DGraph(					int Flag ) ;									// SetDrawValidGraphCreateFlag の旧名称
@@ -2573,14 +2817,16 @@ extern	int			SetUseGraphBaseDataBackup(					int Flag ) ;									// グラフィ
 extern	int			GetUseGraphBaseDataBackup(					void ) ;										// グラフィックハンドルを作成する際に使用した画像データのバックアップをして Direct3DDevice のデバイスロスト時に使用するかどうかを取得する
 extern	int			SetUseSystemMemGraphCreateFlag(				int Flag ) ;									// ( 現在効果なし )グラフィックハンドルが持つ画像データをシステムメモリ上に作成するかどうかを設定する( TRUE:システムメモリ上に作成  FALSE:ＶＲＡＭ上に作成( デフォルト ) )
 extern	int			GetUseSystemMemGraphCreateFlag(				void ) ;										// ( 現在効果なし )グラフィックハンドルが持つ画像データをシステムメモリ上に作成するかどうかを取得する
+extern	int			SetUseLoadDivGraphSizeCheckFlag(			int Flag ) ;									// LoadDivGraph 系の分割画像読み込み関数でサイズのチェックを行うかどうかを設定する( Flag:TRUE( チェックを行う(デフォルト) )  FALSE:チェックを行わない )
+extern	int			GetUseLoadDivGraphSizeCheckFlag(			void ) ;										// LoadDivGraph 系の分割画像読み込み関数でサイズのチェックを行うかどうかの設定を取得する
 
 // 画像情報関係関数
 extern	const unsigned int* GetFullColorImage(				int GrHandle ) ;																// 指定のグラフィックハンドルのＡＲＧＢ８イメージを取得する( 現在動画ファイルをグラフィックハンドルで読み込んだ場合のみ使用可能 )
 
-extern	int			GraphLock(						int GrHandle, int *PitchBuf, void **DataPointBuf, COLORDATA **ColorDataPP = NULL, int WriteOnly = FALSE ) ;	// グラフィックメモリ領域のロック
+extern	int			GraphLock(						int GrHandle, int *PitchBuf, void **DataPointBuf, COLORDATA **ColorDataPP DEFAULTPARAM( = NULL ), int WriteOnly DEFAULTPARAM( = FALSE ) ) ;	// グラフィックメモリ領域のロック
 extern	int			GraphUnLock(					int GrHandle ) ;																							// グラフィックメモリ領域のロック解除
 
-extern	int			SetUseGraphZBuffer(				int GrHandle, int UseFlag, int BitDepth = -1 ) ;										// グラフィックハンドル専用のＺバッファを持つかどうかを設定する( GrHandle:対象となるグラフィックハンドル( 描画対象として使用可能なグラフィックハンドルのみ有効 )  UseFlag:専用のＺバッファを持つかどうか( TRUE:持つ( デフォルト )  FALSE:持たない )  BitDepth:ビット深度( 16 or 24 or 32 ) )
+extern	int			SetUseGraphZBuffer(				int GrHandle, int UseFlag, int BitDepth DEFAULTPARAM( = -1 ) ) ;						// グラフィックハンドル専用のＺバッファを持つかどうかを設定する( GrHandle:対象となるグラフィックハンドル( 描画対象として使用可能なグラフィックハンドルのみ有効 )  UseFlag:専用のＺバッファを持つかどうか( TRUE:持つ( デフォルト )  FALSE:持たない )  BitDepth:ビット深度( 16 or 24 or 32 ) )
 extern	int			CopyGraphZBufferImage(			int DestGrHandle, int SrcGrHandle ) ;													// グラフィックハンドルのＺバッファの状態を別のグラフィックハンドルのＺバッファにコピーする( DestGrHandle も SrcGrHandle もＺバッファを持っている描画対象にできるグラフィックハンドルで、サイズが同じであり、且つマルチサンプリング( アンチエイリアス )設定が無いことが条件 )
 
 extern	int			SetDeviceLostDeleteGraphFlag(	int GrHandle, int DeleteFlag ) ;														// グラフィックスデバイスのデバイスロスト発生時に指定のグラフィックハンドルを削除するかどうかを設定する( TRUE:デバイスロスト時に削除する  FALSE:デバイスロストが発生しても削除しない )
@@ -2588,12 +2834,18 @@ extern	int			SetDeviceLostDeleteGraphFlag(	int GrHandle, int DeleteFlag ) ;					
 extern	int			GetGraphSize(					int GrHandle, int   *SizeXBuf, int   *SizeYBuf ) ;										// グラフィックハンドルが持つ画像のサイズを得る
 extern	int			GetGraphSizeF(					int GrHandle, float *SizeXBuf, float *SizeYBuf ) ;										// グラフィックハンドルが持つ画像のサイズを得る( float型 )
 extern	int			GetGraphTextureSize(			int GrHandle, int   *SizeXBuf, int   *SizeYBuf ) ;										// グラフィックハンドルが持つ一つ目のテクスチャのサイズを得る
+extern	int			GetGraphUseBaseGraphArea(		int GrHandle, int   *UseX,     int   *UseY,    int *UseSizeX, int *UseSizeY ) ;			// LoadDivGraph や DerivationGraph で元画像の一部分を使用している場合に、指定のグラフィックハンドルが使用している元画像の範囲を取得する
 extern	int			GetGraphMipmapCount(			int GrHandle ) ;																		// グラフィックハンドルが持つテクスチャのミップマップレベル数を取得する
 extern	int			GetGraphFilePath(				int GrHandle, TCHAR *FilePathBuffer ) ;													// グラフィックハンドルが画像ファイルから読み込まれていた場合、その画像のファイルパスを取得する
+extern	int			CheckDrawValidGraph(			int GrHandle ) ;																		// 指定のグラフィックハンドルが描画対象にできる( SetDrawScreen の引数に渡せる )グラフィックハンドルかどうかを取得する( 戻り値　TRUE:描画対象にできるグラフィックハンドル　FALSE:描画対象にできないグラフィックハンドル )
 
-extern	const COLORDATA* GetTexColorData(			int AlphaCh, int AlphaTest, int ColorBitDepth, int DrawValid = FALSE ) ;				// カラーデータを得る
+extern	const COLORDATA* GetTexColorData(			int AlphaCh, int AlphaTest, int ColorBitDepth, int DrawValid DEFAULTPARAM( = FALSE ) ) ;	// カラーデータを得る
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
 extern	const COLORDATA* GetTexColorData(			const IMAGEFORMATDESC *Format ) ;														// フォーマットに基づいたカラーデータを得る
-extern	const COLORDATA* GetTexColorData(			int FormatIndex ) ;																		// 指定のフォーマットインデックスのカラーデータを得る
+extern	const COLORDATA* GetTexColorData(			int FormatIndex /* DX_GRAPHICSIMAGE_FORMAT_3D_RGB32 等 */ ) ;							// 指定のフォーマットインデックスのカラーデータを得る
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	const COLORDATA* GetTexColorData2(			const IMAGEFORMATDESC *Format ) ;														// フォーマットに基づいたカラーデータを得る
+extern	const COLORDATA* GetTexColorData3(			int FormatIndex /* DX_GRAPHICSIMAGE_FORMAT_3D_RGB32 等 */ ) ;							// 指定のフォーマットインデックスのカラーデータを得る
 extern	int			GetMaxGraphTextureSize(			int *SizeX, int *SizeY ) ;																// グラフィックスデバイスが対応している最大テクスチャサイズを取得する
 extern	int			GetValidRestoreShredPoint(		void ) ;																				// グラフィックハンドルの画像を復元する関数が登録されているかどうかを取得する( TRUE:登録されている  FALSE:登録されていない )
 extern	int			GetCreateGraphColorData(		COLORDATA *ColorData, IMAGEFORMATDESC *Format ) ;										// ( 現在効果なし )これから新たにグラフィックを作成する場合に使用するカラー情報を取得する
@@ -2605,29 +2857,32 @@ extern	int			SetGraphPalette(				int GrHandle, int ColorIndex, unsigned int Colo
 extern	int			ResetGraphPalette(				int GrHandle ) ;																		// SetGraphPalette で変更したパレットを全て元に戻す( ソフトウエアレンダリングモードで、且つパレット画像の場合のみ使用可能 )
 
 // 図形描画関数
-extern	int			DrawLine(         int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int   Thickness = 1    ) ;							// 線を描画する
-extern	int			DrawLineAA(       float x1, float y1, float x2, float y2,                                         unsigned int Color, float Thickness = 1.0f ) ;							// 線を描画する( アンチエイリアス付き )
-extern	int			DrawBox(          int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int FillFlag ) ;										// 四角形を描画する
-extern	int			DrawBoxAA(        float x1, float y1, float x2, float y2,                                         unsigned int Color, int FillFlag, float LineThickness = 1.0f ) ;			// 四角形を描画する( アンチエイリアス付き )
-extern	int			DrawFillBox(      int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color ) ;													// 中身を塗りつぶす四角形を描画する
-extern	int			DrawLineBox(      int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color ) ;													// 枠だけの四角形の描画 する
-extern	int			DrawCircle(       int   x,  int   y,  int   r,                                                    unsigned int Color, int FillFlag = TRUE, int   LineThickness = 1    ) ;	// 円を描画する
-extern	int			DrawCircleAA(     float x,  float y,  float r,            int posnum,                             unsigned int Color, int FillFlag = TRUE, float LineThickness = 1.0f ) ;	// 円を描画する( アンチエイリアス付き )
-extern	int			DrawOval(         int   x,  int   y,  int   rx, int   ry,                                         unsigned int Color, int FillFlag,        int   LineThickness = 1    ) ;	// 楕円を描画する
-extern	int			DrawOvalAA(       float x,  float y,  float rx, float ry, int posnum,                             unsigned int Color, int FillFlag,        float LineThickness = 1.0f ) ;	// 楕円を描画する( アンチエイリアス付き )
-extern	int			DrawOval_Rect(    int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int FillFlag ) ;										// 指定の矩形に収まる円( 楕円 )を描画する
-extern	int			DrawTriangle(     int   x1, int   y1, int   x2, int   y2, int   x3, int   y3,                     unsigned int Color, int FillFlag ) ;										// 三角形を描画する
-extern	int			DrawTriangleAA(   float x1, float y1, float x2, float y2, float x3, float y3,                     unsigned int Color, int FillFlag, float LineThickness = 1.0f ) ;			// 三角形を描画する( アンチエイリアス付き )
-extern	int			DrawQuadrangle(   int   x1, int   y1, int   x2, int   y2, int   x3, int   y3, int   x4, int   y4, unsigned int Color, int FillFlag ) ;										// 四角形を描画する
-extern	int			DrawQuadrangleAA( float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, int FillFlag, float LineThickness = 1.0f ) ;			// 四角形を描画する( アンチエイリアス付き )
-extern	int			DrawRoundRect(    int   x1, int   y1, int   x2, int   y2, int   rx, int   ry,                     unsigned int Color, int FillFlag ) ;										// 角の丸い四角形を描画する
-extern	int			DrawRoundRectAA(  float x1, float y1, float x2, float y2, float rx, float ry, int posnum,         unsigned int Color, int FillFlag, float LineThickness = 1.0f ) ;			// 角の丸い四角形を描画する( アンチエイリアス付き )
-extern 	int			DrawPixel(        int   x,  int   y,                                                              unsigned int Color ) ;													// 点を描画する
+extern	int			DrawLine(         int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int   Thickness DEFAULTPARAM( = 1 )    ) ;							// 線を描画する
+extern	int			DrawLineAA(       float x1, float y1, float x2, float y2,                                         unsigned int Color, float Thickness DEFAULTPARAM( = 1.0f ) ) ;							// 線を描画する( アンチエイリアス付き )
+extern	int			DrawBox(          int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int FillFlag ) ;														// 四角形を描画する
+extern	int			DrawBoxAA(        float x1, float y1, float x2, float y2,                                         unsigned int Color, int FillFlag, float LineThickness DEFAULTPARAM( = 1.0f ) ) ;			// 四角形を描画する( アンチエイリアス付き )
+extern	int			DrawFillBox(      int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color ) ;																	// 中身を塗りつぶす四角形を描画する
+extern	int			DrawLineBox(      int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color ) ;																	// 枠だけの四角形の描画 する
+extern	int			DrawCircle(       int   x,  int   y,  int   r,                                                    unsigned int Color, int FillFlag DEFAULTPARAM( = TRUE ), int   LineThickness DEFAULTPARAM( = 1 )    ) ;	// 円を描画する
+extern	int			DrawCircleAA(     float x,  float y,  float r,            int posnum,                             unsigned int Color, int FillFlag DEFAULTPARAM( = TRUE ), float LineThickness DEFAULTPARAM( = 1.0f ) ) ;	// 円を描画する( アンチエイリアス付き )
+extern	int			DrawOval(         int   x,  int   y,  int   rx, int   ry,                                         unsigned int Color, int FillFlag,        int   LineThickness DEFAULTPARAM( = 1 )    ) ;	// 楕円を描画する
+extern	int			DrawOvalAA(       float x,  float y,  float rx, float ry, int posnum,                             unsigned int Color, int FillFlag,        float LineThickness DEFAULTPARAM( = 1.0f ) ) ;	// 楕円を描画する( アンチエイリアス付き )
+extern	int			DrawOval_Rect(    int   x1, int   y1, int   x2, int   y2,                                         unsigned int Color, int FillFlag ) ;														// 指定の矩形に収まる円( 楕円 )を描画する
+extern	int			DrawTriangle(     int   x1, int   y1, int   x2, int   y2, int   x3, int   y3,                     unsigned int Color, int FillFlag ) ;														// 三角形を描画する
+extern	int			DrawTriangleAA(   float x1, float y1, float x2, float y2, float x3, float y3,                     unsigned int Color, int FillFlag, float LineThickness DEFAULTPARAM( = 1.0f ) ) ;			// 三角形を描画する( アンチエイリアス付き )
+extern	int			DrawQuadrangle(   int   x1, int   y1, int   x2, int   y2, int   x3, int   y3, int   x4, int   y4, unsigned int Color, int FillFlag ) ;														// 四角形を描画する
+extern	int			DrawQuadrangleAA( float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, int FillFlag, float LineThickness DEFAULTPARAM( = 1.0f ) ) ;			// 四角形を描画する( アンチエイリアス付き )
+extern	int			DrawRoundRect(    int   x1, int   y1, int   x2, int   y2, int   rx, int   ry,                     unsigned int Color, int FillFlag ) ;														// 角の丸い四角形を描画する
+extern	int			DrawRoundRectAA(  float x1, float y1, float x2, float y2, float rx, float ry, int posnum,         unsigned int Color, int FillFlag, float LineThickness DEFAULTPARAM( = 1.0f ) ) ;			// 角の丸い四角形を描画する( アンチエイリアス付き )
+extern	int			BeginAADraw(      void ) ;																																									// DrawTriangleAA などのアンチエイリアス付き図形描画の準備を行う
+extern	int			EndAADraw(        void ) ;																																									// DrawTriangleAA などのアンチエイリアス付き図形描画の後始末を行う
+extern 	int			DrawPixel(        int   x,  int   y,                                                              unsigned int Color ) ;																	// 点を描画する
 
-extern	int			Paint(			int x, int y, unsigned int FillColor, ULONGLONG BoundaryColor = ULL_PARAM( 0xffffffffffffffff ) ) ;								// 指定点から境界色があるところまで塗りつぶす(境界色を -1 にすると指定点の色の領域を塗りつぶす)
+extern	int			Paint(			int x, int y, unsigned int FillColor, ULONGLONG BoundaryColor DEFAULTPARAM( = ULL_PARAM( 0xffffffffffffffff ) ) ) ;				// 指定点から境界色があるところまで塗りつぶす(境界色を -1 にすると指定点の色の領域を塗りつぶす)
 
 extern 	int			DrawPixelSet(   const POINTDATA *PointDataArray, int Num ) ;																					// 点の集合を描画する
 extern	int			DrawLineSet(    const LINEDATA *LineDataArray,   int Num ) ;																					// 線の集合を描画する
+extern	int			DrawBoxSet(     const RECTDATA *RectDataArray,   int Num ) ;																					// 矩形の集合を描画する
 
 extern	int			DrawPixel3D(     VECTOR   Pos,                                                                 unsigned int Color ) ;							// ３Ｄの点を描画する
 extern	int			DrawPixel3DD(    VECTOR_D Pos,                                                                 unsigned int Color ) ;							// ３Ｄの点を描画する
@@ -2637,6 +2892,7 @@ extern	int			DrawTriangle3D(  VECTOR   Pos1,   VECTOR   Pos2, VECTOR   Pos3,    
 extern	int			DrawTriangle3DD( VECTOR_D Pos1,   VECTOR_D Pos2, VECTOR_D Pos3,                                unsigned int Color, int FillFlag ) ;				// ３Ｄの三角形を描画する
 extern	int			DrawCube3D(      VECTOR   Pos1,   VECTOR   Pos2,                            unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄの立方体を描画する
 extern	int			DrawCube3DD(     VECTOR_D Pos1,   VECTOR_D Pos2,                            unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄの立方体を描画する
+extern	int			DrawCubeSet3D(   CUBEDATA *CubeDataArray, int Num, int FillFlag ) ;																				// ３Ｄの立方体の集合を描画する
 extern	int			DrawSphere3D(    VECTOR   CenterPos,                  float  r, int DivNum, unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄの球体を描画する
 extern	int			DrawSphere3DD(   VECTOR_D CenterPos,                  double r, int DivNum, unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄの球体を描画する
 extern	int			DrawCapsule3D(   VECTOR   Pos1,   VECTOR   Pos2,      float  r, int DivNum, unsigned int DifColor, unsigned int SpcColor, int FillFlag ) ;		// ３Ｄのカプセルを描画する
@@ -2648,69 +2904,76 @@ extern	int			DrawCone3DD(     VECTOR_D TopPos, VECTOR_D BottomPos, double r, int
 extern	int			LoadGraphScreen(           int x, int y, const TCHAR *GraphName,                         int TransFlag ) ;										// 画像ファイルを読みこんで画面に描画する
 extern	int			LoadGraphScreenWithStrLen( int x, int y, const TCHAR *GraphName, size_t GraphNameLength, int TransFlag ) ;										// 画像ファイルを読みこんで画面に描画する
 
-extern	int			DrawGraph(                int x, int y,                                                                 int GrHandle, int TransFlag ) ;															// 画像の等倍描画
-extern	int			DrawExtendGraph(          int x1, int y1, int x2, int y2,                                               int GrHandle, int TransFlag ) ;															// 画像の拡大描画
-extern	int			DrawRotaGraph(            int x, int y,                 double ExRate,                    double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画
-extern	int			DrawRotaGraph2(           int x, int y, int cx, int cy, double ExtRate,                   double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画２( 回転中心指定付き )
-extern	int			DrawRotaGraph3(           int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )
-extern	int			DrawRotaGraphFast(        int x, int y,                 float  ExRate,                    float  Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRotaGraphFast2(       int x, int y, int cx, int cy, float  ExtRate,                   float  Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画２( 回転中心指定付き )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRotaGraphFast3(       int x, int y, int cx, int cy, float  ExtRateX, float  ExtRateY, float  Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawModiGraph(            int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,               int GrHandle, int TransFlag ) ;															// 画像の自由変形描画
-extern	int			DrawTurnGraph(            int x, int y,                                                                 int GrHandle, int TransFlag ) ;															// 画像の左右反転描画
-extern	int			DrawReverseGraph(         int x, int y,                                                                 int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の反転描画
+extern	int			DrawGraph(                int x, int y,                                                                 int GrHandle, int TransFlag ) ;																							// 画像の等倍描画
+extern	int			DrawExtendGraph(          int x1, int y1, int x2, int y2,                                               int GrHandle, int TransFlag ) ;																							// 画像の拡大描画
+extern	int			DrawRotaGraph(            int x, int y,                 double ExRate,                    double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画
+extern	int			DrawRotaGraph2(           int x, int y, int cx, int cy, double ExtRate,                   double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画２( 回転中心指定付き )
+extern	int			DrawRotaGraph3(           int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )
+extern	int			DrawRotaGraphFast(        int x, int y,                 float  ExRate,                    float  Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphFast2(       int x, int y, int cx, int cy, float  ExtRate,                   float  Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画２( 回転中心指定付き )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphFast3(       int x, int y, int cx, int cy, float  ExtRateX, float  ExtRateY, float  Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawModiGraph(            int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,               int GrHandle, int TransFlag ) ;																							// 画像の自由変形描画
+extern	int			DrawTurnGraph(            int x, int y,                                                                 int GrHandle, int TransFlag ) ;																							// 画像の左右反転描画
+extern	int			DrawReverseGraph(         int x, int y,                                                                 int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の反転描画
 
 extern	int			DrawGraphF(               float xf, float yf,                                                                       int GrHandle, int TransFlag ) ;															// 画像の描画( 座標指定が float 版 )
 extern	int			DrawExtendGraphF(         float x1f, float y1f, float x2f, float y2,                                                int GrHandle, int TransFlag ) ;															// 画像の拡大描画( 座標指定が float 版 )
-extern	int			DrawRotaGraphF(           float xf, float yf,                       double ExRate,                    double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画( 座標指定が float 版 )
-extern	int			DrawRotaGraph2F(          float xf, float yf, float cxf, float cyf, double ExtRate,                   double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画２( 回転中心指定付き )( 座標指定が float 版 )
-extern	int			DrawRotaGraph3F(          float xf, float yf, float cxf, float cyf, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )
-extern	int			DrawRotaGraphFastF(       float xf, float yf,                       float  ExRate,                    float  Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRotaGraphFast2F(      float xf, float yf, float cxf, float cyf, float  ExtRate,                   float  Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の回転描画２( 回転中心指定付き )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRotaGraphFast3F(      float xf, float yf, float cxf, float cyf, float  ExtRateX, float  ExtRateY, float  Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphF(           float xf, float yf,                       double ExRate,                    double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画( 座標指定が float 版 )
+extern	int			DrawRotaGraph2F(          float xf, float yf, float cxf, float cyf, double ExtRate,                   double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画２( 回転中心指定付き )( 座標指定が float 版 )
+extern	int			DrawRotaGraph3F(          float xf, float yf, float cxf, float cyf, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )
+extern	int			DrawRotaGraphFastF(       float xf, float yf,                       float  ExRate,                    float  Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphFast2F(      float xf, float yf, float cxf, float cyf, float  ExtRate,                   float  Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の回転描画２( 回転中心指定付き )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphFast3F(      float xf, float yf, float cxf, float cyf, float  ExtRateX, float  ExtRateY, float  Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ; 	// 画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
 extern	int			DrawModiGraphF(           float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4,           int GrHandle, int TransFlag ) ;															// 画像の自由変形描画( 座標指定が float 版 )
 extern	int			DrawTurnGraphF(           float xf, float yf,                                                                       int GrHandle, int TransFlag ) ;															// 画像の左右反転描画( 座標指定が float 版 )
-extern	int			DrawReverseGraphF(        float xf, float yf,                                                                       int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の反転描画( 座標指定が float 版 )
+extern	int			DrawReverseGraphF(        float xf, float yf,                                                                       int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の反転描画( 座標指定が float 版 )
 
 extern	int			DrawChipMap(              int Sx, int Sy, int XNum, int YNum, const int *MapData, int ChipTypeNum, int MapDataPitch, const int *ChipGrHandle, int TransFlag ) ;																											// チップ画像を使った２Ｄマップ描画
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
 extern	int			DrawChipMap(              int MapWidth, int MapHeight,        const int *MapData, int ChipTypeNum,                   const int *ChipGrHandle, int TransFlag, int MapDrawPointX, int MapDrawPointY, int MapDrawWidth, int MapDrawHeight, int ScreenX, int ScreenY ) ;	// チップ画像を使った２Ｄマップ描画
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			DrawChipMap2(             int MapWidth, int MapHeight,        const int *MapData, int ChipTypeNum,                   const int *ChipGrHandle, int TransFlag, int MapDrawPointX, int MapDrawPointY, int MapDrawWidth, int MapDrawHeight, int ScreenX, int ScreenY ) ;	// チップ画像を使った２Ｄマップ描画
 extern	int			DrawTile(                 int x1, int y1, int x2, int y2, int Tx, int Ty, double ExtRate, double Angle, int GrHandle, int TransFlag ) ;																																	// 画像を指定領域にタイル状に描画する
 
-extern	int			DrawRectGraph(            int DestX,  int DestY,                          int SrcX, int SrcY, int    Width, int    Height,                         int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを等倍描画
+extern	int			DrawRectGraph(            int DestX,  int DestY,                          int SrcX, int SrcY, int    Width, int    Height,                         int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを等倍描画
 extern	int			DrawRectExtendGraph(      int DestX1, int DestY1, int DestX2, int DestY2, int SrcX, int SrcY, int SrcWidth, int SrcHeight,                         int GraphHandle, int TransFlag ) ;																	// 画像の指定矩形部分のみを拡大描画
-extern	int			DrawRectRotaGraph(        int x, int y, int SrcX, int SrcY, int Width, int Height, double ExtRate, double Angle,                                   int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを回転描画
-extern	int			DrawRectRotaGraph2(       int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, double ExtRate,  double Angle,                  int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )
-extern	int			DrawRectRotaGraph3(       int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )
-extern	int			DrawRectRotaGraphFast(    int x, int y, int SrcX, int SrcY, int Width, int Height, float ExtRate, float Angle,                                     int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを回転描画( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRectRotaGraphFast2(   int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, float ExtRate,  float Angle,                    int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRectRotaGraphFast3(   int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, float ExtRateX, float ExtRateY, float Angle,    int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;				// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRectRotaGraph(        int x, int y, int SrcX, int SrcY, int Width, int Height, double ExtRate, double Angle,                                   int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを回転描画
+extern	int			DrawRectRotaGraph2(       int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, double ExtRate,  double Angle,                  int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )
+extern	int			DrawRectRotaGraph3(       int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )
+extern	int			DrawRectRotaGraphFast(    int x, int y, int SrcX, int SrcY, int Width, int Height, float ExtRate, float Angle,                                     int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを回転描画( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRectRotaGraphFast2(   int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, float ExtRate,  float Angle,                    int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRectRotaGraphFast3(   int x, int y, int SrcX, int SrcY, int Width, int Height, int cx, int cy, float ExtRateX, float ExtRateY, float Angle,    int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;				// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
 extern	int			DrawRectModiGraph(        int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, int SrcX, int SrcY, int Width, int Height,               int GraphHandle, int TransFlag ) ;																	// 画像の指定矩形部分のみを自由変形描画
 
-extern	int			DrawRectGraphF(           float DestX,  float DestY,                              int SrcX, int SrcY, int    Width, int    Height,                           int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを等倍描画( 座標指定が float 版 )
-extern	int			DrawRectExtendGraphF(     float DestX1, float DestY1, float DestX2, float DestY2, int SrcX, int SrcY, int SrcWidth, int SrcHeight,                           int GraphHandle, int TransFlag ) ;															// 画像の指定矩形部分のみを拡大描画( 座標指定が float 版 )
-extern	int			DrawRectRotaGraphF(       float x, float y, int SrcX, int SrcY, int Width, int Height,                       double ExtRate,                   double Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを回転描画( 座標指定が float 版 )
-extern	int			DrawRectRotaGraph2F(      float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, double ExtRate,                   double Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )( 座標指定が float 版 )
-extern	int			DrawRectRotaGraph3F(      float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, double ExtRateX, double ExtRateY, double Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )
-extern	int			DrawRectRotaGraphFastF(   float x, float y, int SrcX, int SrcY, int Width, int Height,                       float ExtRate,                    float  Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを回転描画( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRectRotaGraphFast2F(  float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, float ExtRate,                    float  Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRectRotaGraphFast3F(  float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, float ExtRateX,  float  ExtRateY, float  Angle, int GraphHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRectGraphF(           float DestX,  float DestY,                              int   SrcX, int   SrcY, int    Width, int    Height,                           int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを等倍描画( 座標指定が float 版 )
+extern	int			DrawRectGraphF2(          float DestX,  float DestY,                              float SrcX, float SrcY, float  Width, float  Height,                           int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを等倍描画( 座標指定が float 版( 画像内座標の指定も float 版 ) )
+extern	int			DrawRectExtendGraphF(     float DestX1, float DestY1, float DestX2, float DestY2, int   SrcX, int   SrcY, int SrcWidth, int SrcHeight,                           int GraphHandle, int TransFlag ) ;														// 画像の指定矩形部分のみを拡大描画( 座標指定が float 版 )
+extern	int			DrawRectExtendGraphF2(    float DestX1, float DestY1, float DestX2, float DestY2, float SrcX, float SrcY, float SrcWidth, float SrcHeight,                   int GraphHandle, int TransFlag ) ;															// 画像の指定矩形部分のみを拡大描画( 座標指定が float 版( 画像内座標の指定も float 版 ) )
+extern	int			DrawRectRotaGraphF(       float x, float y, int SrcX, int SrcY, int Width, int Height,                       double ExtRate,                   double Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを回転描画( 座標指定が float 版 )
+extern	int			DrawRectRotaGraph2F(      float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, double ExtRate,                   double Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )( 座標指定が float 版 )
+extern	int			DrawRectRotaGraph3F(      float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, double ExtRateX, double ExtRateY, double Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )
+extern	int			DrawRectRotaGraphFastF(   float x, float y, int SrcX, int SrcY, int Width, int Height,                       float ExtRate,                    float  Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを回転描画( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRectRotaGraphFast2F(  float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, float ExtRate,                    float  Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを回転描画２( 回転中心指定付き )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRectRotaGraphFast3F(  float x, float y, int SrcX, int SrcY, int Width, int Height, float cxf, float cyf, float ExtRateX,  float  ExtRateY, float  Angle, int GraphHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像の指定矩形部分のみを回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 座標指定が float 版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
 extern	int			DrawRectModiGraphF(       float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, int SrcX, int SrcY, int Width, int Height,         int GraphHandle, int TransFlag ) ;															// 画像の指定矩形部分のみを自由変形描画( 座標指定が float 版 )
 
-extern	int			DrawBlendGraph(           int x, int y, int GrHandle, int TransFlag,                 int BlendGraph, int BorderParam, int BorderRange ) ;									// ブレンド画像と合成して画像を等倍描画する
-extern	int			DrawBlendGraphPos(        int x, int y, int GrHandle, int TransFlag, int bx, int by, int BlendGraph, int BorderParam, int BorderRange ) ;									// ブレンド画像と合成して画像を等倍描画する( ブレンド画像の起点座標を指定する引数付き )
+extern	int			DrawBlendGraph(           int   x, int   y, int GrHandle, int TransFlag,                 int BlendGraph, int BorderParam, int BorderRange ) ;									// ブレンド画像と合成して画像を等倍描画する
+extern	int			DrawBlendGraphF(          float x, float y, int GrHandle, int TransFlag,                 int BlendGraph, int BorderParam, int BorderRange ) ;									// ブレンド画像と合成して画像を等倍描画する( 座標指定が float 版 )
+extern	int			DrawBlendGraphPos(        int   x, int   y, int GrHandle, int TransFlag, int bx, int by, int BlendGraph, int BorderParam, int BorderRange ) ;									// ブレンド画像と合成して画像を等倍描画する( ブレンド画像の起点座標を指定する引数付き )
 
-extern	int			DrawCircleGauge(          int CenterX, int CenterY, double Percent, int GrHandle, double StartPercent = 0.0 ) ;																// 円グラフ的な描画を行う( GrHandle の画像の上下左右の端は透過色にしておく必要があります )
+extern	int			DrawCircleGauge(          int   CenterX, int   CenterY, double Percent, int GrHandle, double StartPercent DEFAULTPARAM( = 0.0 ) , double Scale DEFAULTPARAM( = 1.0 ) , int ReverseX DEFAULTPARAM( = FALSE ) , int ReverseY DEFAULTPARAM( = FALSE ) ) ;										// 円グラフ的な描画を行う( GrHandle の画像の上下左右の端は透過色にしておく必要があります )
+extern	int			DrawCircleGaugeF(         float CenterX, float CenterY, double Percent, int GrHandle, double StartPercent DEFAULTPARAM( = 0.0 ) , double Scale DEFAULTPARAM( = 1.0 ) , int ReverseX DEFAULTPARAM( = FALSE ) , int ReverseY DEFAULTPARAM( = FALSE ) ) ;										// 円グラフ的な描画を行う( GrHandle の画像の上下左右の端は透過色にしておく必要があります )( 座標指定が float 版 )
 
 extern	int			DrawGraphToZBuffer(       int X, int Y,                                                                 int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して画像の等倍描画
 extern	int			DrawTurnGraphToZBuffer(   int x, int y,                                                                 int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して画像の左右反転描画
-extern	int			DrawReverseGraphToZBuffer( int x, int y,                                                                int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// Ｚバッファに対して画像の反転描画
+extern	int			DrawReverseGraphToZBuffer( int x, int y,                                                                int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// Ｚバッファに対して画像の反転描画
 extern	int			DrawExtendGraphToZBuffer( int x1, int y1, int x2, int y2,                                               int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して画像の拡大描画
-extern	int			DrawRotaGraphToZBuffer(   int x, int y, double ExRate, double Angle,                                    int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// Ｚバッファに対して画像の回転描画
-extern	int			DrawRotaGraph2ToZBuffer(  int x, int y, int cx, int cy, double ExtRate,                   double Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// Ｚバッファに対して画像の回転描画２( 回転中心指定付き )
-extern	int			DrawRotaGraph3ToZBuffer(  int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ; 	// Ｚバッファに対して画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )
-extern	int			DrawRotaGraphFastToZBuffer(  int x, int y, float ExRate, float Angle,                                   int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// Ｚバッファに対して画像の回転描画( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRotaGraphFast2ToZBuffer( int x, int y, int cx, int cy, float ExtRate,                  float Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;	// Ｚバッファに対して画像の回転描画２( 回転中心指定付き )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
-extern	int			DrawRotaGraphFast3ToZBuffer( int x, int y, int cx, int cy, float ExtRateX, float ExtRateY, float Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ; 	// Ｚバッファに対して画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphToZBuffer(   int x, int y, double ExRate, double Angle,                                    int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// Ｚバッファに対して画像の回転描画
+extern	int			DrawRotaGraph2ToZBuffer(  int x, int y, int cx, int cy, double ExtRate,                   double Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// Ｚバッファに対して画像の回転描画２( 回転中心指定付き )
+extern	int			DrawRotaGraph3ToZBuffer(  int x, int y, int cx, int cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ; 	// Ｚバッファに対して画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )
+extern	int			DrawRotaGraphFastToZBuffer(  int x, int y, float ExRate, float Angle,                                   int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// Ｚバッファに対して画像の回転描画( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphFast2ToZBuffer( int x, int y, int cx, int cy, float ExtRate,                  float Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;	// Ｚバッファに対して画像の回転描画２( 回転中心指定付き )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
+extern	int			DrawRotaGraphFast3ToZBuffer( int x, int y, int cx, int cy, float ExtRateX, float ExtRateY, float Angle, int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ , int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ; 	// Ｚバッファに対して画像の回転描画３( 回転中心指定付き＋縦横拡大率別指定版 )( 高速版、座標計算のアルゴリズムが簡略化されています、描画結果に不都合が無ければこちらの方が高速です )
 extern	int			DrawModiGraphToZBuffer(   int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,               int GrHandle, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して画像の自由変形描画
 extern	int			DrawBoxToZBuffer(         int x1, int y1, int x2, int y2,                                               int FillFlag, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して矩形の描画
 extern	int			DrawCircleToZBuffer(      int x, int y, int r,                                                          int FillFlag, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して円の描画
@@ -2718,20 +2981,28 @@ extern	int			DrawTriangleToZBuffer(    int x1, int y1, int x2, int y2, int x3, i
 extern	int			DrawQuadrangleToZBuffer(  int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,               int FillFlag, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して四角形を描画する
 extern	int			DrawRoundRectToZBuffer(   int x1, int y1, int x2, int y2, int rx, int ry,                               int FillFlag, int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;														// Ｚバッファに対して角の丸い四角形を描画する
 
-extern	int			DrawPolygon(                             const VERTEX    *VertexArray, int PolygonNum,                                                                                                       int GrHandle, int TransFlag, int UVScaling = FALSE ) ;		// ２Ｄポリゴンを描画する( Vertex:三角形を形成する頂点配列の先頭アドレス( 頂点の数はポリゴンの数×３ )  PolygonNum:描画するポリゴンの数  GrHandle:使用するグラフィックハンドル  TransFlag:透過色処理を行うかどうか( TRUE:行う  FALSE:行わない )  UVScaling:基本FALSEでOK )
+extern	int			DrawPolygon(                             const VERTEX    *VertexArray, int PolygonNum,                                                                                                       int GrHandle, int TransFlag, int UVScaling DEFAULTPARAM( = FALSE ) ) ;		// ２Ｄポリゴンを描画する( Vertex:三角形を形成する頂点配列の先頭アドレス( 頂点の数はポリゴンの数×３ )  PolygonNum:描画するポリゴンの数  GrHandle:使用するグラフィックハンドル  TransFlag:透過色処理を行うかどうか( TRUE:行う  FALSE:行わない )  UVScaling:基本FALSEでOK )
 extern	int			DrawPolygon2D(                           const VERTEX2D  *VertexArray, int PolygonNum,                                                                                                       int GrHandle, int TransFlag ) ;							// ２Ｄポリゴンを描画する
 extern	int			DrawPolygon3D(                           const VERTEX3D  *VertexArray, int PolygonNum,                                                                                                       int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する
 extern	int			DrawPolygonIndexed2D(                    const VERTEX2D  *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum,                                                      int GrHandle, int TransFlag ) ;							// ２Ｄポリゴンを描画する( 頂点インデックスを使用 )
+extern	int			DrawPolygon32bitIndexed2D(               const VERTEX2D  *VertexArray, int VertexNum, const unsigned int   *IndexArray, int PolygonNum,                                                      int GrHandle, int TransFlag ) ;							// ２Ｄポリゴンを描画する( 頂点インデックスを使用 )
 extern	int			DrawPolygonIndexed3D(                    const VERTEX3D  *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum,                                                      int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 頂点インデックスを使用 )
+extern	int			DrawPolygon32bitIndexed3D(               const VERTEX3D  *VertexArray, int VertexNum, const unsigned int   *IndexArray, int PolygonNum,                                                      int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 頂点インデックスを使用 )
 extern	int			DrawPolygonIndexed3DBase(                const VERTEX_3D *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum,   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 頂点インデックスを使用 )( 旧バージョン用 )
+extern	int			DrawPolygon32bitIndexed3DBase(           const VERTEX_3D *VertexArray, int VertexNum, const unsigned int   *IndexArray, int IndexNum,   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 頂点インデックスを使用 )( 旧バージョン用 )
 extern	int			DrawPolygon3DBase(                       const VERTEX_3D *VertexArray, int VertexNum,                                                   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 旧バージョン用 )
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
 extern	int			DrawPolygon3D(                           const VERTEX_3D *VertexArray, int PolygonNum,                                                                                                       int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 旧バージョン用 )
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			DrawPolygon3D2(                          const VERTEX_3D *VertexArray, int PolygonNum,                                                                                                       int GrHandle, int TransFlag ) ;							// ３Ｄポリゴンを描画する( 旧バージョン用 )
 
-extern	int			DrawPolygonBase(                         const VERTEX    *VertexArray, int VertexNum,                                                   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag, int UVScaling = FALSE ) ;		// ２Ｄプリミティブを描画する
+extern	int			DrawPolygonBase(                         const VERTEX    *VertexArray, int VertexNum,                                                   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag, int UVScaling DEFAULTPARAM( = FALSE ) ) ;		// ２Ｄプリミティブを描画する
 extern	int			DrawPrimitive2D(                         const VERTEX2D  *VertexArray, int VertexNum,                                                   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ２Ｄプリミティブを描画する
 extern	int			DrawPrimitive3D(                         const VERTEX3D  *VertexArray, int VertexNum,                                                   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ３Ｄプリミティブを描画する
 extern	int			DrawPrimitiveIndexed2D(                  const VERTEX2D  *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum,   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ２Ｄプリミティブを描画する(頂点インデックス使用)
+extern	int			DrawPrimitive32bitIndexed2D(             const VERTEX2D  *VertexArray, int VertexNum, const unsigned int   *IndexArray, int IndexNum,   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ２Ｄプリミティブを描画する(頂点インデックス使用)
 extern	int			DrawPrimitiveIndexed3D(                  const VERTEX3D  *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum,   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ３Ｄプリミティブを描画する(頂点インデックス使用)
+extern	int			DrawPrimitive32bitIndexed3D(             const VERTEX3D  *VertexArray, int VertexNum, const unsigned int   *IndexArray, int IndexNum,   int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int GrHandle, int TransFlag ) ;							// ３Ｄプリミティブを描画する(頂点インデックス使用)
 
 extern	int			DrawPolygon3D_UseVertexBuffer(           int VertexBufHandle,                                                                                                                                                               int GrHandle, int TransFlag ) ;		// 頂点バッファを使用して３Ｄポリゴンを描画する
 extern	int			DrawPrimitive3D_UseVertexBuffer(         int VertexBufHandle,                     int PrimitiveType  /* DX_PRIMTYPE_TRIANGLELIST 等 */,                                                                                     int GrHandle, int TransFlag ) ;		// 頂点バッファを使用して３Ｄプリミティブを描画する
@@ -2742,10 +3013,10 @@ extern	int			DrawPrimitiveIndexed3D_UseVertexBuffer2( int VertexBufHandle, int I
 
 extern	int			DrawGraph3D(                             float x, float y, float z,                                                                     int GrHandle, int TransFlag ) ;																// 画像の３Ｄ描画
 extern	int			DrawExtendGraph3D(                       float x, float y, float z, double ExRateX, double ExRateY,                                     int GrHandle, int TransFlag ) ;																// 画像の拡大３Ｄ描画
-extern	int			DrawRotaGraph3D(                         float x, float y, float z, double ExRate, double Angle,                                        int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;		// 画像の回転３Ｄ描画
-extern	int			DrawRota2Graph3D(                        float x, float y, float z, float cx, float cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;		// 画像の回転３Ｄ描画(回転中心指定型)
+extern	int			DrawRotaGraph3D(                         float x, float y, float z, double ExRate, double Angle,                                        int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;		// 画像の回転３Ｄ描画
+extern	int			DrawRota2Graph3D(                        float x, float y, float z, float cx, float cy, double ExtRateX, double ExtRateY, double Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;		// 画像の回転３Ｄ描画(回転中心指定型)
 extern	int			DrawModiBillboard3D(                     VECTOR Pos, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4,    int GrHandle, int TransFlag ) ;																// 画像の自由変形３Ｄ描画
-extern	int			DrawBillboard3D(                         VECTOR Pos, float cx, float cy, float Size, float Angle,                                       int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;		// ３Ｄ空間上に画像を描画
+extern	int			DrawBillboard3D(                         VECTOR Pos, float cx, float cy, float Size, float Angle,                                       int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;		// ３Ｄ空間上に画像を描画
 
 
 // 描画設定関係関数
@@ -2753,7 +3024,10 @@ extern	int			SetDrawMode(						int DrawMode ) ;												// 描画モードを
 extern	int			GetDrawMode(						void ) ;														// 描画モードを取得する
 extern	int			SetDrawBlendMode(					int BlendMode, int BlendParam ) ;								// 描画ブレンドモードを設定する
 extern	int			GetDrawBlendMode(					int *BlendMode, int *BlendParam ) ;								// 描画ブレンドモードを取得する
+extern	int			SetDrawCustomBlendMode(				int BlendEnable, int SrcBlendRGB /* DX_BLEND_SRC_COLOR 等 */, int DestBlendRGB /* DX_BLEND_SRC_COLOR 等 */, int BlendOpRGB /* DX_BLENDOP_ADD 等 */, int SrcBlendA /* DX_BLEND_SRC_COLOR 等 */, int DestBlendA /* DX_BLEND_SRC_COLOR 等 */, int BlendOpA /* DX_BLENDOP_ADD 等 */, int BlendParam ) ;		// カスタムブレンドモードを設定する
+extern	int			GetDrawCustomBlendMode(				int *BlendEnable, int *SrcBlendRGB, int *DestBlendRGB, int *BlendOpRGB, int *SrcBlendA, int *DestBlendA, int *BlendOpA, int *BlendParam ) ;																																								// カスタムブレンドモードを取得する
 extern	int			SetDrawAlphaTest(					int TestMode, int TestParam ) ;									// 描画時のアルファテストの設定を行う( TestMode:テストモード( DX_CMP_GREATER等 -1でデフォルト動作に戻す )  TestParam:描画アルファ値との比較に使用する値( 0～255 ) )
+extern	int			GetDrawAlphaTest(					int *TestMode, int *TestParam ) ;								// 描画時のアルファテストの設定を取得する( TestMode:テストモード( DX_CMP_GREATER等 -1でデフォルト動作に戻す )  TestParam:描画アルファ値との比較に使用する値( 0～255 ) )
 extern	int			SetBlendGraph(						int BlendGraph, int BorderParam, int BorderRange ) ;			// ( SetBlendGraphParam の BlendType = DX_BLENDGRAPHTYPE_WIPE の処理を行う旧関数 )描画処理時に描画する画像とブレンドするαチャンネル付き画像をセットする( BlendGraph を -1 でブレンド機能を無効 )
 extern	int			SetBlendGraphParam(					int BlendGraph, int BlendType, ... ) ;							// 描画処理時に描画する画像とブレンドする画像のブレンド設定を行う、BlendGraph を -1 にすれば設定を解除、その場合 BlendType とその後ろのパラメータは無視される
 //		int			SetBlendGraphParam(					int BlendGraph, int BlendType = DX_BLENDGRAPHTYPE_NORMAL, int Ratio = ( 0( ブレンド率０％ )～255( ブレンド率１００％ ) ) ) ;
@@ -2763,8 +3037,15 @@ extern	int			SetBlendGraphPosition(				int x, int y ) ;												// ブレン�
 extern	int			SetBlendGraphPositionMode(			int BlendGraphPositionMode /* DX_BLENDGRAPH_POSMODE_DRAWGRAPH など */ ) ;	// ブレンド画像の適応座標モードを設定する
 extern	int			SetDrawBright(						int RedBright, int GreenBright, int BlueBright ) ;				// 描画輝度を設定する
 extern	int			GetDrawBright(						int *Red, int *Green, int *Blue ) ;								// 描画輝度を取得する
-extern	int			SetIgnoreDrawGraphColor(			int EnableFlag ) ;												// 描画する画像のＲＧＢ成分を無視するかどうかを指定する( EnableFlag:この機能を使うかどうか( TRUE:使う  FALSE:使わない( デフォルト ) ) )
+extern	int			SetDrawAddColor(					int Red, int Green, int Blue ) ;								// 描画カラーに加算する色を設定する( Red, Green, Blue : 加算する色( 0 = 0%  255 = 100%  -255 = -100% ) ( マイナスの値で減算もできます ) )
+extern	int			GetDrawAddColor(					int *Red, int *Green, int *Blue ) ;								// 描画カラーに加算する色を取得する
+extern	int			SetWriteAlphaChannelFlag(			int Flag ) ;													// 描画先のアルファチャンネルの内容を書き換えるかを設定する( FALSE:書き換えない  TRUE:書き換える( デフォルト ) )
+extern	int			GetWriteAlphaChannelFlag(			void ) ;														// 描画先のアルファチャンネルの内容を書き換えるかを取得する( FALSE:書き換えない  TRUE:書き換える( デフォルト ) )
+extern	int			CheckSeparateAlphaBlendEnable(		void ) ;														// 描画先のアルファチャンネルの内容を書き換えないことができるかどうかを取得する( TRUE:書き換えないことができる  FALSE:書き換えないことができない )
+extern	int			SetIgnoreDrawGraphColor(			int EnableFlag ) ;												// 描画する画像のＲＧＢ成分を無視するかどうかを指定する( EnableFlag:この機能を使うかどうか( TRUE:使う  FALSE:使わない( デフォルト ) )
+extern	int			GetIgnoreDrawGraphColor(			void ) ;														// 描画する画像のＲＧＢ成分を無視するかどうかを取得する( 戻り値  この機能を使うかどうか( TRUE:使う  FALSE:使わない )
 extern	int			SetMaxAnisotropy(					int MaxAnisotropy ) ;											// 最大異方性値を設定する
+extern	int			GetMaxAnisotropy(					void ) ;														// 最大異方性値を取得する
 extern	int			SetUseLarge3DPositionSupport(		int UseFlag ) ;													// ３Ｄ処理で使用する座標値が 10000000.0f などの大きな値になっても描画の崩れを小さく抑える処理を使用するかどうかを設定する、DxLib_Init の呼び出し前でのみ使用可能( TRUE:描画の崩れを抑える処理を使用する( CPU負荷が上がります )　　FALSE:描画の崩れを抑える処理は使用しない( デフォルト ) )
 
 extern	int			SetUseZBufferFlag(					int Flag ) ;													// Ｚバッファを使用するかどうかを設定する( ２Ｄと３Ｄ描画に影響 )( TRUE:Ｚバッファを使用する  FALSE:Ｚバッファを使用しない( デフォルト ) )
@@ -2828,9 +3109,11 @@ extern	VECTOR_D	ConvScreenPosToWorldPos_ZLinearD(	VECTOR_D ScreenPos ) ;								
 extern	int			SetUseCullingFlag(					int Flag ) ;													// SetUseBackCulling の旧名称
 extern	int			SetUseBackCulling(					int Flag /* DX_CULLING_LEFT 等 */ ) ;							// ポリゴンカリングモードを設定する
 extern	int			GetUseBackCulling(					void ) ;														// ポリゴンカリングモードを取得する
+extern	int			SetUseRightHandClippingProcess(		int Flag ) ;													// 右手座標系のクリッピング処理を行うかを設定する( TRUE:右手座標系のクリッピング処理を行う  FALSE:左手座標系のクリッピング処理を行う( デフォルト ) )
+extern	int			GetUseRightHandClippingProcess(		void ) ;														// 右手座標系のクリッピング処理を行うかを取得する( TRUE:右手座標系のクリッピング処理を行う  FALSE:左手座標系のクリッピング処理を行う( デフォルト ) )
 
-extern	int			SetTextureAddressMode(				int Mode /* DX_TEXADDRESS_WRAP 等 */ , int Stage = -1 ) ;		// テクスチャアドレスモードを設定する
-extern	int			SetTextureAddressModeUV(			int ModeU, int ModeV, int Stage = -1 ) ;						// テクスチャアドレスモードを設定する( U と V を別々に設定する )
+extern	int			SetTextureAddressMode(				int Mode /* DX_TEXADDRESS_WRAP 等 */ , int Stage DEFAULTPARAM( = -1 ) ) ;	// テクスチャアドレスモードを設定する
+extern	int			SetTextureAddressModeUV(			int ModeU, int ModeV, int Stage DEFAULTPARAM( = -1 ) ) ;					// テクスチャアドレスモードを設定する( U と V を別々に設定する )
 extern	int			SetTextureAddressTransform(			float TransU, float TransV, float ScaleU, float ScaleV, float RotCenterU, float RotCenterV, float Rotate ) ;	// テクスチャ座標変換パラメータを設定する
 extern	int			SetTextureAddressTransformMatrix(	MATRIX Matrix ) ;												// テクスチャ座標変換行列を設定する
 extern	int			ResetTextureAddressTransform(		void ) ;														// テクスチャ座標変換設定をリセットする
@@ -2848,17 +3131,20 @@ extern	float		GetFogDensity(						void ) ;														// フォグの密度を
 
 
 // 画面関係関数
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
 extern	unsigned int	GetPixel(									int x, int y ) ;																// 指定座標の色を取得する
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	unsigned int	GetPixelDX(									int x, int y ) ;																// 指定座標の色を取得する
 extern	COLOR_F			GetPixelF(									int x, int y ) ;																// 指定座標の色を取得する( float型 )
-extern	int				SetBackgroundColor(							int Red,  int  Green, int  Blue ) ;												// メインウインドウの背景色を設定する( Red,Green,Blue:それぞれ ０～２５５ )
-extern	int				GetBackgroundColor(							int *Red, int *Green, int *Blue ) ;												// メインウインドウの背景色を取得する( Red,Green,Blue:それぞれ ０～２５５ )
-extern	int				GetDrawScreenGraph(							                             int x1, int y1, int x2, int y2,                       int GrHandle, int UseClientFlag = TRUE ) ;	// 描画先の画面から指定領域の画像情報をグラフィックハンドルに転送する
+extern	int				SetBackgroundColor(							int Red,  int  Green, int  Blue, int  Alpha DEFAULTPARAM( = 0 )    ) ;			// メインウインドウの背景色を設定する( Red,Green,Blue,Alpha:それぞれ ０～２５５ )
+extern	int				GetBackgroundColor(							int *Red, int *Green, int *Blue, int *Alpha DEFAULTPARAM( = NULL ) ) ;			// メインウインドウの背景色を取得する( Red,Green,Blue,Alpha:それぞれ ０～２５５ )
+extern	int				GetDrawScreenGraph(							                             int x1, int y1, int x2, int y2,                       int GrHandle, int UseClientFlag DEFAULTPARAM( = TRUE ) ) ;	// 描画先の画面から指定領域の画像情報をグラフィックハンドルに転送する
 extern	int				BltDrawValidGraph(							int TargetDrawValidGrHandle, int x1, int y1, int x2, int y2, int DestX, int DestY, int DestGrHandle ) ;							// SetDrawScreen で描画対象にできるグラフィックハンドルから指定領域の画像情報を別のグラフィックハンドルに転送する
 extern	int				ScreenFlip(									void ) ;																		// 裏画面と表画面の内容を交換する
 extern 	int				ScreenCopy(									void ) ;																		// 裏画面の内容を表画面に転送する
 extern	int				WaitVSync(									int SyncNum ) ;																	// 垂直同期信号を待つ
-extern	int				ClearDrawScreen(					        const RECT *ClearRect = NULL ) ;												// 画面をクリアする
-extern	int				ClearDrawScreenZBuffer(						const RECT *ClearRect = NULL ) ;												// 画面のＺバッファをクリアする
+extern	int				ClearDrawScreen(					        const RECT *ClearRect DEFAULTPARAM( = NULL ) ) ;												// 画面をクリアする
+extern	int				ClearDrawScreenZBuffer(						const RECT *ClearRect DEFAULTPARAM( = NULL ) ) ;												// 画面のＺバッファをクリアする
 extern	int				ClsDrawScreen(								void ) ;																		// ClearDrawScreenの旧名称
 extern	int				SetDrawScreen(								int DrawScreen ) ;																// 描画先画面を設定する( MakeScreen で作成したグラフィックハンドルも渡すことができます )
 extern	int				GetDrawScreen(								void ) ;																		// 描画先画面を取得する
@@ -2866,10 +3152,12 @@ extern	int				GetActiveGraph(								void ) ;																		// GetDrawScreen 
 extern	int				SetUseSetDrawScreenSettingReset(			int UseFlag ) ;																	// SetDrawScreen を実行した際にカメラや描画範囲の設定をリセットするかを設定する( UseFlag  TRUE:リセットする( デフォルト )  FALSE:リセットしない )
 extern	int				GetUseSetDrawScreenSettingReset(			void ) ;																		// SetDrawScreen を実行した際にカメラや描画範囲の設定をリセットするかを取得する
 extern	int				SetDrawZBuffer(								int DrawScreen ) ;																// 描画先Ｚバッファのセット( DrawScreen 付属のＺバッファを描画先Ｚバッファにする、DrawScreen を -1 にするとデフォルトの描画先Ｚバッファに戻る )
-extern	int				SetGraphMode(								int ScreenSizeX, int ScreenSizeY, int ColorBitDepth, int RefreshRate = 60 ) ;	// 画面モードを設定する
+extern	int				SetGraphMode(								int ScreenSizeX, int ScreenSizeY, int ColorBitDepth, int RefreshRate DEFAULTPARAM( = 60 ) ) ;	// 画面モードを設定する
+extern	int				SetUserScreenImage(							void *Image, int PixelFormat /* DX_USER_SCREEN_PIXEL_FORMAT_R5G6B5 等 */ ) ;	// 画面のメモリイメージをセットする( DxLib_Init の前で呼ぶ必要がある( DxLib_Init の前に一度でも呼んでいれば、DxLib_Init 後は Image のアドレスのみの変更目的で呼ぶことは可能 )、PixelFormat に DX_USER_SCREEN_PIXEL_FORMAT_R5G6B5 又は DX_USER_SCREEN_PIXEL_FORMAT_X8R8G8B8 の二つ以外を指定した場合はＤＸライブラリの描画関数は一切使用できなくなります )
 extern	int				SetFullScreenResolutionMode(				int ResolutionMode /* DX_FSRESOLUTIONMODE_NATIVE 等 */ ) ;						// フルスクリーン解像度モードを設定する
 extern	int				GetFullScreenResolutionMode(				int *ResolutionMode, int *UseResolutionMode ) ;									// フルスクリーン解像度モードを取得する( UseResolutionMode は実際に使用されている解像度モード( 例えば DX_FSRESOLUTIONMODE_NATIVE を指定していてもモニタが指定の解像度に対応していない場合は UseResolutionMode が DX_FSRESOLUTIONMODE_DESKTOP や DX_FSRESOLUTIONMODE_MAXIMUM になります ) )
-extern	int				SetFullScreenScalingMode(					int ScalingMode /* DX_FSSCALINGMODE_NEAREST 等 */ , int FitScaling = FALSE ) ;	// フルスクリーンモード時の画面拡大モードを設定する
+extern	int				GetUseFullScreenResolutionMode(				void ) ;																		// フルスクリーン解像度モードを取得する( GetFullScreenResolutionMode の UseResolutionMode で取得できる値を返す関数 )
+extern	int				SetFullScreenScalingMode(					int ScalingMode /* DX_FSSCALINGMODE_NEAREST 等 */ , int FitScaling DEFAULTPARAM( = FALSE ) ) ;	// フルスクリーンモード時の画面拡大モードを設定する
 extern	int				SetEmulation320x240(						int Flag ) ;																	// ６４０ｘ４８０の画面で３２０ｘ２４０の画面解像度にするかどうかを設定する、６４０ｘ４８０以外の解像度では無効( TRUE:有効  FALSE:無効 )
 extern	int				SetZBufferSize(								int ZBufferSizeX, int ZBufferSizeY ) ;											// 画面用のＺバッファのサイズを設定する
 extern	int				SetZBufferBitDepth(							int BitDepth ) ;																// 画面用のＺバッファのビット深度を設定する( 16 or 24 or 32 )
@@ -2883,12 +3171,14 @@ extern	int				GetDrawScreenSize(							int *XBuf, int *YBuf ) ;														// 
 extern	int				GetScreenBitDepth(							void ) ;																		// 画面のカラービット数を取得する
 extern	int				GetColorBitDepth(							void ) ;																		// GetScreenBitDepth の旧名称
 extern	int				GetChangeDisplayFlag(						void ) ;																		// 画面モードが変更されているかどうかを取得する
-extern	int				GetVideoMemorySize(							int *AllSize, int *FreeSize ) ;													// ( 現在正常に動作しません )ビデオメモリの容量を得る
+extern	int				GetVideoMemorySize(							int *AllSize, int *FreeSize ) ;													// ビデオメモリの容量を得る
+extern	int				GetVideoMemorySizeEx(						ULONGLONG *TotalSize, ULONGLONG *UseSize ) ;									// ビデオメモリの容量を得る( 64bit版 )
 extern	int				GetRefreshRate(								void ) ;																		// 現在の画面のリフレッシュレートを取得する
 extern	int				GetDisplayNum(								void ) ;																		// ディスプレイの数を取得
-extern	int				GetDisplayModeNum(							int DisplayIndex = 0 ) ;														// 変更可能なディスプレイモードの数を取得する
-extern	DISPLAYMODEDATA	GetDisplayMode(								int ModeIndex, int DisplayIndex = 0 ) ;											// 変更可能なディスプレイモードの情報を取得する( ModeIndex は 0 ～ GetDisplayModeNum の戻り値-1 )
-extern	int				GetDisplayMaxResolution(					int *SizeX, int *SizeY, int DisplayIndex = 0 ) ;								// ディスプレイの最大解像度を取得する
+extern	int				GetDisplayInfo(								int DisplayIndex, int *DesktopRectX, int *DesktopRectY, int *DesktopSizeX, int *DesktopSizeY, int *IsPrimary ) ;	// ディスプレイのデスクトップ上での矩形位置を取得する
+extern	int				GetDisplayModeNum(							int DisplayIndex DEFAULTPARAM( = 0 ) ) ;										// 変更可能なディスプレイモードの数を取得する
+extern	DISPLAYMODEDATA	GetDisplayMode(								int ModeIndex, int DisplayIndex DEFAULTPARAM( = 0 ) ) ;							// 変更可能なディスプレイモードの情報を取得する( ModeIndex は 0 ～ GetDisplayModeNum の戻り値-1 )
+extern	int				GetDisplayMaxResolution(					int *SizeX, int *SizeY, int DisplayIndex DEFAULTPARAM( = 0 ) ) ;				// ディスプレイの最大解像度を取得する
 extern	const COLORDATA* GetDispColorData(							void ) ;																		// ディスプレイのカラーデータアドレスを取得する
 extern	int				GetMultiDrawScreenNum(						void ) ;																		// 同時に描画を行うことができる画面の数を取得する
 extern	int				GetDrawFloatCoordType(						void ) ;																		// DrawGraphF 等の浮動小数点値で座標を指定する関数における座標タイプを取得する( 戻り値 : DX_DRAWFLOATCOORDTYPE_DIRECT3D9 など )
@@ -2923,30 +3213,30 @@ extern	float		GetFPS(										void ) ;										// フレームレート( １�
 // 描画先画面保存関数
 // Jpeg_Quality         = 0:低画質～100:高画質
 // Png_CompressionLevel = 0:無圧縮～  9:最高圧縮
-extern	int			SaveDrawScreen(                 int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int SaveType = DX_IMAGESAVETYPE_BMP , int Jpeg_Quality = 80 , int Jpeg_Sample2x1 = TRUE , int Png_CompressionLevel = -1 ) ;		// 現在描画対象になっている画面をファイルで保存する
-extern	int			SaveDrawScreenWithStrLen(       int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int SaveType = DX_IMAGESAVETYPE_BMP , int Jpeg_Quality = 80 , int Jpeg_Sample2x1 = TRUE , int Png_CompressionLevel = -1 ) ;		// 現在描画対象になっている画面をファイルで保存する
+extern	int			SaveDrawScreen(                 int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int SaveType DEFAULTPARAM( = DX_IMAGESAVETYPE_BMP ) , int Jpeg_Quality DEFAULTPARAM( = 80 ) , int Jpeg_Sample2x1 DEFAULTPARAM( = TRUE ) , int Png_CompressionLevel DEFAULTPARAM( = -1 ) ) ;	// 現在描画対象になっている画面をファイルで保存する
+extern	int			SaveDrawScreenWithStrLen(       int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int SaveType DEFAULTPARAM( = DX_IMAGESAVETYPE_BMP ) , int Jpeg_Quality DEFAULTPARAM( = 80 ) , int Jpeg_Sample2x1 DEFAULTPARAM( = TRUE ) , int Png_CompressionLevel DEFAULTPARAM( = -1 ) ) ;	// 現在描画対象になっている画面をファイルで保存する
 extern	int			SaveDrawScreenToBMP(            int x1, int y1, int x2, int y2, const TCHAR *FileName                        ) ;																																// 現在描画対象になっている画面をＢＭＰ形式で保存する
 extern	int			SaveDrawScreenToBMPWithStrLen(  int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength ) ;																																// 現在描画対象になっている画面をＢＭＰ形式で保存する
 extern	int			SaveDrawScreenToDDS(            int x1, int y1, int x2, int y2, const TCHAR *FileName                        ) ;																																// 現在描画対象になっている画面をＤＤＳ形式で保存する
 extern	int			SaveDrawScreenToDDSWithStrLen(  int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength ) ;																																// 現在描画対象になっている画面をＤＤＳ形式で保存する
-extern	int			SaveDrawScreenToJPEG(           int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int Quality = 80 , int Sample2x1 = TRUE ) ;																						// 現在描画対象になっている画面をＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
-extern	int			SaveDrawScreenToJPEGWithStrLen( int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int Quality = 80 , int Sample2x1 = TRUE ) ;																						// 現在描画対象になっている画面をＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
-extern	int			SaveDrawScreenToPNG(            int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int CompressionLevel = -1 ) ;																										// 現在描画対象になっている画面をＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
-extern	int			SaveDrawScreenToPNGWithStrLen(  int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int CompressionLevel = -1 ) ;																										// 現在描画対象になっている画面をＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
+extern	int			SaveDrawScreenToJPEG(           int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int Quality DEFAULTPARAM( = 80 ) , int Sample2x1 DEFAULTPARAM( = TRUE ) ) ;																						// 現在描画対象になっている画面をＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
+extern	int			SaveDrawScreenToJPEGWithStrLen( int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int Quality DEFAULTPARAM( = 80 ) , int Sample2x1 DEFAULTPARAM( = TRUE ) ) ;																						// 現在描画対象になっている画面をＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
+extern	int			SaveDrawScreenToPNG(            int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int CompressionLevel DEFAULTPARAM( = -1 ) ) ;																						// 現在描画対象になっている画面をＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
+extern	int			SaveDrawScreenToPNGWithStrLen(  int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int CompressionLevel DEFAULTPARAM( = -1 ) ) ;																						// 現在描画対象になっている画面をＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
 
 // 描画対象にできるグラフィックハンドル保存関数
 // Jpeg_Quality         = 0:低画質～100:高画質
 // Png_CompressionLevel = 0:無圧縮～  9:最高圧縮
-extern	int			SaveDrawValidGraph(                 int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int SaveType = DX_IMAGESAVETYPE_BMP , int Jpeg_Quality = 80 , int Jpeg_Sample2x1 = TRUE , int Png_CompressionLevel = -1 ) ;		// 描画対象にできるグラフィックハンドルをファイルで保存する
-extern	int			SaveDrawValidGraphWithStrLen(       int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int SaveType = DX_IMAGESAVETYPE_BMP , int Jpeg_Quality = 80 , int Jpeg_Sample2x1 = TRUE , int Png_CompressionLevel = -1 ) ;		// 描画対象にできるグラフィックハンドルをファイルで保存する
+extern	int			SaveDrawValidGraph(                 int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int SaveType DEFAULTPARAM( = DX_IMAGESAVETYPE_BMP ) , int Jpeg_Quality DEFAULTPARAM( = 80 ) , int Jpeg_Sample2x1 DEFAULTPARAM( = TRUE ) , int Png_CompressionLevel DEFAULTPARAM( = -1 ) ) ;		// 描画対象にできるグラフィックハンドルをファイルで保存する
+extern	int			SaveDrawValidGraphWithStrLen(       int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int SaveType DEFAULTPARAM( = DX_IMAGESAVETYPE_BMP ) , int Jpeg_Quality DEFAULTPARAM( = 80 ) , int Jpeg_Sample2x1 DEFAULTPARAM( = TRUE ) , int Png_CompressionLevel DEFAULTPARAM( = -1 ) ) ;		// 描画対象にできるグラフィックハンドルをファイルで保存する
 extern	int			SaveDrawValidGraphToBMP(            int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName                        ) ;																																// 描画対象にできるグラフィックハンドルをＢＭＰ形式で保存する
 extern	int			SaveDrawValidGraphToBMPWithStrLen(  int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength ) ;																																// 描画対象にできるグラフィックハンドルをＢＭＰ形式で保存する
 extern	int			SaveDrawValidGraphToDDS(            int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName                        ) ;																																// 描画対象にできるグラフィックハンドルをＤＤＳ形式で保存する
 extern	int			SaveDrawValidGraphToDDSWithStrLen(  int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength ) ;																																// 描画対象にできるグラフィックハンドルをＤＤＳ形式で保存する
-extern	int			SaveDrawValidGraphToJPEG(           int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int Quality = 80 , int Sample2x1 = TRUE ) ;																						// 描画対象にできるグラフィックハンドルをＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
-extern	int			SaveDrawValidGraphToJPEGWithStrLen( int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int Quality = 80 , int Sample2x1 = TRUE ) ;																						// 描画対象にできるグラフィックハンドルをＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
-extern	int			SaveDrawValidGraphToPNG(            int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int CompressionLevel = -1 ) ;																									// 描画対象にできるグラフィックハンドルをＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
-extern	int			SaveDrawValidGraphToPNGWithStrLen(  int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int CompressionLevel = -1 ) ;																									// 描画対象にできるグラフィックハンドルをＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
+extern	int			SaveDrawValidGraphToJPEG(           int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int Quality DEFAULTPARAM( = 80 ) , int Sample2x1 DEFAULTPARAM( = TRUE ) ) ;																						// 描画対象にできるグラフィックハンドルをＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
+extern	int			SaveDrawValidGraphToJPEGWithStrLen( int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int Quality DEFAULTPARAM( = 80 ) , int Sample2x1 DEFAULTPARAM( = TRUE ) ) ;																						// 描画対象にできるグラフィックハンドルをＪＰＥＧ形式で保存する Quality = 画質、値が大きいほど低圧縮高画質,0～100 
+extern	int			SaveDrawValidGraphToPNG(            int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName,                        int CompressionLevel DEFAULTPARAM( = -1 ) ) ;																					// 描画対象にできるグラフィックハンドルをＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
+extern	int			SaveDrawValidGraphToPNGWithStrLen(  int GrHandle, int x1, int y1, int x2, int y2, const TCHAR *FileName, size_t FileNameLength, int CompressionLevel DEFAULTPARAM( = -1 ) ) ;																					// 描画対象にできるグラフィックハンドルをＰＮＧ形式で保存する CompressionLevel = 圧縮率、値が大きいほど高圧縮率高負荷、０は無圧縮,0～9
 
 #endif // DX_NON_SAVEFUNCTION
 
@@ -2955,24 +3245,31 @@ extern	int			CreateVertexBuffer(		int VertexNum, int VertexType /* DX_VERTEX_TYP
 extern	int			DeleteVertexBuffer(		int VertexBufHandle ) ;																	// 頂点バッファを削除する
 extern	int			InitVertexBuffer(		void ) ;																				// すべての頂点バッファを削除する
 extern	int			SetVertexBufferData(	int SetIndex, const void *VertexArray, int VertexNum, int VertexBufHandle ) ;			// 頂点バッファに頂点データを転送する
+extern	void *		GetBufferVertexBuffer(	int VertexBufHandle ) ;																	// 頂点バッファハンドルの頂点バッファのアドレスを取得する
+extern	int			UpdateVertexBuffer(		int VertexBufHandle, int UpdateStartIndex, int UpdateVertexNum ) ;						// 頂点バッファハンドルの頂点バッファへの変更を適用する( GetBufferVertexBuffer で取得したバッファへの変更を反映する )
 extern	int			CreateIndexBuffer(		int IndexNum, int IndexType /* DX_INDEX_TYPE_16BIT 等 */  ) ;							// インデックスバッファを作成する( -1:エラー　0以上：インデックスバッファハンドル )
 extern	int			DeleteIndexBuffer(		int IndexBufHandle ) ;																	// インデックスバッファを削除する
 extern	int			InitIndexBuffer(		void ) ;																				// すべてのインデックスバッファを削除する
 extern	int			SetIndexBufferData(		int SetIndex, const void *IndexArray, int IndexNum, int IndexBufHandle ) ;				// インデックスバッファにインデックスデータを転送する
+extern	void *		GetBufferIndexBuffer(	int IndexBufHandle ) ;																	// インデックスバッファハンドルのインデックスバッファのアドレスを取得する
+extern	int			UpdateIndexBuffer(		int IndexBufHandle, int UpdateStartIndex, int UpdateIndexNum ) ;						// インデックスバッファハンドルのインデックスバッファへの変更を適用する( GetBufferIndexBuffer で取得したバッファへの変更を反映する )
 extern	int			GetMaxPrimitiveCount(	void ) ;																				// グラフィックスデバイスが対応している一度に描画できるプリミティブの最大数を取得する
 extern	int			GetMaxVertexIndex(		void ) ;																				// グラフィックスデバイスが対応している一度に使用することのできる最大頂点数を取得する
 
 // シェーダー関係関数
-extern	int			GetValidShaderVersion(		void ) ;												// 使用できるシェーダーのバージョンを取得する( 0=使えない  200=シェーダーモデル２．０が使用可能  300=シェーダーモデル３．０が使用可能 )
+extern	int			GetValidShaderVersion(			void ) ;												// 使用できるシェーダーのバージョンを取得する( 0=使えない  200=シェーダーモデル２．０が使用可能  300=シェーダーモデル３．０が使用可能 )
 
-extern	int			LoadVertexShader(			const TCHAR *FileName                        ) ;		// 頂点シェーダーバイナリをファイルから読み込み頂点シェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
-extern	int			LoadVertexShaderWithStrLen(	const TCHAR *FileName, size_t FileNameLength ) ;		// 頂点シェーダーバイナリをファイルから読み込み頂点シェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
-extern	int			LoadPixelShader(			const TCHAR *FileName                        ) ;		// ピクセルシェーダーバイナリをファイルから読み込みピクセルシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
-extern	int			LoadPixelShaderWithStrLen(	const TCHAR *FileName, size_t FileNameLength ) ;		// ピクセルシェーダーバイナリをファイルから読み込みピクセルシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
-extern	int			LoadVertexShaderFromMem(	const void *ImageAddress, int ImageSize ) ;				// メモリに読み込まれた頂点シェーダーバイナリから頂点シェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
-extern	int			LoadPixelShaderFromMem(		const void *ImageAddress, int ImageSize ) ;				// メモリに読み込まれたピクセルシェーダーバイナリからピクセルシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
-extern	int			DeleteShader(				int ShaderHandle ) ;									// シェーダーハンドルの削除( 頂点シェーダー・ピクセルシェーダー共通 )
-extern	int			InitShader(					void ) ;												// シェーダーハンドルを全て削除する( 頂点シェーダーハンドル・ピクセルシェーダーハンドルどちらもすべて削除 )
+extern	int			LoadVertexShader(				const TCHAR *FileName                        ) ;		// 頂点シェーダーバイナリをファイルから読み込み頂点シェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadVertexShaderWithStrLen(		const TCHAR *FileName, size_t FileNameLength ) ;		// 頂点シェーダーバイナリをファイルから読み込み頂点シェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadGeometryShader(				const TCHAR *FileName                        ) ;		// ジオメトリシェーダーバイナリをファイルから読み込みジオメトリシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadGeometryShaderWithStrLen(	const TCHAR *FileName, size_t FileNameLength ) ;		// ジオメトリシェーダーバイナリをファイルから読み込みジオメトリシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadPixelShader(				const TCHAR *FileName                        ) ;		// ピクセルシェーダーバイナリをファイルから読み込みピクセルシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadPixelShaderWithStrLen(		const TCHAR *FileName, size_t FileNameLength ) ;		// ピクセルシェーダーバイナリをファイルから読み込みピクセルシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadVertexShaderFromMem(		const void *ImageAddress, int ImageSize ) ;				// メモリに読み込まれた頂点シェーダーバイナリから頂点シェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadGeometryShaderFromMem(		const void *ImageAddress, int ImageSize ) ;				// メモリに読み込まれたジオメトリシェーダーバイナリからジオメトリシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			LoadPixelShaderFromMem(			const void *ImageAddress, int ImageSize ) ;				// メモリに読み込まれたピクセルシェーダーバイナリからピクセルシェーダーハンドルを作成する( 戻り値 -1:エラー  -1以外:シェーダーハンドル )
+extern	int			DeleteShader(					int ShaderHandle ) ;									// シェーダーハンドルの削除( 頂点シェーダー・ピクセルシェーダー共通 )
+extern	int			InitShader(						void ) ;												// シェーダーハンドルを全て削除する( 頂点シェーダーハンドル・ピクセルシェーダーハンドルどちらもすべて削除 )
 
 extern	int			GetConstIndexToShader(                     const TCHAR *ConstantName,                            int ShaderHandle ) ;	// 指定の名前を持つ定数が使用するシェーダー定数の番号を取得する
 extern	int			GetConstIndexToShaderWithStrLen(           const TCHAR *ConstantName, size_t ConstantNameLength, int ShaderHandle ) ;	// 指定の名前を持つ定数が使用するシェーダー定数の番号を取得する
@@ -3016,28 +3313,34 @@ extern	int			ResetPSConstF(        int ConstantIndex, int ParamNum ) ;							// 
 extern	int			ResetPSConstI(        int ConstantIndex, int ParamNum ) ;							// ピクセルシェーダーの int   型定数の設定をリセットする
 extern	int			ResetPSConstB(        int ConstantIndex, int ParamNum ) ;							// ピクセルシェーダーの BOOL  型定数の設定をリセットする
 
-extern	int			SetRenderTargetToShader( int TargetIndex, int DrawScreen, int SurfaceIndex = 0 , int MipLevel = 0 ) ;	// シェーダーを使用した描画での描画先を設定する( DrawScreen に -1 を渡すと無効化 )
+extern	int			SetRenderTargetToShader( int TargetIndex, int DrawScreen, int SurfaceIndex DEFAULTPARAM( = 0 ) , int MipLevel DEFAULTPARAM( = 0 ) ) ;	// シェーダーを使用した描画での描画先を設定する( DrawScreen に -1 を渡すと無効化 )
 extern	int			SetUseTextureToShader(   int StageIndex, int GraphHandle ) ;						// シェーダーを使用した描画で使用するグラフィックハンドルを設定する
 extern	int			SetUseVertexShader(      int ShaderHandle ) ;										// シェーダーを使用した描画に使用する頂点シェーダーを設定する( -1を渡すと解除 )
+extern	int			SetUseGeometryShader(    int ShaderHandle ) ;										// シェーダーを使用した描画に使用するジオメトリシェーダーを設定する( -1を渡すと解除 )
 extern	int			SetUsePixelShader(       int ShaderHandle ) ;										// シェーダーを使用した描画に使用するピクセルシェーダーを設定する( -1を渡すと解除 )
 
-extern	int			CalcPolygonBinormalAndTangentsToShader(        VERTEX3DSHADER *VertexArray, int PolygonNum ) ;														// ポリゴンの頂点の接線と従法線をＵＶ座標から計算してセットする
-extern	int			CalcPolygonIndexedBinormalAndTangentsToShader( VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum ) ;		// ポリゴンの頂点の接線と従法線をＵＶ座標から計算してセットする( 頂点インデックスを使用する )
+extern	int			CalcPolygonBinormalAndTangentsToShader(             VERTEX3DSHADER *VertexArray, int PolygonNum ) ;														// ポリゴンの頂点の接線と従法線をＵＶ座標から計算してセットする
+extern	int			CalcPolygonIndexedBinormalAndTangentsToShader(      VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum ) ;	// ポリゴンの頂点の接線と従法線をＵＶ座標から計算してセットする( 頂点インデックスを使用する )
+extern	int			CalcPolygon32bitIndexedBinormalAndTangentsToShader( VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned int   *IndexArray, int PolygonNum ) ;	// ポリゴンの頂点の接線と従法線をＵＶ座標から計算してセットする( 頂点インデックスを使用する )
 
-extern	int			DrawBillboard3DToShader( VECTOR Pos, float cx, float cy, float Size, float Angle, int GrHandle, int TransFlag, int ReverseXFlag = FALSE , int ReverseYFlag = FALSE ) ;							// シェーダーを使ってビルボードを描画する
-extern	int			DrawPolygon2DToShader(          const VERTEX2DSHADER *VertexArray, int PolygonNum ) ;																											// シェーダーを使って２Ｄポリゴンを描画する
-extern	int			DrawPolygon3DToShader(          const VERTEX3DSHADER *VertexArray, int PolygonNum ) ;																											// シェーダーを使って３Ｄポリゴンを描画する
-extern	int			DrawPolygonIndexed2DToShader(   const VERTEX2DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum ) ;															// シェーダーを使って２Ｄポリゴンを描画する( 頂点インデックスを使用する )
-extern	int			DrawPolygonIndexed3DToShader(   const VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum ) ;															// シェーダーを使って３Ｄポリゴンを描画する( 頂点インデックスを使用する )
-extern	int			DrawPrimitive2DToShader(        const VERTEX2DSHADER *VertexArray, int VertexNum,                                                 int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って２Ｄプリミティブを描画する
-extern	int			DrawPrimitive3DToShader(        const VERTEX3DSHADER *VertexArray, int VertexNum,                                                 int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って３Ｄプリミティブを描画する
-extern	int			DrawPrimitiveIndexed2DToShader( const VERTEX2DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って２Ｄプリミティブを描画する( 頂点インデックスを使用する )
-extern	int			DrawPrimitiveIndexed3DToShader( const VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って３Ｄプリミティブを描画する( 頂点インデックスを使用する )
-extern	int			DrawPolygon3DToShader_UseVertexBuffer(           int VertexBufHandle ) ;																														// シェーダーを使って３Ｄポリゴンを描画する( 頂点バッファ使用版 )
-extern	int			DrawPolygonIndexed3DToShader_UseVertexBuffer(    int VertexBufHandle, int IndexBufHandle ) ;																									// シェーダーを使って３Ｄポリゴンを描画する( 頂点バッファとインデックスバッファ使用版 )
-extern	int			DrawPrimitive3DToShader_UseVertexBuffer(         int VertexBufHandle,                     int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;												// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファ使用版 )
-extern	int			DrawPrimitive3DToShader_UseVertexBuffer2(        int VertexBufHandle,                     int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int StartVertex, int UseVertexNum ) ;			// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファ使用版 )
-extern	int			DrawPrimitiveIndexed3DToShader_UseVertexBuffer(  int VertexBufHandle, int IndexBufHandle, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;												// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファとインデックスバッファ使用版 )
+extern	int			DrawBillboard3DToShader( VECTOR Pos, float cx, float cy, float Size, float Angle, int GrHandle, int TransFlag, int ReverseXFlag DEFAULTPARAM( = FALSE ) , int ReverseYFlag DEFAULTPARAM( = FALSE ) ) ;							// シェーダーを使ってビルボードを描画する
+extern	int			DrawPolygon2DToShader(               const VERTEX2DSHADER *VertexArray, int PolygonNum ) ;																											// シェーダーを使って２Ｄポリゴンを描画する
+extern	int			DrawPolygon3DToShader(               const VERTEX3DSHADER *VertexArray, int PolygonNum ) ;																											// シェーダーを使って３Ｄポリゴンを描画する
+extern	int			DrawPolygonIndexed2DToShader(        const VERTEX2DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum ) ;															// シェーダーを使って２Ｄポリゴンを描画する( 頂点インデックスを使用する )
+extern	int			DrawPolygon32bitIndexed2DToShader(   const VERTEX2DSHADER *VertexArray, int VertexNum, const unsigned int   *IndexArray, int PolygonNum ) ;															// シェーダーを使って２Ｄポリゴンを描画する( 頂点インデックスを使用する )
+extern	int			DrawPolygonIndexed3DToShader(        const VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int PolygonNum ) ;															// シェーダーを使って３Ｄポリゴンを描画する( 頂点インデックスを使用する )
+extern	int			DrawPolygon32bitIndexed3DToShader(   const VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned int   *IndexArray, int PolygonNum ) ;															// シェーダーを使って３Ｄポリゴンを描画する( 頂点インデックスを使用する )
+extern	int			DrawPrimitive2DToShader(             const VERTEX2DSHADER *VertexArray, int VertexNum,                                                 int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って２Ｄプリミティブを描画する
+extern	int			DrawPrimitive3DToShader(             const VERTEX3DSHADER *VertexArray, int VertexNum,                                                 int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って３Ｄプリミティブを描画する
+extern	int			DrawPrimitiveIndexed2DToShader(      const VERTEX2DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って２Ｄプリミティブを描画する( 頂点インデックスを使用する )
+extern	int			DrawPrimitive32bitIndexed2DToShader( const VERTEX2DSHADER *VertexArray, int VertexNum, const unsigned int   *IndexArray, int IndexNum, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って２Ｄプリミティブを描画する( 頂点インデックスを使用する )
+extern	int			DrawPrimitiveIndexed3DToShader(      const VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned short *IndexArray, int IndexNum, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って３Ｄプリミティブを描画する( 頂点インデックスを使用する )
+extern	int			DrawPrimitive32bitIndexed3DToShader( const VERTEX3DSHADER *VertexArray, int VertexNum, const unsigned int   *IndexArray, int IndexNum, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;		// シェーダーを使って３Ｄプリミティブを描画する( 頂点インデックスを使用する )
+extern	int			DrawPolygon3DToShader_UseVertexBuffer(           int VertexBufHandle ) ;																															// シェーダーを使って３Ｄポリゴンを描画する( 頂点バッファ使用版 )
+extern	int			DrawPolygonIndexed3DToShader_UseVertexBuffer(    int VertexBufHandle, int IndexBufHandle ) ;																										// シェーダーを使って３Ｄポリゴンを描画する( 頂点バッファとインデックスバッファ使用版 )
+extern	int			DrawPrimitive3DToShader_UseVertexBuffer(         int VertexBufHandle,                     int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;													// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファ使用版 )
+extern	int			DrawPrimitive3DToShader_UseVertexBuffer2(        int VertexBufHandle,                     int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int StartVertex, int UseVertexNum ) ;				// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファ使用版 )
+extern	int			DrawPrimitiveIndexed3DToShader_UseVertexBuffer(  int VertexBufHandle, int IndexBufHandle, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */ ) ;													// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファとインデックスバッファ使用版 )
 extern	int			DrawPrimitiveIndexed3DToShader_UseVertexBuffer2( int VertexBufHandle, int IndexBufHandle, int PrimitiveType /* DX_PRIMTYPE_TRIANGLELIST 等 */, int BaseVertex, int StartVertex, int UseVertexNum, int StartIndex, int UseIndexNum ) ;	// シェーダーを使って３Ｄプリミティブを描画する( 頂点バッファとインデックスバッファ使用版 )
 
 // シェーダー用定数バッファ関係関数
@@ -3050,6 +3353,9 @@ extern	int			SetShaderConstantBuffer(		int SConstBufHandle, int TargetShader /* 
 
 // フィルター関係関数
 #ifndef DX_NON_FILTER
+extern	int			SetGraphFilterBltBlendMode( int BlendMode /* DX_BLENDMODE_ALPHA など */ ) ;												// GraphFilterBlt や GraphBlendBlt の結果を転送先に転送する際のブレンドモードを設定する( 現状で対応しているのは DX_BLENDMODE_NOBLEND と DX_BLENDMODE_ALPHA のみ )
+extern	int			SetGraphBlendScalingFilterMode( int IsBilinearFilter ) ;																// GraphBlend で GrHandle と BlendGrHandle のサイズが異なる場合に適用される拡大フィルターモードを設定する( IsBilinearFilter  TRUE:バイリニアフィルター(デフォルト)  FALSE:ニアレストフィルター )
+
 extern	int			GraphFilter(         int    GrHandle,                                                                                                               int FilterType /* DX_GRAPH_FILTER_GAUSS 等 */ , ... ) ;		// 画像にフィルター処理を行う
 extern	int			GraphFilterBlt(      int SrcGrHandle, int DestGrHandle,                                                                                             int FilterType /* DX_GRAPH_FILTER_GAUSS 等 */ , ... ) ;		// 画像のフィルター付き転送を行う
 extern	int			GraphFilterRectBlt(  int SrcGrHandle, int DestGrHandle, int SrcX1, int SrcY1, int SrcX2, int SrcY2, int DestX,  int DestY,                          int FilterType /* DX_GRAPH_FILTER_GAUSS 等 */ , ... ) ;		// 画像のフィルター付き転送を行う( 矩形指定 )
@@ -3063,6 +3369,7 @@ extern	int			GraphFilterRectBlt(  int SrcGrHandle, int DestGrHandle, int SrcX1, 
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_LEVEL, int Min = 変換元の下限値( 0 ～ 255 ), int Max = 変換元の上限値( 0 ～ 255 ), int Gamma = ガンマ値( 100 でガンマ補正無し、0 とそれ以下の値は不可 ), int AfterMin = 変換後の最低値( 0 ～ 255 ), int AfterMax = 変換後の最大値( 0 ～ 255 ) ) ;
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_TWO_COLOR, int Threshold = 閾値( 0 ～ 255 ), unsigned int LowColor = 閾値より値が低かったピクセルの変換後の色値( GetColor で取得する ), int LowAlpha = 閾値より値が低かったピクセルの変換後のα値( 0 ～ 255 ), unsigned int HighColor = 閾値より値が高かったピクセルの変換後の色値( GetColor で取得する ), int HighAlpha = 閾値より値が高かったピクセルの変換後のα値( 0 ～ 255 ) ) ;
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_GRADIENT_MAP, int MapGrHandle = グラデーションマップのグラフィックハンドル( 元画像の輝度からグラデーションマップ画像の x 座標を算出しますので縦幅は1dotでもＯＫ ), int Reverse = グラデーションマップ左右反転フラグ( TRUE : グラデーションマップを左右反転して使う  FALSE : 左右反転しない ) ) ;
+//		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_REPLACEMENT, int TargetR, int TargetG, int TargetB, int TargetA = 置換対象の色( 0～255 ), int R, int G, int B, int A = 置換後の色( 0～255 ) ) ;
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_PREMUL_ALPHA ) ;			// 通常のアルファチャンネル付き画像を乗算済みアルファ画像に変換するフィルタ
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_INTERP_ALPHA ) ;			// 乗算済みα画像を通常のアルファチャンネル付き画像に変換するフィルタ
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_YUV_TO_RGB ) ;				// YUVカラーをRGBカラーに変換するフィルタ
@@ -3071,10 +3378,13 @@ extern	int			GraphFilterRectBlt(  int SrcGrHandle, int DestGrHandle, int SrcX1, 
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_Y2UV1_TO_RGB_RRA, int UVGrHandle = YUVカラーのUV成分のみで、且つYに対して解像度が半分( 若しくは 4 分の 1 )のグラフィックハンドル( U=R, V=G ) ) ;		// YUVカラーをRGBカラーに変換するフィルタ( UV成分が Y成分の半分・又は４分の１( 横・縦片方若しくは両方 )の解像度しかない場合用 )( 且つ右側半分のRの値をアルファ値として扱う )
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_BICUBIC_SCALE, int DestSizeX = スケーリング後の横ピクセル数, int DestSizeY = スケーリング後の縦ピクセル数 ) ;
 //		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_LANCZOS3_SCALE, int DestSizeX = スケーリング後の横ピクセル数, int DestSizeY = スケーリング後の縦ピクセル数 ) ;
+//		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_SSAO, int ColorWithDepthGrHandle = Zバッファが含まれるカラーバッファ, float KernelRadius = 遮蔽物を調べる範囲, float MinDistance = 遮蔽物判定する最小深度値, float MaxDistance = 遮蔽物判定する最大深度値, float Strength = 遮蔽物の影響の強さ, int OcclusionColor = オクリュージョンカラー, float OcclusionPower = オクリュージョンカラーの強さ ) ;
+//		int			GraphFilter( int GrHandle, int FilterType = DX_GRAPH_FILTER_FLOAT_COLOR_SCALE, float ColorScaleR = 赤成分へのスケーリング値, float ColorScaleG = 緑成分へのスケーリング値, float ColorScaleB = 青成分へのスケーリング値, float ColorScaleA = α成分へのスケーリング値, float ColorPreSubR = 赤成分にスケーリングを掛ける前に減算する値, float ColorPreSubG = 緑成分にスケーリングを掛ける前に減算する値, float ColorPreSubB = 青成分にスケーリングを掛ける前に減算する値, float ColorPreSubA = α成分にスケーリングを掛ける前に減算する値 ) ;
 
-extern	int			GraphBlend(         int    GrHandle, int BlendGrHandle,                                                                                                              int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドする
-extern	int			GraphBlendBlt(      int SrcGrHandle, int BlendGrHandle, int DestGrHandle,                                                                                            int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドして結果を指定の画像に出力する
-extern	int			GraphBlendRectBlt(  int SrcGrHandle, int BlendGrHandle, int DestGrHandle, int SrcX1, int SrcY1, int SrcX2, int SrcY2, int BlendX,  int BlendY, int DestX, int DestY, int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドして結果を指定の画像に出力する( 矩形指定 )
+extern	int			GraphBlend(         int    GrHandle, int BlendGrHandle,                                                                                                                                         int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドする
+extern	int			GraphBlendBlt(      int SrcGrHandle, int BlendGrHandle, int DestGrHandle,                                                                                                                       int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドして結果を指定の画像に出力する
+extern	int			GraphBlendRectBlt(  int SrcGrHandle, int BlendGrHandle, int DestGrHandle, int SrcX1, int SrcY1, int SrcX2, int SrcY2, int BlendX,  int BlendY,                            int DestX, int DestY, int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドして結果を指定の画像に出力する( 矩形指定 )
+extern	int			GraphBlendRectBlt2( int SrcGrHandle, int BlendGrHandle, int DestGrHandle, int SrcX1, int SrcY1, int SrcX2, int SrcY2, int BlendX1, int BlendY1, int BlendX2, int BlendY2, int DestX, int DestY, int BlendRatio /* ブレンド効果の影響度( 0:０％  255:１００％ ) */ , int BlendType /* DX_GRAPH_BLEND_ADD 等 */ , ... ) ;	// 二つの画像をブレンドして結果を指定の画像に出力する( 矩形指定、ブレンド画像も矩形指定 )
 //		int			GraphBlend( int GrHandle, int BlendGrHandle, int BlendRatio, int BlendType = DX_GRAPH_BLEND_NORMAL ) ;
 //		int			GraphBlend( int GrHandle, int BlendGrHandle, int BlendRatio, int BlendType = DX_GRAPH_BLEND_RGBA_SELECT_MIX, int SelectR = ( 出力の赤分となる成分 DX_RGBA_SELECT_SRC_R 等 ), int SelectG = ( 出力の緑成分となる成分 DX_RGBA_SELECT_SRC_R 等 ), int SelectB = ( 出力の青成分となる成分 DX_RGBA_SELECT_SRC_R 等 ), int SelectA = ( 出力のα成分となる成分 DX_RGBA_SELECT_SRC_R 等 ) ) ;
 //		int			GraphBlend( int GrHandle, int BlendGrHandle, int BlendRatio, int BlendType = DX_GRAPH_BLEND_MULTIPLE ) ;
@@ -3102,18 +3412,18 @@ extern	int			PlayMovieWithStrLen(				const TCHAR *FileName, size_t FileNameLengt
 extern	int			GetMovieImageSize_File(             const TCHAR *FileName,                        int *SizeX, int *SizeY ) ;	// 動画ファイルの横ピクセル数と縦ピクセル数を取得する
 extern	int			GetMovieImageSize_File_WithStrLen(  const TCHAR *FileName, size_t FileNameLength, int *SizeX, int *SizeY ) ;	// 動画ファイルの横ピクセル数と縦ピクセル数を取得する
 extern	int			GetMovieImageSize_Mem(              const void *FileImage, int FileImageSize, int *SizeX, int *SizeY ) ;		// メモリ上に展開された動画ファイルの横ピクセル数と縦ピクセル数を取得する
-extern	int			OpenMovieToGraph(					const TCHAR *FileName,                        int FullColor = TRUE ) ;		// 動画ファイルを開く
-extern	int			OpenMovieToGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int FullColor = TRUE ) ;		// 動画ファイルを開く
-extern 	int			PlayMovieToGraph(					int GraphHandle, int PlayType = DX_PLAYTYPE_BACK , int SysPlay = 0 ) ;		// 動画ファイルを使用するグラフィックハンドルの動画ファイルの再生を開始する
-extern 	int			PauseMovieToGraph(					int GraphHandle, int SysPause = 0 ) ;										// 動画ファイルを使用するグラフィックハンドルの動画ファイルの再生を停止する
+extern	int			OpenMovieToGraph(					const TCHAR *FileName,                        int FullColor DEFAULTPARAM( = TRUE ) ) ;		// 動画ファイルを開く
+extern	int			OpenMovieToGraphWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int FullColor DEFAULTPARAM( = TRUE ) ) ;		// 動画ファイルを開く
+extern 	int			PlayMovieToGraph(					int GraphHandle, int PlayType DEFAULTPARAM( = DX_PLAYTYPE_BACK ) , int SysPlay DEFAULTPARAM( = 0 ) ) ;		// 動画ファイルを使用するグラフィックハンドルの動画ファイルの再生を開始する
+extern 	int			PauseMovieToGraph(					int GraphHandle, int SysPause DEFAULTPARAM( = 0 ) ) ;										// 動画ファイルを使用するグラフィックハンドルの動画ファイルの再生を停止する
 extern	int			AddMovieFrameToGraph(				int GraphHandle, unsigned int FrameNum ) ;									// 動画ファイルの再生フレームを進める、戻すことは出来ない( 動画ファイルが停止状態で、且つ Ogg Theora のみ有効 )
 extern	int			SeekMovieToGraph(					int GraphHandle, int Time ) ;												// 動画ファイルの再生位置を設定する(ミリ秒単位)
 extern	int			SetPlaySpeedRateMovieToGraph(		int GraphHandle, double SpeedRate ) ;										// 動画ファイルの再生速度を設定する( 1.0 = 等倍速  2.0 = ２倍速 )、一部のファイルフォーマットのみで有効な機能です
 extern 	int			GetMovieStateToGraph(				int GraphHandle ) ;															// 動画ファイルの再生状態を得る
 extern	int			SetMovieVolumeToGraph(				int Volume, int GraphHandle ) ;												// 動画ファイルの音量を設定する(0～10000)
 extern	int			ChangeMovieVolumeToGraph(			int Volume, int GraphHandle ) ;												// 動画ファイルの音量を設定する(0～255)
-extern	const BASEIMAGE* GetMovieBaseImageToGraph(		int GraphHandle, int *ImageUpdateFlag = NULL , int ImageUpdateFlagSetOnly = FALSE ) ;	// 動画ファイルの基本イメージデータを取得する( ImageUpdateFlag に int 型変数のアドレスを渡すと、イメージが更新された場合は 1 が、更新されていない場合は 0 が格納されます、 ImageUpdateFlagSetOnly を TRUE にすると戻り値の BASEIMAGE は有効な画像データではなくなりますが、BASEIMAGE の更新処理が行われませんので、ImageUpdateFlag を利用して画像が更新されたかどうかだけをチェックしたい場合は TRUE にしてください )
-extern	int			GetMovieTotalFrameToGraph(			int GraphHandle ) ;															// 動画ファイルの総フレーム数を得る( Ogg Theora でのみ有効 )
+extern	const BASEIMAGE* GetMovieBaseImageToGraph(		int GraphHandle, int *ImageUpdateFlag DEFAULTPARAM( = NULL ) , int ImageUpdateFlagSetOnly DEFAULTPARAM( = FALSE ) ) ;	// 動画ファイルの基本イメージデータを取得する( ImageUpdateFlag に int 型変数のアドレスを渡すと、イメージが更新された場合は 1 が、更新されていない場合は 0 が格納されます、 ImageUpdateFlagSetOnly を TRUE にすると戻り値の BASEIMAGE は有効な画像データではなくなりますが、BASEIMAGE の更新処理が行われませんので、ImageUpdateFlag を利用して画像が更新されたかどうかだけをチェックしたい場合は TRUE にしてください )
+extern	int			GetMovieTotalFrameToGraph(			int GraphHandle ) ;															// 動画ファイルの総フレーム数を得る( Ogg Theora と mp4 でのみ有効 )
 extern	int			TellMovieToGraph(					int GraphHandle ) ;															// 動画ファイルの再生位置を取得する(ミリ秒単位)
 extern	int			TellMovieToGraphToFrame(			int GraphHandle ) ;															// 動画ファイルの再生位置を取得する(フレーム単位)
 extern	int			SeekMovieToGraphToFrame(			int GraphHandle, int Frame ) ;												// 動画ファイルの再生位置を設定する(フレーム単位)
@@ -3208,6 +3518,7 @@ extern	int			SetMaterialUseVertSpcColor( int UseFlag ) ;																	// ３�
 extern	int			SetMaterialParam(			MATERIALPARAM Material ) ;														// ３Ｄ描画のライティング計算で使用するマテリアルパラメータを設定する
 extern	int			SetUseSpecular(				int UseFlag ) ;																	// ３Ｄ描画にスペキュラを使用するかどうかを設定する
 extern	int			SetGlobalAmbientLight(		COLOR_F Color ) ;																// グローバルアンビエントライトカラーを設定する
+extern	int			SetUseLightAngleAttenuation( int UseFlag ) ;																// ３Ｄ描画のライティング計算で角度減衰を行うかどうかを設定する( TRUE:角度減衰を行う( デフォルト )  FALSE:角度減衰を行わない )
 
 extern	int			ChangeLightTypeDir(			VECTOR Direction ) ;															// デフォルトライトのタイプをディレクショナルライトにする
 extern	int			ChangeLightTypeSpot(		VECTOR Position, VECTOR Direction, float OutAngle, float InAngle, float Range, float Atten0, float Atten1, float Atten2 ) ;	// デフォルトライトのタイプをスポットライトにする
@@ -3288,6 +3599,7 @@ extern	int			SetMaskScreenGraphUseChannel(		int UseChannel /* DX_MASKGRAPH_CH_A 
 extern	int			InitMask(							void ) ;																						// マスクハンドルをすべて削除する
 extern	int			MakeMask(							int Width, int Height ) ;																		// マスクハンドルを作成する
 extern	int			GetMaskSize(						int *WidthBuf, int *HeightBuf, int MaskHandle ) ;												// マスクハンドルが持つマスクイメージのサイズを取得する
+extern	int			GetMaskBaseImageInfo(				BASEIMAGE *BaseImage, int MaskHandle ) ;														// マスクハンドルが持つマスクイメージのBASEIMAGEデータを取得する( フォーマットが変更されるような操作をすると正常に動作しなくなります、あと、ReleaseBaseImage は実行する必要はありません )
 extern	int			SetDataToMask(						int Width, int Height, const void *MaskData, int MaskHandle ) ;									// マスクハンドルにビットマップイメージを転送する
 extern	int			DeleteMask(							int MaskHandle ) ;																				// マスクハンドルを削除する
 extern	int			GraphImageBltToMask(				const BASEIMAGE *BaseImage, int ImageX, int ImageY, int MaskHandle ) ;							// マスクハンドルにBASEIMAGEデータを転送する
@@ -3335,20 +3647,20 @@ extern	int			GetMaskUseFlag(						void ) ;																						// マスクス�
 #ifndef DX_NON_FONT
 
 // フォント、文字列描画関係関数
-extern	int			EnumFontName(                           TCHAR *NameBuffer, int NameBufferNum, int JapanOnlyFlag = TRUE ) ;																				// 使用可能なフォントの名前を列挙する( NameBuffer に 64バイト区切りで名前が格納されます )
-extern	int			EnumFontNameEx(                         TCHAR *NameBuffer, int NameBufferNum,                                                       int CharSet = -1 /* DX_CHARSET_DEFAULT 等 */ ) ;	// 使用可能なフォントの名前を列挙する( NameBuffer に 64バイト区切りで名前が格納されます )( 文字セット指定版 )
-extern	int			EnumFontNameEx2(						TCHAR *NameBuffer, int NameBufferNum, const TCHAR *EnumFontName,                            int CharSet = -1 /* DX_CHARSET_DEFAULT 等 */ ) ;	// 指定のフォント名のフォントを列挙する
-extern	int			EnumFontNameEx2WithStrLen(				TCHAR *NameBuffer, int NameBufferNum, const TCHAR *EnumFontName, size_t EnumFontNameLength, int CharSet = -1 /* DX_CHARSET_DEFAULT 等 */ ) ;	// 指定のフォント名のフォントを列挙する
-extern	int			CheckFontName(							const TCHAR *FontName,                        int CharSet = -1 /* DX_CHARSET_DEFAULT 等 */ ) ;													// 指定のフォント名のフォントが存在するかどうかをチェックする( 戻り値  TRUE:存在する  FALSE:存在しない )
-extern	int			CheckFontNameWithStrLen(				const TCHAR *FontName, size_t FontNameLength, int CharSet = -1 /* DX_CHARSET_DEFAULT 等 */ ) ;													// 指定のフォント名のフォントが存在するかどうかをチェックする( 戻り値  TRUE:存在する  FALSE:存在しない )
+extern	int			EnumFontName(                           TCHAR *NameBuffer, int NameBufferNum, int JapanOnlyFlag DEFAULTPARAM( = TRUE ) ) ;																				// 使用可能なフォントの名前を列挙する( NameBuffer に 64バイト区切りで名前が格納されます )
+extern	int			EnumFontNameEx(                         TCHAR *NameBuffer, int NameBufferNum,                                                       int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_DEFAULT 等 */ ) ;	// 使用可能なフォントの名前を列挙する( NameBuffer に 64バイト区切りで名前が格納されます )( 文字セット指定版 )
+extern	int			EnumFontNameEx2(						TCHAR *NameBuffer, int NameBufferNum, const TCHAR *EnumFontName,                            int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_DEFAULT 等 */ ) ;	// 指定のフォント名のフォントを列挙する
+extern	int			EnumFontNameEx2WithStrLen(				TCHAR *NameBuffer, int NameBufferNum, const TCHAR *EnumFontName, size_t EnumFontNameLength, int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_DEFAULT 等 */ ) ;	// 指定のフォント名のフォントを列挙する
+extern	int			CheckFontName(							const TCHAR *FontName,                        int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_DEFAULT 等 */ ) ;													// 指定のフォント名のフォントが存在するかどうかをチェックする( 戻り値  TRUE:存在する  FALSE:存在しない )
+extern	int			CheckFontNameWithStrLen(				const TCHAR *FontName, size_t FontNameLength, int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_DEFAULT 等 */ ) ;													// 指定のフォント名のフォントが存在するかどうかをチェックする( 戻り値  TRUE:存在する  FALSE:存在しない )
 
 extern	int			InitFontToHandle(                       void ) ;																						// 全てのフォントハンドルを削除する
 
-extern	int			CreateFontToHandle(						const TCHAR *FontName,                        int Size, int Thick, int FontType = -1 , int CharSet = -1 , int EdgeSize = -1 , int Italic = FALSE , int Handle = -1 ) ;		// フォントハンドルを作成する
-extern	int			CreateFontToHandleWithStrLen(			const TCHAR *FontName, size_t FontNameLength, int Size, int Thick, int FontType = -1 , int CharSet = -1 , int EdgeSize = -1 , int Italic = FALSE , int Handle = -1 ) ;		// フォントハンドルを作成する
-extern	int			LoadFontDataToHandle(					const TCHAR *FileName,                            int EdgeSize = 0 ) ;							// フォントデータファイルからフォントハンドルを作成する
-extern	int			LoadFontDataToHandleWithStrLen(			const TCHAR *FileName, size_t FileNameLength,     int EdgeSize = 0 ) ;							// フォントデータファイルからフォントハンドルを作成する
-extern	int			LoadFontDataFromMemToHandle(			const void *FontDataImage, int FontDataImageSize, int EdgeSize = 0 ) ;							// メモリ上のフォントデータファイルイメージからフォントハンドルを作成する
+extern	int			CreateFontToHandle(						const TCHAR *FontName,                        int Size, int Thick, int FontType DEFAULTPARAM( = -1 ) , int CharSet DEFAULTPARAM( = -1 ) , int EdgeSize DEFAULTPARAM( = -1 ) , int Italic DEFAULTPARAM( = FALSE ) , int Handle DEFAULTPARAM( = -1 ) ) ;		// フォントハンドルを作成する
+extern	int			CreateFontToHandleWithStrLen(			const TCHAR *FontName, size_t FontNameLength, int Size, int Thick, int FontType DEFAULTPARAM( = -1 ) , int CharSet DEFAULTPARAM( = -1 ) , int EdgeSize DEFAULTPARAM( = -1 ) , int Italic DEFAULTPARAM( = FALSE ) , int Handle DEFAULTPARAM( = -1 ) ) ;		// フォントハンドルを作成する
+extern	int			LoadFontDataToHandle(					const TCHAR *FileName,                            int EdgeSize DEFAULTPARAM( = 0 ) ) ;			// フォントデータファイルからフォントハンドルを作成する
+extern	int			LoadFontDataToHandleWithStrLen(			const TCHAR *FileName, size_t FileNameLength,     int EdgeSize DEFAULTPARAM( = 0 ) ) ;			// フォントデータファイルからフォントハンドルを作成する
+extern	int			LoadFontDataFromMemToHandle(			const void *FontDataImage, int FontDataImageSize, int EdgeSize DEFAULTPARAM( = 0 ) ) ;			// メモリ上のフォントデータファイルイメージからフォントハンドルを作成する
 extern	int			SetFontSpaceToHandle(                   int Pixel, int FontHandle ) ;																	// フォントハンドルの字間を変更する
 extern	int			SetFontLineSpaceToHandle(               int Pixel, int FontHandle ) ;																	// フォントハンドルの行間を変更する
 extern	int			SetFontCharCodeFormatToHandle(			int CharCodeFormat /* DX_CHARCODEFORMAT_SHIFTJIS 等 */ , int FontHandle ) ;						// 指定のフォントハンドルを使用する関数の引数に渡す文字列の文字コード形式を設定する( UNICODE版では無効 )
@@ -3361,8 +3673,9 @@ extern	int			SubFontImageToHandleWithStrLen(			int FontHandle, const TCHAR *Char
 extern	int			AddSubstitutionFontToHandle(			int FontHandle, int SubstitutionFontHandle, int DrawX, int DrawY ) ;							// 代替フォントハンドル( FontHandle に無い文字を描画しようとしたときに代わりに使用されるフォントハンドル )を登録する
 extern	int			SubSubstitutionFontToHandle(			int FontHandle, int SubstitutionFontHandle ) ;													// 代替フォントハンドルの登録を解除する
 
-extern	int			ChangeFont(                             const TCHAR *FontName,                        int CharSet = -1 /* DX_CHARSET_SHFTJIS 等 */ ) ;	// デフォルトフォントハンドルで使用するフォントを変更
-extern	int			ChangeFontWithStrLen(                   const TCHAR *FontName, size_t FontNameLength, int CharSet = -1 /* DX_CHARSET_SHFTJIS 等 */ ) ;	// デフォルトフォントハンドルで使用するフォントを変更
+extern	int			ChangeFont(                             const TCHAR *FontName,                        int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_SHFTJIS 等 */ ) ;	// デフォルトフォントハンドルで使用するフォントを変更
+extern	int			ChangeFontWithStrLen(                   const TCHAR *FontName, size_t FontNameLength, int CharSet DEFAULTPARAM( = -1 ) /* DX_CHARSET_SHFTJIS 等 */ ) ;	// デフォルトフォントハンドルで使用するフォントを変更
+extern	int			ChangeFontFromHandle(					int FontHandle ) ;																				// デフォルトフォントハンドルとして使用するフォントハンドルを変更する
 extern	int			ChangeFontType(                         int FontType ) ;																				// デフォルトフォントハンドルのフォントタイプの変更
 extern	const TCHAR *GetFontName(							void ) ;																						// デフォルトフォントハンドルのフォント名を取得する
 extern	int			SetFontSize(                            int FontSize ) ;																				// デフォルトフォントハンドルのサイズを設定する
@@ -3374,25 +3687,35 @@ extern	int			GetFontSpace(                           void ) ;																			
 extern	int			SetFontLineSpace(                       int Pixel ) ;																					// デフォルトフォントハンドルの行間を変更する
 extern	int			GetFontLineSpace(                       void ) ;																						// デフォルトフォントハンドルの行間を取得する
 extern	int			SetFontCharCodeFormat(					int CharCodeFormat /* DX_CHARCODEFORMAT_SHIFTJIS 等 */ ) ;										// デフォルトフォントハンドルを使用する関数の引数に渡す文字列の文字コード形式を設定する( UNICODE版では無効 )
-extern	int			SetDefaultFontState(                    const TCHAR *FontName,                        int Size, int Thick, int FontType = -1 , int CharSet = -1 , int EdgeSize = -1 , int Italic = FALSE ) ;	// デフォルトフォントハンドルの設定を変更する
-extern	int			SetDefaultFontStateWithStrLen(          const TCHAR *FontName, size_t FontNameLength, int Size, int Thick, int FontType = -1 , int CharSet = -1 , int EdgeSize = -1 , int Italic = FALSE ) ;	// デフォルトフォントハンドルの設定を変更する
-extern	int			GetDefaultFontHandle(                   void ) ;																						// デフォルトフォントハンドルを取得する
-extern	int			GetFontMaxWidth(                        void ) ;																						// デフォルトフォントハンドルの文字の最大幅を取得する
-extern	int			GetFontAscent(                          void ) ;																						// デフォルトフォントハンドルの描画位置からベースラインまでの高さを取得する
-extern	int			GetDrawStringWidth(                     const TCHAR *String, int StrLen, int VerticalFlag = FALSE ) ;									// デフォルトフォントハンドルを使用した文字列の描画幅を取得する
-extern	int			GetDrawFormatStringWidth(               const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用した書式付き文字列の描画幅を取得する
-extern	int			GetDrawExtendStringWidth(               double ExRateX, const TCHAR *String, int StrLen, int VerticalFlag = FALSE ) ;					// デフォルトフォントハンドルを使用した文字列の描画幅を取得する( 拡大率付き )
-extern	int			GetDrawExtendFormatStringWidth(         double ExRateX, const TCHAR *FormatString, ... ) ;												// デフォルトフォントハンドルを使用した書式付き文字列の描画幅を取得する( 拡大率付き )
-extern	int			GetDrawStringSize(                      int *SizeX, int *SizeY, int *LineCount, const TCHAR *String, int StrLen, int VerticalFlag = FALSE ) ;											// デフォルトフォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
-extern	int			GetDrawFormatStringSize(                int *SizeX, int *SizeY, int *LineCount, const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する
-extern	int			GetDrawExtendStringSize(                int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *String, int StrLen, int VerticalFlag = FALSE ) ;			// デフォルトフォントハンドルを使用した文字列の描画幅・高さ・行数を取得する( 拡大率付き )
-extern	int			GetDrawExtendFormatStringSize(          int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *FormatString, ... ) ;										// デフォルトフォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する( 拡大率付き )
-extern	int			GetDrawStringCharInfo(                  DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *String, int StrLen, int VerticalFlag = FALSE ) ;									// デフォルトフォントハンドルを使用した文字列の１文字毎の情報を取得する
-extern	int			GetDrawFormatStringCharInfo(            DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
-extern	int			GetDrawExtendStringCharInfo(            DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *String, int StrLen, int VerticalFlag = FALSE ) ;	// デフォルトフォントハンドルを使用した文字列の１文字毎の情報を取得する
-extern	int			GetDrawExtendFormatStringCharInfo(      DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *FormatString, ... ) ;								// デフォルトフォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
+extern	int			SetDefaultFontState(                    const TCHAR *FontName,                        int Size, int Thick, int FontType DEFAULTPARAM( = -1 ) , int CharSet DEFAULTPARAM( = -1 ) , int EdgeSize DEFAULTPARAM( = -1 ) , int Italic DEFAULTPARAM( = FALSE ) ) ;	// デフォルトフォントハンドルの設定を変更する
+extern	int			SetDefaultFontStateWithStrLen(          const TCHAR *FontName, size_t FontNameLength, int Size, int Thick, int FontType DEFAULTPARAM( = -1 ) , int CharSet DEFAULTPARAM( = -1 ) , int EdgeSize DEFAULTPARAM( = -1 ) , int Italic DEFAULTPARAM( = FALSE ) ) ;	// デフォルトフォントハンドルの設定を変更する
+extern	int			GetDefaultFontHandle(                   void ) ;																								// デフォルトフォントハンドルを取得する
+extern	int			GetFontMaxCacheCharNum(					void ) ;																								// デフォルトフォントハンドルのキャッシュできる文字の数を取得する
+extern	int			GetFontMaxWidth(                        void ) ;																								// デフォルトフォントハンドルの文字の最大幅を取得する
+extern	int			GetFontAscent(                          void ) ;																								// デフォルトフォントハンドルの描画位置からベースラインまでの高さを取得する
+extern	int			GetDrawStringWidth(                     const TCHAR *String, int StrLen,          int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// デフォルトフォントハンドルを使用した文字列の描画幅を取得する
+extern	int			GetDrawNStringWidth(                    const TCHAR *String, size_t StringLength, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// デフォルトフォントハンドルを使用した文字列の描画幅を取得する
+extern	int			GetDrawFormatStringWidth(               const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用した書式付き文字列の描画幅を取得する
+extern	int			GetDrawExtendStringWidth(               double ExRateX, const TCHAR *String, int StrLen,          int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;					// デフォルトフォントハンドルを使用した文字列の描画幅を取得する( 拡大率付き )
+extern	int			GetDrawExtendNStringWidth(              double ExRateX, const TCHAR *String, size_t StringLength, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;					// デフォルトフォントハンドルを使用した文字列の描画幅を取得する( 拡大率付き )
+extern	int			GetDrawExtendFormatStringWidth(         double ExRateX, const TCHAR *FormatString, ... ) ;														// デフォルトフォントハンドルを使用した書式付き文字列の描画幅を取得する( 拡大率付き )
+extern	int			GetDrawStringSize(                      int *SizeX, int *SizeY, int *LineCount, const TCHAR *String, int StrLen,          int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;											// デフォルトフォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawNStringSize(                     int *SizeX, int *SizeY, int *LineCount, const TCHAR *String, size_t StringLength, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;											// デフォルトフォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawFormatStringSize(                int *SizeX, int *SizeY, int *LineCount, const TCHAR *FormatString, ... ) ;																				// デフォルトフォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawExtendStringSize(                int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *String, int StrLen,          int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// デフォルトフォントハンドルを使用した文字列の描画幅・高さ・行数を取得する( 拡大率付き )
+extern	int			GetDrawExtendNStringSize(               int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// デフォルトフォントハンドルを使用した文字列の描画幅・高さ・行数を取得する( 拡大率付き )
+extern	int			GetDrawExtendFormatStringSize(          int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *FormatString, ... ) ;												// デフォルトフォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する( 拡大率付き )
+extern	int			GetDrawStringCharInfo(                  DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *String, int StrLen,          int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// デフォルトフォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawNStringCharInfo(                 DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *String, size_t StringLength, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// デフォルトフォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawFormatStringCharInfo(            DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
+extern	int			GetDrawExtendStringCharInfo(            DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *String, int StrLen,          int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// デフォルトフォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawExtendNStringCharInfo(           DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// デフォルトフォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawExtendFormatStringCharInfo(      DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *FormatString, ... ) ;										// デフォルトフォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
+extern	int			GetDrawStringKerningPairInfo(			const TCHAR *PairChar,                        int *KernAmount ) ;								// デフォルトフォントハンドルを使用した二つの文字のペアのカーニング情報を取得する( PairChar:カーニング情報を調べるペアとなる2文字の文字列( 2文字以上あっても先頭の2文字だけ使用されます )  KernAmount:2文字目の文字を基本の位置からずらすドット数を代入するint型変数のアドレス )
+extern	int			GetDrawStringKerningPairInfoWithStrLen(	const TCHAR *PairChar, size_t PairCharLength, int *KernAmount ) ;								// デフォルトフォントハンドルを使用した二つの文字のペアのカーニング情報を取得する( PairChar:カーニング情報を調べるペアとなる2文字の文字列( 2文字以上あっても先頭の2文字だけ使用されます )  KernAmount:2文字目の文字を基本の位置からずらすドット数を代入するint型変数のアドレス )
 
 extern	const TCHAR *GetFontNameToHandle(					int FontHandle ) ;																				// フォントハンドルのフォント名を取得する
+extern	int			GetFontMaxCacheCharNumToHandle(			int FontHandle ) ;																				// フォントハンドルのキャッシュできる文字の数を取得する
 extern	int			GetFontMaxWidthToHandle(                int FontHandle ) ;																				// フォントハンドルの文字の最大幅を取得する
 extern	int			GetFontAscentToHandle(                  int FontHandle ) ;																				// フォントハンドルの描画位置からベースラインまでの高さを取得する
 extern	int			GetFontSizeToHandle(                    int FontHandle ) ;																				// フォントハンドルのサイズを取得する
@@ -3401,19 +3724,27 @@ extern	int			GetFontSpaceToHandle(                   int FontHandle ) ;									
 extern	int			GetFontLineSpaceToHandle(               int FontHandle ) ;																				// フォントハンドルの行間を取得する
 extern	int			GetFontCharInfo(                        int FontHandle, const TCHAR *Char,                    int *DrawX, int *DrawY, int *NextCharX, int *SizeX, int *SizeY ) ;	// フォントハンドルの指定の文字の描画情報を取得する
 extern	int			GetFontCharInfoWithStrLen(              int FontHandle, const TCHAR *Char, size_t CharLength, int *DrawX, int *DrawY, int *NextCharX, int *SizeX, int *SizeY ) ;	// フォントハンドルの指定の文字の描画情報を取得する
-extern	int			GetDrawStringWidthToHandle(             const TCHAR   *String, int StrLen, int FontHandle, int VerticalFlag = FALSE ) ;					// フォントハンドルを使用した文字列の描画幅を取得する
-extern	int			GetDrawFormatStringWidthToHandle(       int FontHandle, const TCHAR *FormatString, ... ) ;												// フォントハンドルを使用した書式付き文字列の描画幅を取得する
-extern	int			GetDrawExtendStringWidthToHandle(       double ExRateX, const TCHAR *String, int StrLen, int FontHandle, int VerticalFlag = FALSE ) ;	// フォントハンドルを使用した文字列の描画幅を取得する
-extern	int			GetDrawExtendFormatStringWidthToHandle( double ExRateX, int FontHandle, const TCHAR *FormatString, ... ) ;								// フォントハンドルを使用した書式付き文字列の描画幅を取得する
-extern	int			GetDrawStringSizeToHandle(              int *SizeX, int *SizeY, int *LineCount, const TCHAR   *String, int StrLen, int FontHandle, int VerticalFlag = FALSE ) ;									// フォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
-extern	int			GetDrawFormatStringSizeToHandle(        int *SizeX, int *SizeY, int *LineCount, int FontHandle, const TCHAR *FormatString, ... ) ;																// フォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する
-extern	int			GetDrawExtendStringSizeToHandle(        int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *String, int StrLen, int FontHandle, int VerticalFlag = FALSE ) ;	// フォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
-extern	int			GetDrawExtendFormatStringSizeToHandle(  int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, int FontHandle, const TCHAR *FormatString, ... ) ;								// フォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する
-extern	int			GetDrawStringCharInfoToHandle(              DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *String, int StrLen, int FontHandle, int VerticalFlag = FALSE ) ;									// フォントハンドルを使用した文字列の１文字毎の情報を取得する
-extern	int			GetDrawFormatStringCharInfoToHandle(        DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, int FontHandle, const TCHAR *FormatString, ... ) ;																// フォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
-extern	int			GetDrawExtendStringCharInfoToHandle(        DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *String, int StrLen, int FontHandle, int VerticalFlag = FALSE ) ;	// フォントハンドルを使用した文字列の１文字毎の情報を取得する
-extern	int			GetDrawExtendFormatStringCharInfoToHandle(  DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, int FontHandle, const TCHAR *FormatString, ... ) ;								// フォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
-extern	int			GetFontStateToHandle(                   TCHAR   *FontName, int *Size, int *Thick, int FontHandle, int *FontType = NULL , int *CharSet = NULL , int *EdgeSize = NULL , int *Italic = NULL ) ;	// フォントハンドルの情報を取得する
+extern	int			GetDrawStringWidthToHandle(             const TCHAR   *String, int StrLen,          int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;						// フォントハンドルを使用した文字列の描画幅を取得する
+extern	int			GetDrawNStringWidthToHandle(            const TCHAR   *String, size_t StringLength, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;						// フォントハンドルを使用した文字列の描画幅を取得する
+extern	int			GetDrawFormatStringWidthToHandle(       int FontHandle, const TCHAR *FormatString, ... ) ;																// フォントハンドルを使用した書式付き文字列の描画幅を取得する
+extern	int			GetDrawExtendStringWidthToHandle(       double ExRateX, const TCHAR *String, int StrLen,          int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// フォントハンドルを使用した文字列の描画幅を取得する
+extern	int			GetDrawExtendNStringWidthToHandle(      double ExRateX, const TCHAR *String, size_t StringLength, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// フォントハンドルを使用した文字列の描画幅を取得する
+extern	int			GetDrawExtendFormatStringWidthToHandle( double ExRateX, int FontHandle, const TCHAR *FormatString, ... ) ;												// フォントハンドルを使用した書式付き文字列の描画幅を取得する
+extern	int			GetDrawStringSizeToHandle(              int *SizeX, int *SizeY, int *LineCount, const TCHAR   *String, int StrLen,          int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;											// フォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawNStringSizeToHandle(             int *SizeX, int *SizeY, int *LineCount, const TCHAR   *String, size_t StringLength, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;											// フォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawFormatStringSizeToHandle(        int *SizeX, int *SizeY, int *LineCount, int FontHandle, const TCHAR *FormatString, ... ) ;																					// フォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawExtendStringSizeToHandle(        int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *String, int StrLen,          int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;				// フォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawExtendNStringSizeToHandle(       int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;				// フォントハンドルを使用した文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawExtendFormatStringSizeToHandle(  int *SizeX, int *SizeY, int *LineCount, double ExRateX, double ExRateY, int FontHandle, const TCHAR *FormatString, ... ) ;													// フォントハンドルを使用した書式付き文字列の描画幅・高さ・行数を取得する
+extern	int			GetDrawStringCharInfoToHandle(              DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *String, int StrLen,          int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// フォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawNStringCharInfoToHandle(             DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, const TCHAR *String, size_t StringLength, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// フォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawFormatStringCharInfoToHandle(        DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, int FontHandle, const TCHAR *FormatString, ... ) ;																		// フォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
+extern	int			GetDrawExtendStringCharInfoToHandle(        DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *String, int StrLen,          int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// フォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawExtendNStringCharInfoToHandle(       DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// フォントハンドルを使用した文字列の１文字毎の情報を取得する
+extern	int			GetDrawExtendFormatStringCharInfoToHandle(  DRAWCHARINFO *InfoBuffer, size_t InfoBufferSize, double ExRateX, double ExRateY, int FontHandle, const TCHAR *FormatString, ... ) ;										// フォントハンドルを使用した書式付き文字列の１文字毎の情報を取得する
+extern	int			GetDrawStringKerningPairInfoToHandle(	        const TCHAR *PairChar,                        int *KernAmount, int FontHandle ) ;		// フォントハンドルを使用した二つの文字のペアのカーニング情報を取得する( PairChar:カーニング情報を調べるペアとなる2文字の文字列( 2文字以上あっても先頭の2文字だけ使用されます )  KernAmount:2文字目の文字を基本の位置からずらすドット数を代入するint型変数のアドレス )
+extern	int			GetDrawStringKerningPairInfoToHandleWithStrLen(	const TCHAR *PairChar, size_t PairCharLength, int *KernAmount, int FontHandle ) ;		// フォントハンドルを使用した二つの文字のペアのカーニング情報を取得する( PairChar:カーニング情報を調べるペアとなる2文字の文字列( 2文字以上あっても先頭の2文字だけ使用されます )  KernAmount:2文字目の文字を基本の位置からずらすドット数を代入するint型変数のアドレス )
+extern	int			GetFontStateToHandle(                   TCHAR   *FontName, int *Size, int *Thick, int FontHandle, int *FontType DEFAULTPARAM( = NULL ) , int *CharSet DEFAULTPARAM( = NULL ) , int *EdgeSize DEFAULTPARAM( = NULL ) , int *Italic DEFAULTPARAM( = NULL ) ) ;						// フォントハンドルの情報を取得する
 extern	int			CheckFontCacheToTextureFlag(            int FontHandle ) ;																				// フォントハンドルがテクスチャキャッシュを使用しているかどうかを取得する
 extern	int			CheckFontChacheToTextureFlag(           int FontHandle ) ;																				// CheckFontCacheToTextureFlag の誤字版
 extern	int			CheckFontHandleValid(                   int FontHandle ) ;																				// フォントハンドルが有効かどうかを取得する
@@ -3431,61 +3762,71 @@ extern	int			SetFontCacheUsePremulAlphaFlag(         int Flag ) ;															
 extern	int			GetFontCacheUsePremulAlphaFlag(         void ) ;																						// フォントキャッシュとして保存する画像の形式を乗算済みαチャンネル付き画像にするかどうかを取得する
 extern	int			SetFontUseAdjustSizeFlag(               int Flag ) ;																					// フォントのサイズを補正する処理を行うかどうかを設定する( Flag  TRUE:行う( デフォルト )  FALSE:行わない )
 extern	int			GetFontUseAdjustSizeFlag(               void ) ;																						// フォントのサイズを補正する処理を行うかどうかを取得する
+extern	int			SetFontOnlyDrawType(					int OnlyType ) ;																				// フォントの描画で縁のみ、又は本体のみ描画を行うかどうかを設定する( OnlyType  0:通常描画 1:本体のみ描画 2:縁のみ描画 )
+extern	int			GetFontOnlyDrawType(					void ) ;																						// フォントの描画で縁のみ、又は本体のみ描画を行うかどうかを取得する( 戻り値  0:通常描画 1:本体のみ描画 2:縁のみ描画 )
 
 
 // FontCacheStringDraw の代わりに DrawString を使ってください
-extern	int			FontCacheStringDrawToHandle(            int x, int y, const TCHAR *StrData,                       unsigned int Color, unsigned int EdgeColor, BASEIMAGE *DestImage, const RECT *ClipRect /* NULL 可 */ , int FontHandle, int VerticalFlag = FALSE , SIZE *DrawSizeP = NULL ) ;
-extern	int			FontCacheStringDrawToHandleWithStrLen(  int x, int y, const TCHAR *StrData, size_t StrDataLength, unsigned int Color, unsigned int EdgeColor, BASEIMAGE *DestImage, const RECT *ClipRect /* NULL 可 */ , int FontHandle, int VerticalFlag = FALSE , SIZE *DrawSizeP = NULL ) ;
-extern	int			FontBaseImageBlt(                       int x, int y, const TCHAR *StrData,                       BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage,                 int VerticalFlag = FALSE ) ;	// 基本イメージに文字列を描画する( デフォルトフォントハンドルを使用する )
-extern	int			FontBaseImageBltWithStrLen(             int x, int y, const TCHAR *StrData, size_t StrDataLength, BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage,                 int VerticalFlag = FALSE ) ;	// 基本イメージに文字列を描画する( デフォルトフォントハンドルを使用する )
-extern	int			FontBaseImageBltToHandle(               int x, int y, const TCHAR *StrData,                       BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage, int FontHandle, int VerticalFlag = FALSE ) ;	// 基本イメージに文字列を描画する
-extern	int			FontBaseImageBltToHandleWithStrLen(     int x, int y, const TCHAR *StrData, size_t StrDataLength, BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage, int FontHandle, int VerticalFlag = FALSE ) ;	// 基本イメージに文字列を描画する
+extern	int			FontCacheStringDrawToHandle(            int x, int y, const TCHAR *StrData,                       unsigned int Color, unsigned int EdgeColor, BASEIMAGE *DestImage, const RECT *ClipRect /* NULL 可 */ , int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) , SIZE *DrawSizeP DEFAULTPARAM( = NULL ) ) ;
+extern	int			FontCacheStringDrawToHandleWithStrLen(  int x, int y, const TCHAR *StrData, size_t StrDataLength, unsigned int Color, unsigned int EdgeColor, BASEIMAGE *DestImage, const RECT *ClipRect /* NULL 可 */ , int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) , SIZE *DrawSizeP DEFAULTPARAM( = NULL ) ) ;
+extern	int			FontBaseImageBlt(                       int x, int y, const TCHAR *StrData,                       BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage,                 int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// 基本イメージに文字列を描画する( デフォルトフォントハンドルを使用する )
+extern	int			FontBaseImageBltWithStrLen(             int x, int y, const TCHAR *StrData, size_t StrDataLength, BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage,                 int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// 基本イメージに文字列を描画する( デフォルトフォントハンドルを使用する )
+extern	int			FontBaseImageBltToHandle(               int x, int y, const TCHAR *StrData,                       BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// 基本イメージに文字列を描画する
+extern	int			FontBaseImageBltToHandleWithStrLen(     int x, int y, const TCHAR *StrData, size_t StrDataLength, BASEIMAGE *DestImage, BASEIMAGE *DestEdgeImage, int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// 基本イメージに文字列を描画する
 
 extern	int			MultiByteCharCheck(                     const char *Buf, int CharSet /* DX_CHARSET_SHFTJIS */ ) ;										// ２バイト文字か調べる( TRUE:２バイト文字  FALSE:１バイト文字 )
 
 // 文字列描画関数
-extern	int			DrawString(                             int x, int y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列を描画する
-extern	int			DrawNString(                            int x, int y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列を描画する
-extern	int			DrawVString(                            int x, int y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )
-extern	int			DrawNVString(                           int x, int y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )
-extern	int			DrawFormatString(                       int x, int y,                                 unsigned int Color, const TCHAR *FormatString, ... ) ;																			// デフォルトフォントハンドルを使用して書式指定文字列を描画する
-extern	int			DrawFormatVString(                      int x, int y,                                 unsigned int Color, const TCHAR *FormatString, ... ) ;																			// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縦書き )
-extern	int			DrawExtendString(                       int x, int y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画
-extern	int			DrawExtendNString(                      int x, int y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画
-extern	int			DrawExtendVString(                      int x, int y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )
-extern	int			DrawExtendNVString(                     int x, int y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )
-extern	int			DrawExtendFormatString(                 int x, int y, double ExRateX, double ExRateY, unsigned int Color, const TCHAR *FormatString, ... ) ;																			// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する
-extern	int			DrawExtendFormatVString(                int x, int y, double ExRateX, double ExRateY, unsigned int Color, const TCHAR *FormatString, ... ) ;																			// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )
-extern	int			DrawRotaString(							int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL                           ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する
-extern	int			DrawRotaNString(						int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL , size_t StringLength = 0 ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する
-extern	int			DrawRotaFormatString(					int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *FormatString = NULL , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を回転描画する
-extern	int			DrawModiString(							int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL                           ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する
-extern	int			DrawModiNString(						int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL , size_t StringLength = 0 ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する
-extern	int			DrawModiFormatString(					int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *FormatString = NULL , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を変形描画する
+extern	int			DrawString(                             int x, int y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列を描画する
+extern	int			DrawNString(                            int x, int y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列を描画する
+extern	int			DrawVString(                            int x, int y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )
+extern	int			DrawNVString(                           int x, int y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )
+extern	int			DrawFormatString(                       int x, int y,                                 unsigned int Color,                         const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を描画する
+extern	int			DrawFormatVString(                      int x, int y,                                 unsigned int Color,                         const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縦書き )
+extern	int			DrawFormatString2(                      int x, int y,                                 unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )
+extern	int			DrawFormatVString2(                     int x, int y,                                 unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )( 縦書き )
+extern	int			DrawExtendString(                       int x, int y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画
+extern	int			DrawExtendNString(                      int x, int y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画
+extern	int			DrawExtendVString(                      int x, int y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )
+extern	int			DrawExtendNVString(                     int x, int y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;							// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )
+extern	int			DrawExtendFormatString(                 int x, int y, double ExRateX, double ExRateY, unsigned int Color,                         const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する
+extern	int			DrawExtendFormatVString(                int x, int y, double ExRateX, double ExRateY, unsigned int Color,                         const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )
+extern	int			DrawExtendFormatString2(                int x, int y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )
+extern	int			DrawExtendFormatVString2(               int x, int y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																	// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )( 縦書き )
+extern	int			DrawRotaString(							int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL )                           ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する
+extern	int			DrawRotaNString(						int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL ) , size_t StringLength DEFAULTPARAM( = 0 ) ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する
+extern	int			DrawRotaFormatString(					int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *FormatString DEFAULTPARAM( = NULL ) , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を回転描画する
+extern	int			DrawModiString(							int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL )                           ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する
+extern	int			DrawModiNString(						int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL ) , size_t StringLength DEFAULTPARAM( = 0 ) ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する
+extern	int			DrawModiFormatString(					int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *FormatString DEFAULTPARAM( = NULL ) , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を変形描画する
 
-extern	int			DrawStringF(                            float x, float y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
-extern	int			DrawNStringF(                           float x, float y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
-extern	int			DrawVStringF(                           float x, float y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawNVStringF(                          float x, float y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawFormatStringF(                      float x, float y,                                 unsigned int Color, const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 座標指定が float 版 )
-extern	int			DrawFormatVStringF(                     float x, float y,                                 unsigned int Color, const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawExtendStringF(                      float x, float y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 座標指定が float 版 )
-extern	int			DrawExtendNStringF(                     float x, float y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 座標指定が float 版 )
-extern	int			DrawExtendVStringF(                     float x, float y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )( 座標指定が float 版 )
-extern	int			DrawExtendNVStringF(                    float x, float y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor = 0 ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )( 座標指定が float 版 )
-extern	int			DrawExtendFormatStringF(                float x, float y, double ExRateX, double ExRateY, unsigned int Color, const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 座標指定が float 版 )
-extern	int			DrawExtendFormatVStringF(               float x, float y, double ExRateX, double ExRateY, unsigned int Color, const TCHAR *FormatString, ... ) ;																		// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawRotaStringF(						float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL                           ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
-extern	int			DrawRotaNStringF(						float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL , size_t StringLength = 0 ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
-extern	int			DrawRotaFormatStringF(					float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *FormatString = NULL , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を回転描画する( 座標指定が float 版 )
-extern	int			DrawModiStringF(						float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL                           ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する( 座標指定が float 版 )
-extern	int			DrawModiNStringF(						float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL , size_t StringLength = 0 ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する( 座標指定が float 版 )
-extern	int			DrawModiFormatStringF(					float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *FormatString = NULL , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を変形描画する( 座標指定が float 版 )
+extern	int			DrawStringF(                            float x, float y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
+extern	int			DrawNStringF(                           float x, float y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
+extern	int			DrawVStringF(                           float x, float y,                                              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawNVStringF(                          float x, float y,                                              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawFormatStringF(                      float x, float y,                                 unsigned int Color,                         const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 座標指定が float 版 )
+extern	int			DrawFormatVStringF(                     float x, float y,                                 unsigned int Color,                         const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawFormatString2F(                     float x, float y,                                 unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )( 座標指定が float 版 )
+extern	int			DrawFormatVString2F(                    float x, float y,                                 unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendStringF(                      float x, float y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 座標指定が float 版 )
+extern	int			DrawExtendNStringF(                     float x, float y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 座標指定が float 版 )
+extern	int			DrawExtendVStringF(                     float x, float y, double ExRateX, double ExRateY,              const TCHAR *String,                      unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendNVStringF(                    float x, float y, double ExRateX, double ExRateY,              const TCHAR *String, size_t StringLength, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;						// デフォルトフォントハンドルを使用して文字列の拡大描画( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendFormatStringF(                float x, float y, double ExRateX, double ExRateY, unsigned int Color,                         const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 座標指定が float 版 )
+extern	int			DrawExtendFormatVStringF(               float x, float y, double ExRateX, double ExRateY, unsigned int Color,                         const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendFormatString2F(               float x, float y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )( 座標指定が float 版 )
+extern	int			DrawExtendFormatVString2F(              float x, float y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, const TCHAR *FormatString, ... ) ;																// デフォルトフォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )( 縦書き )( 座標指定が float 版 )
+extern	int			DrawRotaStringF(						float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL )                           ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
+extern	int			DrawRotaNStringF(						float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL ) , size_t StringLength DEFAULTPARAM( = 0 ) ) ;		// デフォルトフォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
+extern	int			DrawRotaFormatStringF(					float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *FormatString DEFAULTPARAM( = NULL ) , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を回転描画する( 座標指定が float 版 )
+extern	int			DrawModiStringF(						float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL )                           ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する( 座標指定が float 版 )
+extern	int			DrawModiNStringF(						float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL ) , size_t StringLength DEFAULTPARAM( = 0 ) ) ;		// デフォルトフォントハンドルを使用して文字列を変形描画する( 座標指定が float 版 )
+extern	int			DrawModiFormatStringF(					float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *FormatString DEFAULTPARAM( = NULL ) , ...                     ) ;		// デフォルトフォントハンドルを使用して書式指定文字列を変形描画する( 座標指定が float 版 )
 
-extern	int			DrawNumberToI(                          int x, int y,                          int    Num, int RisesNum, unsigned int Color, unsigned int EdgeColor = 0 ) ;											// デフォルトフォントハンドルを使用して整数型の数値を描画する
-extern	int			DrawNumberToF(                          int x, int y,                          double Num, int Length,   unsigned int Color, unsigned int EdgeColor = 0 ) ;											// デフォルトフォントハンドルを使用して浮動小数点型の数値を描画する
-extern	int			DrawNumberPlusToI(                      int x, int y, const TCHAR *NoteString, int    Num, int RisesNum, unsigned int Color, unsigned int EdgeColor = 0 ) ;											// デフォルトフォントハンドルを使用して整数型の数値とその説明の文字列を一度に描画する
-extern 	int			DrawNumberPlusToF(                      int x, int y, const TCHAR *NoteString, double Num, int Length,   unsigned int Color, unsigned int EdgeColor = 0 ) ;											// デフォルトフォントハンドルを使用して浮動小数点型の数値とその説明の文字列を一度に描画する
+extern	int			DrawNumberToI(                          int x, int y,                          int    Num, int RisesNum, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// デフォルトフォントハンドルを使用して整数型の数値を描画する
+extern	int			DrawNumberToF(                          int x, int y,                          double Num, int Length,   unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// デフォルトフォントハンドルを使用して浮動小数点型の数値を描画する
+extern	int			DrawNumberPlusToI(                      int x, int y, const TCHAR *NoteString, int    Num, int RisesNum, unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// デフォルトフォントハンドルを使用して整数型の数値とその説明の文字列を一度に描画する
+extern 	int			DrawNumberPlusToF(                      int x, int y, const TCHAR *NoteString, double Num, int Length,   unsigned int Color, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// デフォルトフォントハンドルを使用して浮動小数点型の数値とその説明の文字列を一度に描画する
 
 extern	int			DrawStringToZBuffer(                    int x, int y, const TCHAR *String,                                                                                        int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;												// デフォルトフォントハンドルを使用してＺバッファに対して文字列を描画する
 extern	int			DrawNStringToZBuffer(                   int x, int y, const TCHAR *String, size_t StringLength,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;												// デフォルトフォントハンドルを使用してＺバッファに対して文字列を描画する
@@ -3507,18 +3848,22 @@ extern	int			DrawModiNStringToZBuffer(				int x1, int y1, int x2, int y2, int x3
 extern	int			DrawModiFormatStringToZBuffer(			int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,                                      int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag , const TCHAR *FormatString , ...                ) ;	// デフォルトフォントハンドルを使用してＺバッファに対して書式指定文字列を変形描画する
 
 
-extern	int			DrawStringToHandle(                     int x, int y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;											// フォントハンドルを使用して文字列を描画する
-extern	int			DrawNStringToHandle(                    int x, int y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;											// フォントハンドルを使用して文字列を描画する
-extern	int			DrawVStringToHandle(                    int x, int y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;																		// フォントハンドルを使用して文字列を描画する( 縦書き )
-extern	int			DrawNVStringToHandle(                   int x, int y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;																		// フォントハンドルを使用して文字列を描画する( 縦書き )
-extern	int			DrawFormatStringToHandle(               int x, int y, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する
-extern	int			DrawFormatVStringToHandle(              int x, int y, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縦書き )
-extern	int			DrawExtendStringToHandle(               int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;			// フォントハンドルを使用して文字列を拡大描画する
-extern	int			DrawExtendNStringToHandle(              int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;			// フォントハンドルを使用して文字列を拡大描画する
-extern	int			DrawExtendVStringToHandle(              int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;										// フォントハンドルを使用して文字列を拡大描画する( 縦書き )
-extern	int			DrawExtendNVStringToHandle(             int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;										// フォントハンドルを使用して文字列を拡大描画する( 縦書き )
-extern	int			DrawExtendFormatStringToHandle(         int x, int y, double ExRateX, double ExRateY, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する
-extern	int			DrawExtendFormatVStringToHandle(        int x, int y, double ExRateX, double ExRateY, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )
+extern	int			DrawStringToHandle(                     int x, int y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// フォントハンドルを使用して文字列を描画する
+extern	int			DrawNStringToHandle(                    int x, int y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// フォントハンドルを使用して文字列を描画する
+extern	int			DrawVStringToHandle(                    int x, int y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;																				// フォントハンドルを使用して文字列を描画する( 縦書き )
+extern	int			DrawNVStringToHandle(                   int x, int y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;																				// フォントハンドルを使用して文字列を描画する( 縦書き )
+extern	int			DrawFormatStringToHandle(               int x, int y, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する
+extern	int			DrawFormatVStringToHandle(              int x, int y, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縦書き )
+extern	int			DrawFormatString2ToHandle(              int x, int y, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )
+extern	int			DrawFormatVString2ToHandle(             int x, int y, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )( 縦書き )
+extern	int			DrawExtendStringToHandle(               int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// フォントハンドルを使用して文字列を拡大描画する
+extern	int			DrawExtendNStringToHandle(              int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// フォントハンドルを使用して文字列を拡大描画する
+extern	int			DrawExtendVStringToHandle(              int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;												// フォントハンドルを使用して文字列を拡大描画する( 縦書き )
+extern	int			DrawExtendNVStringToHandle(             int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;												// フォントハンドルを使用して文字列を拡大描画する( 縦書き )
+extern	int			DrawExtendFormatStringToHandle(         int x, int y, double ExRateX, double ExRateY, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する
+extern	int			DrawExtendFormatVStringToHandle(        int x, int y, double ExRateX, double ExRateY, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )
+extern	int			DrawExtendFormatString2ToHandle(        int x, int y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )
+extern	int			DrawExtendFormatVString2ToHandle(       int x, int y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )( 縦書き )
 extern	int			DrawRotaStringToHandle(					int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *String                            ) ;		// フォントハンドルを使用して文字列を回転描画する
 extern	int			DrawRotaNStringToHandle(				int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *String,       size_t StringLength ) ;		// フォントハンドルを使用して文字列を回転描画する
 extern	int			DrawRotaFormatStringToHandle(			int x, int y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *FormatString, ...                 ) ;		// フォントハンドルを使用して書式指定文字列を回転描画する
@@ -3526,38 +3871,42 @@ extern	int			DrawModiStringToHandle(					int x1, int y1, int x2, int y2, int x3,
 extern	int			DrawModiNStringToHandle(				int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *String,       size_t StringLength ) ;	// フォントハンドルを使用して文字列を変形描画する
 extern	int			DrawModiFormatStringToHandle(			int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *FormatString, ...                 ) ;	// フォントハンドルを使用して書式指定文字列を変形描画する
 
-extern	int			DrawStringFToHandle(                    float x, float y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;										// フォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
-extern	int			DrawNStringFToHandle(                   float x, float y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;										// フォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
-extern	int			DrawVStringFToHandle(                   float x, float y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;																	// フォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawNVStringFToHandle(                  float x, float y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;																	// フォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawFormatStringFToHandle(              float x, float y, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																										// フォントハンドルを使用して書式指定文字列を描画する( 座標指定が float 版 )
-extern	int			DrawFormatVStringFToHandle(             float x, float y, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																										// フォントハンドルを使用して書式指定文字列を描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawExtendStringFToHandle(              float x, float y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;		// フォントハンドルを使用して文字列を拡大描画する( 座標指定が float 版 )
-extern	int			DrawExtendNStringFToHandle(             float x, float y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE ) ;		// フォントハンドルを使用して文字列を拡大描画する( 座標指定が float 版 )
-extern	int			DrawExtendVStringFToHandle(             float x, float y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;									// フォントハンドルを使用して文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawExtendNVStringFToHandle(            float x, float y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;									// フォントハンドルを使用して文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawExtendFormatStringFToHandle(        float x, float y, double ExRateX, double ExRateY, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																		// フォントハンドルを使用して書式指定文字列を拡大描画する( 座標指定が float 版 )
-extern	int			DrawExtendFormatVStringFToHandle(       float x, float y, double ExRateX, double ExRateY, unsigned int Color, int FontHandle, const TCHAR *FormatString, ... ) ;																		// フォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
-extern	int			DrawRotaStringFToHandle(				float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL                           ) ;		// フォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
-extern	int			DrawRotaNStringFToHandle(				float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *String       = NULL , size_t StringLength = 0 ) ;		// フォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
-extern	int			DrawRotaFormatStringFToHandle(			float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 , int VerticalFlag = FALSE , const TCHAR *FormatString = NULL , ...                     ) ;		// フォントハンドルを使用して書式指定文字列を回転描画する( 座標指定が float 版 )
+extern	int			DrawStringFToHandle(                    float x, float y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// フォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
+extern	int			DrawNStringFToHandle(                   float x, float y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;									// フォントハンドルを使用して文字列を描画する( 座標指定が float 版 )
+extern	int			DrawVStringFToHandle(                   float x, float y, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;																				// フォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawNVStringFToHandle(                  float x, float y, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;																				// フォントハンドルを使用して文字列を描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawFormatStringFToHandle(              float x, float y, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 座標指定が float 版 )
+extern	int			DrawFormatVStringFToHandle(             float x, float y, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawFormatString2FToHandle(             float x, float y, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )( 座標指定が float 版 )
+extern	int			DrawFormatVString2FToHandle(            float x, float y, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																											// フォントハンドルを使用して書式指定文字列を描画する( 縁の色引数付き )( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendStringFToHandle(              float x, float y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// フォントハンドルを使用して文字列を拡大描画する( 座標指定が float 版 )
+extern	int			DrawExtendNStringFToHandle(             float x, float y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;	// フォントハンドルを使用して文字列を拡大描画する( 座標指定が float 版 )
+extern	int			DrawExtendVStringFToHandle(             float x, float y, double ExRateX, double ExRateY, const TCHAR *String,                      unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;												// フォントハンドルを使用して文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendNVStringFToHandle(            float x, float y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;												// フォントハンドルを使用して文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendFormatStringFToHandle(        float x, float y, double ExRateX, double ExRateY, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 座標指定が float 版 )
+extern	int			DrawExtendFormatVStringFToHandle(       float x, float y, double ExRateX, double ExRateY, unsigned int Color,                         int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縦書き )( 座標指定が float 版 )
+extern	int			DrawExtendFormatString2FToHandle(       float x, float y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )( 座標指定が float 版 )
+extern	int			DrawExtendFormatVString2FToHandle(      float x, float y, double ExRateX, double ExRateY, unsigned int Color, unsigned int EdgeColor, int FontHandle, const TCHAR *FormatString, ... ) ;																			// フォントハンドルを使用して書式指定文字列を拡大描画する( 縁の色引数付き )( 縦書き )( 座標指定が float 版 )
+extern	int			DrawRotaStringFToHandle(				float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL )                           ) ;		// フォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
+extern	int			DrawRotaNStringFToHandle(				float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *String       DEFAULTPARAM( = NULL ) , size_t StringLength DEFAULTPARAM( = 0 ) ) ;		// フォントハンドルを使用して文字列を回転描画する( 座標指定が float 版 )
+extern	int			DrawRotaFormatStringFToHandle(			float x, float y, double ExRateX, double ExRateY, double RotCenterX, double RotCenterY, double RotAngle, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) , int VerticalFlag DEFAULTPARAM( = FALSE ) , const TCHAR *FormatString DEFAULTPARAM( = NULL ) , ...                     ) ;		// フォントハンドルを使用して書式指定文字列を回転描画する( 座標指定が float 版 )
 extern	int			DrawModiStringFToHandle(				float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *String                            ) ;		// フォントハンドルを使用して文字列を変形描画する( 座標指定が float 版 )
 extern	int			DrawModiNStringFToHandle(				float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *String,       size_t StringLength ) ;		// フォントハンドルを使用して文字列を変形描画する( 座標指定が float 版 )
 extern	int			DrawModiFormatStringFToHandle(			float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, unsigned int Color, int FontHandle, unsigned int EdgeColor, int VerticalFlag, const TCHAR *FormatString, ...                 ) ;		// フォントハンドルを使用して書式指定文字列を変形描画する( 座標指定が float 版 )
 
-extern	int			DrawNumberToIToHandle(                  int x, int y,                          int    Num, int RisesNum, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;											// フォントハンドルを使用して整数型の数値を描画する
-extern	int			DrawNumberToFToHandle(                  int x, int y,                          double Num, int Length,   unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;											// フォントハンドルを使用して浮動小数点型の数値を描画する
-extern	int			DrawNumberPlusToIToHandle(              int x, int y, const TCHAR *NoteString, int    Num, int RisesNum, unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;											// フォントハンドルを使用して整数型の数値とその説明の文字列を一度に描画する
-extern	int			DrawNumberPlusToFToHandle(              int x, int y, const TCHAR *NoteString, double Num, int Length,   unsigned int Color, int FontHandle, unsigned int EdgeColor = 0 ) ;											// フォントハンドルを使用して浮動小数点型の数値とその説明の文字列を一度に描画する
+extern	int			DrawNumberToIToHandle(                  int x, int y,                          int    Num, int RisesNum, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// フォントハンドルを使用して整数型の数値を描画する
+extern	int			DrawNumberToFToHandle(                  int x, int y,                          double Num, int Length,   unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// フォントハンドルを使用して浮動小数点型の数値を描画する
+extern	int			DrawNumberPlusToIToHandle(              int x, int y, const TCHAR *NoteString, int    Num, int RisesNum, unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// フォントハンドルを使用して整数型の数値とその説明の文字列を一度に描画する
+extern	int			DrawNumberPlusToFToHandle(              int x, int y, const TCHAR *NoteString, double Num, int Length,   unsigned int Color, int FontHandle, unsigned int EdgeColor DEFAULTPARAM( = 0 ) ) ;											// フォントハンドルを使用して浮動小数点型の数値とその説明の文字列を一度に描画する
 
-extern	int			DrawStringToHandleToZBuffer(            int x, int y, const TCHAR *String,                      int FontHandle,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag = FALSE ) ;							// フォントハンドルを使用してＺバッファに対して文字列を描画する
-extern	int			DrawNStringToHandleToZBuffer(           int x, int y, const TCHAR *String, size_t StringLength, int FontHandle,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag = FALSE ) ;							// フォントハンドルを使用してＺバッファに対して文字列を描画する
+extern	int			DrawStringToHandleToZBuffer(            int x, int y, const TCHAR *String,                      int FontHandle,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// フォントハンドルを使用してＺバッファに対して文字列を描画する
+extern	int			DrawNStringToHandleToZBuffer(           int x, int y, const TCHAR *String, size_t StringLength, int FontHandle,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// フォントハンドルを使用してＺバッファに対して文字列を描画する
 extern	int			DrawVStringToHandleToZBuffer(           int x, int y, const TCHAR *String,                      int FontHandle,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;													// フォントハンドルを使用してＺバッファに対して文字列を描画する( 縦書き )
 extern	int			DrawNVStringToHandleToZBuffer(          int x, int y, const TCHAR *String, size_t StringLength, int FontHandle,                                                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;													// フォントハンドルを使用してＺバッファに対して文字列を描画する( 縦書き )
 extern	int			DrawFormatStringToHandleToZBuffer(      int x, int y, int FontHandle,                                                                                        int WriteZMode /* DX_ZWRITE_MASK 等 */ , const TCHAR *FormatString, ... ) ;										// フォントハンドルを使用してＺバッファに対して書式指定文字列を描画する
 extern	int			DrawFormatVStringToHandleToZBuffer(     int x, int y, int FontHandle,                                                                                        int WriteZMode /* DX_ZWRITE_MASK 等 */ , const TCHAR *FormatString, ... ) ;										// フォントハンドルを使用してＺバッファに対して書式指定文字列を描画する( 縦書き )
-extern	int			DrawExtendStringToHandleToZBuffer(      int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      int FontHandle,                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag = FALSE ) ;							// フォントハンドルを使用してＺバッファに対して文字列を拡大描画する
-extern	int			DrawExtendNStringToHandleToZBuffer(     int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int FontHandle,                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag = FALSE ) ;							// フォントハンドルを使用してＺバッファに対して文字列を拡大描画する
+extern	int			DrawExtendStringToHandleToZBuffer(      int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      int FontHandle,                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// フォントハンドルを使用してＺバッファに対して文字列を拡大描画する
+extern	int			DrawExtendNStringToHandleToZBuffer(     int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int FontHandle,                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ , int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;			// フォントハンドルを使用してＺバッファに対して文字列を拡大描画する
 extern	int			DrawExtendVStringToHandleToZBuffer(     int x, int y, double ExRateX, double ExRateY, const TCHAR *String,                      int FontHandle,                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;													// フォントハンドルを使用してＺバッファに対して文字列を拡大描画する( 縦書き )
 extern	int			DrawExtendNVStringToHandleToZBuffer(    int x, int y, double ExRateX, double ExRateY, const TCHAR *String, size_t StringLength, int FontHandle,                                   int WriteZMode /* DX_ZWRITE_MASK 等 */ ) ;													// フォントハンドルを使用してＺバッファに対して文字列を拡大描画する( 縦書き )
 extern	int			DrawExtendFormatStringToHandleToZBuffer(   int x, int y, double ExRateX, double ExRateY, int FontHandle,                                                      int WriteZMode /* DX_ZWRITE_MASK 等 */ , const TCHAR *FormatString, ... ) ;										// フォントハンドルを使用してＺバッファに対して書式指定文字列を拡大描画する
@@ -3593,14 +3942,14 @@ extern	int			CreateLookAtMatrixRH(          MATRIX   *Out, const VECTOR   *Eye, 
 extern	int			CreateLookAtMatrixRHD(         MATRIX_D *Out, const VECTOR_D *Eye, const VECTOR_D *At, const VECTOR_D *Up ) ;					// ビュー行列を作成する(右手座標系用)
 extern	int			CreateMultiplyMatrix(          MATRIX   *Out, const MATRIX   *In1, const MATRIX   *In2 ) ;										// 行列の積を求める
 extern	int			CreateMultiplyMatrixD(         MATRIX_D *Out, const MATRIX_D *In1, const MATRIX_D *In2 ) ;										// 行列の積を求める
-extern	int			CreatePerspectiveFovMatrix(    MATRIX   *Out, float  fov,  float  zn, float  zf, float  aspect = -1.0f ) ;						// 射影行列を作成する
-extern	int			CreatePerspectiveFovMatrixD(   MATRIX_D *Out, double fov,  double zn, double zf, double aspect = -1.0f ) ;						// 射影行列を作成する
-extern	int			CreatePerspectiveFovMatrixRH(  MATRIX   *Out, float  fov,  float  zn, float  zf, float  aspect = -1.0f ) ;						// 射影行列を作成する(右手座標系用)
-extern	int			CreatePerspectiveFovMatrixRHD( MATRIX_D *Out, double fov,  double zn, double zf, double aspect = -1.0f ) ;						// 射影行列を作成する(右手座標系用)
-extern	int			CreateOrthoMatrix(             MATRIX   *Out, float  size, float  zn, float  zf, float  aspect = -1.0f ) ;						// 正射影行列を作成する
-extern	int			CreateOrthoMatrixD(            MATRIX_D *Out, double size, double zn, double zf, double aspect = -1.0f ) ;						// 正射影行列を作成する
-extern	int			CreateOrthoMatrixRH(           MATRIX   *Out, float  size, float  zn, float  zf, float  aspect = -1.0f ) ;						// 正射影行列を作成する(右手座標系用)
-extern	int			CreateOrthoMatrixRHD(          MATRIX_D *Out, double size, double zn, double zf, double aspect = -1.0f ) ;						// 正射影行列を作成する(右手座標系用)
+extern	int			CreatePerspectiveFovMatrix(    MATRIX   *Out, float  fov,  float  zn, float  zf, float  aspect DEFAULTPARAM( = -1.0f ) ) ;		// 射影行列を作成する
+extern	int			CreatePerspectiveFovMatrixD(   MATRIX_D *Out, double fov,  double zn, double zf, double aspect DEFAULTPARAM( = -1.0f ) ) ;		// 射影行列を作成する
+extern	int			CreatePerspectiveFovMatrixRH(  MATRIX   *Out, float  fov,  float  zn, float  zf, float  aspect DEFAULTPARAM( = -1.0f ) ) ;		// 射影行列を作成する(右手座標系用)
+extern	int			CreatePerspectiveFovMatrixRHD( MATRIX_D *Out, double fov,  double zn, double zf, double aspect DEFAULTPARAM( = -1.0f ) ) ;		// 射影行列を作成する(右手座標系用)
+extern	int			CreateOrthoMatrix(             MATRIX   *Out, float  size, float  zn, float  zf, float  aspect DEFAULTPARAM( = -1.0f ) ) ;		// 正射影行列を作成する
+extern	int			CreateOrthoMatrixD(            MATRIX_D *Out, double size, double zn, double zf, double aspect DEFAULTPARAM( = -1.0f ) ) ;		// 正射影行列を作成する
+extern	int			CreateOrthoMatrixRH(           MATRIX   *Out, float  size, float  zn, float  zf, float  aspect DEFAULTPARAM( = -1.0f ) ) ;		// 正射影行列を作成する(右手座標系用)
+extern	int			CreateOrthoMatrixRHD(          MATRIX_D *Out, double size, double zn, double zf, double aspect DEFAULTPARAM( = -1.0f ) ) ;		// 正射影行列を作成する(右手座標系用)
 extern	int			CreateScalingMatrix(           MATRIX   *Out, float  sx, float  sy, float  sz ) ;												// スケーリング行列を作成する
 extern	int			CreateScalingMatrixD(          MATRIX_D *Out, double sx, double sy, double sz ) ;												// スケーリング行列を作成する
 extern	int			CreateRotationXMatrix(         MATRIX   *Out, float  Angle ) ;																	// Ｘ軸を中心とした回転行列を作成する
@@ -3717,6 +4066,8 @@ extern	int			HitCheck_Triangle_Triangle_2D(       VECTOR   Triangle1Pos1, VECTOR
 extern	int			HitCheck_Triangle_TriangleD_2D(      VECTOR_D Triangle1Pos1, VECTOR_D Triangle1Pos2, VECTOR_D Triangle1Pos3, VECTOR_D Triangle2Pos1, VECTOR_D Triangle2Pos2, VECTOR_D Triangle2Pos3 ) ;	// 三角形と三角形の当たり判定( ２Ｄ版 )( TRUE:当たっている  FALSE:当たっていない )
 extern	HITRESULT_LINE   HitCheck_Line_Cube(             VECTOR   LinePos1, VECTOR   LinePos2, VECTOR   CubePos1, VECTOR   CubePos2 );																		// 線と箱の当たり判定
 extern	HITRESULT_LINE_D HitCheck_Line_CubeD(            VECTOR_D LinePos1, VECTOR_D LinePos2, VECTOR_D CubePos1, VECTOR_D CubePos2 );																		// 線と箱の当たり判定
+extern	int			HitCheck_Point_Cone(                 VECTOR   PointPos, VECTOR   ConeTopPos, VECTOR   ConeBottomPos, float  ConeR ) ;																	// 点と円錐の当たり判定( TRUE:当たっている  FALSE:当たっていない )
+extern	int			HitCheck_Point_ConeD(                VECTOR_D PointPos, VECTOR_D ConeTopPos, VECTOR_D ConeBottomPos, double ConeR ) ;																	// 点と円錐の当たり判定( TRUE:当たっている  FALSE:当たっていない )
 extern	int			HitCheck_Line_Sphere(                VECTOR   LinePos1, VECTOR   LinePos2, VECTOR   SphereCenterPos, float  SphereR ) ;																	// 線と球の当たり判定( TRUE:当たっている  FALSE:当たっていない )
 extern	int			HitCheck_Line_SphereD(               VECTOR_D LinePos1, VECTOR_D LinePos2, VECTOR_D SphereCenterPos, double SphereR ) ;																	// 線と球の当たり判定( TRUE:当たっている  FALSE:当たっていない )
 extern	int			HitCheck_Sphere_Sphere(              VECTOR   Sphere1CenterPos, float  Sphere1R, VECTOR   Sphere2CenterPos, float  Sphere2R ) ;															// 球と球の当たり判定( TRUE:当たっている  FALSE:当たっていない )
@@ -3771,6 +4122,7 @@ extern  VECTOR_D	MGetSizeD(          MATRIX_D InM ) ;													// 拡大行�
 extern	MATRIX		MGetRotElem(        MATRIX   InM ) ;													// 行列の回転成分を取得する
 extern	MATRIX_D	MGetRotElemD(       MATRIX_D InM ) ;													// 行列の回転成分を取得する
 
+#ifdef __cplusplus
 
 // 行列の平行移動成分を取得する
 __inline VECTOR MGetTranslateElem( MATRIX &InM )
@@ -3819,6 +4171,8 @@ __inline VECTOR VConvDtoF( const VECTOR_D &In )
 	return Result ;
 }
 
+#endif // __cplusplus
+
 // ベクトル値の生成
 __inline VECTOR VGet( float x, float y, float z )
 {
@@ -3866,6 +4220,8 @@ __inline DOUBLE4 D4Get( double x, double y, double z, double w )
 	Result.w = w ;
 	return Result ;
 }
+
+#ifdef __cplusplus
 
 // ベクトルの加算
 __inline VECTOR		VAdd( const VECTOR &In1, const VECTOR &In2 )
@@ -4041,6 +4397,8 @@ __inline DOUBLE4	D4Scale( const DOUBLE4 &In, double Scale )
 	return Result ;
 }
 
+#endif // __cplusplus
+
 // ベクトルの正規化
 extern VECTOR		VNorm(  VECTOR   In ) ;
 extern VECTOR_D		VNormD( VECTOR_D In ) ;
@@ -4048,6 +4406,8 @@ extern VECTOR_D		VNormD( VECTOR_D In ) ;
 // ベクトルのサイズ
 extern float		VSize(  VECTOR   In ) ;
 extern double		VSizeD( VECTOR_D In ) ;
+
+#ifdef __cplusplus
 
 // ベクトルのサイズの２乗
 __inline float		VSquareSize(  const VECTOR   &In )
@@ -4098,6 +4458,8 @@ __inline VECTOR_D	VTransformSRD( const VECTOR_D &InV, const MATRIX_D &InM )
 	return Result ;
 }
 
+#endif // __cplusplus
+
 // 二つのベクトルが成す角のコサイン値を得る
 extern	float		VCos(  VECTOR   In1, VECTOR   In2 ) ;
 extern	double		VCosD( VECTOR_D In1, VECTOR_D In2 ) ;
@@ -4107,6 +4469,7 @@ extern	float		VRad(  VECTOR   In1, VECTOR   In2 ) ;
 extern	double		VRadD( VECTOR_D In1, VECTOR_D In2 ) ;
 
 
+#ifdef __cplusplus
 
 // 2つのクォータニオンの乗算の結果を返す
 __inline FLOAT4 QTCross( const FLOAT4 &A, const FLOAT4 &B )
@@ -4147,6 +4510,8 @@ __inline DOUBLE4 QTConjD( const DOUBLE4 &A )
 	Result.z = -A.z ;
 	return Result ;
 }
+
+#endif // __cplusplus
 
 // 回転を表すクォータニオンを返す
 extern FLOAT4  QTRot(  VECTOR   Axis, float  Angle ) ;
@@ -4193,25 +4558,31 @@ extern	int			SetUseFastLoadFlag(              int Flag ) ;														// 高�
 extern	int			SetGraphDataShavedMode(          int ShavedMode /* DX_SHAVEDMODE_NONE 等 */ ) ;						// 画像減色時の画像劣化緩和処理モードを設定する( デフォルトでは緩和処理無しの DX_SHAVEDMODE_NONE )
 extern	int			GetGraphDataShavedMode(          void ) ;															// 画像減色時の画像劣化緩和処理モードを取得する
 extern	int			SetUsePremulAlphaConvertLoad(    int UseFlag ) ;													// 画像ファイル読み込み時に乗算済みアルファ画像に変換するかどうかを設定する( TRUE:変換処理を行う  FALSE:変換処理を行わない( デフォルト ) )
+extern	int			GetUsePremulAlphaConvertLoad(    void ) ;															// 画像ファイル読み込み時に乗算済みアルファ画像に変換するかどうかを取得する( TRUE:変換処理を行う  FALSE:変換処理を行わない( デフォルト ) )
+extern	int			SetUseConvertNormalFormatLoad(   int UseFlag ) ;													// 画像ファイル読み込み時に DX_BASEIMAGE_FORMAT_NORMAL 以外の形式のイメージを DX_BASEIMAGE_FORMAT_NORMAL 形式のイメージに変換するかどうかを設定する( TRUE:変換処理を行う  FALSE:変換処理を行なわない( デフォルト ) )
+extern	int			GetUseConvertNormalFormatLoad(   void ) ;															// 画像ファイル読み込み時に DX_BASEIMAGE_FORMAT_NORMAL 以外の形式のイメージを DX_BASEIMAGE_FORMAT_NORMAL 形式のイメージに変換するかどうかを取得する( TRUE:変換処理を行う  FALSE:変換処理を行なわない( デフォルト ) )
 
 // 基本イメージデータ構造体関係
 extern	int			CreateBaseImage(                 const TCHAR *FileName,                        const void *FileImage, int FileImageSize, int DataType /*=LOADIMAGE_TYPE_FILE*/ , BASEIMAGE *BaseImage,  int ReverseFlag ) ;			// 画像ファイル若しくはメモリ上に展開された画像ファイルイメージから基本イメージデータを構築する
 extern	int			CreateBaseImageWithStrLen(       const TCHAR *FileName, size_t FileNameLength, const void *FileImage, int FileImageSize, int DataType /*=LOADIMAGE_TYPE_FILE*/ , BASEIMAGE *BaseImage,  int ReverseFlag ) ;			// 画像ファイル若しくはメモリ上に展開された画像ファイルイメージから基本イメージデータを構築する
 extern	int			CreateGraphImage(                const TCHAR *FileName,                        const void *DataImage, int DataImageSize, int DataImageType,                      BASEIMAGE *GraphImage, int ReverseFlag ) ;			// CreateBaseImage の旧名称
-extern	int			CreateBaseImageToFile(           const TCHAR *FileName,                                                                                                          BASEIMAGE *BaseImage,  int ReverseFlag = FALSE ) ;	// 画像ファイルから基本イメージデータを構築する
-extern	int			CreateBaseImageToFileWithStrLen( const TCHAR *FileName, size_t FileNameLength,                                                                                   BASEIMAGE *BaseImage,  int ReverseFlag = FALSE ) ;	// 画像ファイルから基本イメージデータを構築する
-extern	int			CreateBaseImageToMem(                                                          const void *FileImage, int FileImageSize,                                         BASEIMAGE *BaseImage,  int ReverseFlag = FALSE ) ;	// メモリ上に展開された画像ファイルイメージから基本イメージデータを構築する
+extern	int			CreateBaseImageToFile(           const TCHAR *FileName,                                                                                                          BASEIMAGE *BaseImage,  int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像ファイルから基本イメージデータを構築する
+extern	int			CreateBaseImageToFileWithStrLen( const TCHAR *FileName, size_t FileNameLength,                                                                                   BASEIMAGE *BaseImage,  int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// 画像ファイルから基本イメージデータを構築する
+extern	int			CreateBaseImageToMem(                                                          const void *FileImage, int FileImageSize,                                         BASEIMAGE *BaseImage,  int ReverseFlag DEFAULTPARAM( = FALSE ) ) ;	// メモリ上に展開された画像ファイルイメージから基本イメージデータを構築する
 extern	int			CreateARGBF32ColorBaseImage(     int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＡＲＧＢ各チャンネル 32bit 浮動小数点型 カラーの基本イメージデータを作成する
 extern	int			CreateARGBF16ColorBaseImage(     int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＡＲＧＢ各チャンネル 16bit 浮動小数点型 カラーの基本イメージデータを作成する
-extern	int			CreateARGB8ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＡＲＧＢ８カラーの基本イメージデータを作成する
 extern	int			CreateXRGB8ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＸＲＧＢ８カラーの基本イメージデータを作成する
-extern	int			CreateRGB8ColorBaseImage(        int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＲＧＢ８カラーの基本イメージデータを作成する
+extern	int			CreateARGB8ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＡＲＧＢ８カラーの基本イメージデータを作成する
+extern	int			CreateRGBA8ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＲＧＢＡ８カラーの基本イメージデータを作成する
+extern	int			CreateABGR8ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＡＢＧＲ８カラーの基本イメージデータを作成する
+extern	int			CreateBGRA8ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＢＧＲＡ８カラーの基本イメージデータを作成する
 extern	int			CreateARGB4ColorBaseImage(       int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＡＲＧＢ４カラーの基本イメージデータを作成する
 extern	int			CreateA1R5G5B5ColorBaseImage(    int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// Ａ１Ｒ５Ｇ５Ｂ５カラーの基本イメージデータを作成する
 extern	int			CreateX1R5G5B5ColorBaseImage(    int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// Ｘ１Ｒ５Ｇ５Ｂ５カラーの基本イメージデータを作成する
 extern	int			CreateR5G5B5A1ColorBaseImage(    int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// Ｒ５Ｇ５Ｂ５Ａ１カラーの基本イメージデータを作成する
 extern	int			CreateR5G6B5ColorBaseImage(      int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// Ｒ５Ｇ６Ｂ５カラーの基本イメージデータを作成する
-extern	int			CreatePAL8ColorBaseImage(        int SizeX, int SizeY,                             BASEIMAGE *BaseImage, int UseAlpha = FALSE ) ;																	// パレット８ビットカラーの基本イメージデータを作成する
+extern	int			CreateRGB8ColorBaseImage(        int SizeX, int SizeY,                             BASEIMAGE *BaseImage ) ;																							// ＲＧＢ８カラーの基本イメージデータを作成する
+extern	int			CreatePAL8ColorBaseImage(        int SizeX, int SizeY,                             BASEIMAGE *BaseImage, int UseAlpha DEFAULTPARAM( = FALSE ) ) ;													// パレット８ビットカラーの基本イメージデータを作成する
 extern	int			CreateColorDataBaseImage(        int SizeX, int SizeY, const COLORDATA *ColorData, BASEIMAGE *BaseImage ) ;																							// 指定のカラーフォーマットの基本イメージデータを作成する
 extern	int			GetBaseImageGraphDataSize(       const BASEIMAGE *BaseImage ) ;																																		// 基本イメージデータのイメージサイズを取得する( 単位：byte )
 extern	int			DerivationBaseImage(             const BASEIMAGE *BaseImage, int x1, int y1, int x2, int y2, BASEIMAGE *NewBaseImage ) ;																			// 基本イメージデータの指定の部分だけを使う基本イメージデータの情報を作成する( BaseImage にはフォーマットが DX_BASEIMAGE_FORMAT_NORMAL でミップマップを使用していない画像のみ使用可能 )
@@ -4219,7 +4590,7 @@ extern	int			DerivationBaseImage(             const BASEIMAGE *BaseImage, int x1
 extern	int			ReleaseBaseImage(                BASEIMAGE *BaseImage ) ;																																			// 基本イメージデータの後始末を行う
 extern	int			ReleaseGraphImage(               BASEIMAGE *GraphImage ) ;																																			// ReleaseBaseImage の旧名称
 
-extern	int			ConvertNormalFormatBaseImage(    BASEIMAGE *BaseImage, int ReleaseOrigGraphData = TRUE ) ;																											// DX_BASEIMAGE_FORMAT_NORMAL 以外の形式のイメージを DX_BASEIMAGE_FORMAT_NORMAL 形式のイメージに変換する
+extern	int			ConvertNormalFormatBaseImage(    BASEIMAGE *BaseImage, int ReleaseOrigGraphData DEFAULTPARAM( = TRUE ) ) ;																							// DX_BASEIMAGE_FORMAT_NORMAL 以外の形式のイメージを DX_BASEIMAGE_FORMAT_NORMAL 形式のイメージに変換する
 extern	int			ConvertPremulAlphaBaseImage(     BASEIMAGE *BaseImage ) ;																																			// 通常のαチャンネル付き画像を乗算済みαチャンネル付き画像に変換する( ピクセルフォーマットが ARGB8 以外の場合は ARGB8 に変換されます )
 extern	int			ConvertInterpAlphaBaseImage(     BASEIMAGE *BaseImage ) ;																																			// 乗算済みαチャンネル付き画像を通常のαチャンネル付き画像に変換する( ピクセルフォーマットが ARGB8 以外の場合は ARGB8 に変換されます )
 
@@ -4237,11 +4608,14 @@ extern	int			SetPixelBaseImageF(                    BASEIMAGE *BaseImage, int x,
 extern	int			GetPixelBaseImage(               const BASEIMAGE *BaseImage, int x, int y, int   *r, int   *g, int   *b, int   *a ) ;																				// 基本イメージデータの指定の座標の色を取得する(各色要素は０～２５５)
 extern	int			GetPixelBaseImageF(              const BASEIMAGE *BaseImage, int x, int y, float *r, float *g, float *b, float *a ) ;																				// 基本イメージデータの指定の座標の色を取得する(各色要素は浮動小数点数)
 extern	int			DrawLineBaseImage(                     BASEIMAGE *BaseImage, int x1, int y1, int x2, int y2, int r, int g, int b, int a ) ;																			// 基本イメージデータの指定の座標に線を描画する(各色要素は０～２５５)
-extern	int			DrawCircleBaseImage(                   BASEIMAGE *BaseImage, int x, int y, int radius, int r, int g, int b, int a, int FillFlag = TRUE ) ;															// 基本イメージデータの指定の座標に円を描画する(各色要素は０～２５５)
+extern	int			DrawCircleBaseImage(                   BASEIMAGE *BaseImage, int x, int y, int radius, int r, int g, int b, int a, int FillFlag DEFAULTPARAM( = TRUE ) ) ;											// 基本イメージデータの指定の座標に円を描画する(各色要素は０～２５５)
 extern	int			BltBaseImage(                          int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int DestX, int DestY, BASEIMAGE *SrcBaseImage, BASEIMAGE *DestBaseImage ) ;									// 基本イメージデータを別の基本イメージデータに転送する
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
 extern	int			BltBaseImage(                                                                          int DestX, int DestY, BASEIMAGE *SrcBaseImage, BASEIMAGE *DestBaseImage ) ;									// 基本イメージデータを別の基本イメージデータに転送する
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			BltBaseImage2(                                                                         int DestX, int DestY, BASEIMAGE *SrcBaseImage, BASEIMAGE *DestBaseImage ) ;									// 基本イメージデータを別の基本イメージデータに転送する
 extern	int			BltBaseImageWithTransColor(            int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int DestX, int DestY, BASEIMAGE *SrcBaseImage, BASEIMAGE *DestBaseImage, int Tr, int Tg, int Tb, int Ta ) ;	// 基本イメージデータを別の基本イメージデータに透過色処理付きで転送する
-extern	int			BltBaseImageWithAlphaBlend(            int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int DestX, int DestY, BASEIMAGE *SrcBaseImage, BASEIMAGE *DestBaseImage, int Opacity = 255 ) ;				// 基本イメージデータを別の基本イメージデータにアルファ値のブレンドを考慮した上で転送する( Opacity は透明度 : 0( 完全透明 ) ～ 255( 完全不透明 ) )( 出力先が ARGB8 形式以外の場合はエラーになります )
+extern	int			BltBaseImageWithAlphaBlend(            int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int DestX, int DestY, BASEIMAGE *SrcBaseImage, BASEIMAGE *DestBaseImage, int Opacity DEFAULTPARAM( = 255 ) ) ;	// 基本イメージデータを別の基本イメージデータにアルファ値のブレンドを考慮した上で転送する( Opacity は透明度 : 0( 完全透明 ) ～ 255( 完全不透明 ) )( 出力先が ARGB8 形式以外の場合はエラーになります )
 extern	int			ReverseBaseImageH(                     BASEIMAGE *BaseImage ) ;																																		// 基本イメージデータを左右反転する
 extern	int			ReverseBaseImageV(                     BASEIMAGE *BaseImage ) ;																																		// 基本イメージデータを上下反転する
 extern	int			ReverseBaseImage(                      BASEIMAGE *BaseImage ) ;																																		// 基本イメージデータを上下左右反転する
@@ -4279,9 +4653,9 @@ extern int			GraphColorMatchBltVer2(       void *DestGraphData, int DestPitch,  
 											const void *AlphaMask,     int AlphaPitch, const COLORDATA *AlphaColorData,
 											POINT DestPoint, const RECT *SrcRect, int ReverseFlag,
 											int TransColorAlphaTestFlag, unsigned int TransColor,
-											int ImageShavedMode, int AlphaOnlyFlag = FALSE ,
-											int RedIsAlphaFlag = FALSE , int TransColorNoMoveFlag = FALSE ,
-											int Pal8ColorMatch = FALSE ) ;
+											int ImageShavedMode, int AlphaOnlyFlag DEFAULTPARAM( = FALSE ) ,
+											int RedIsAlphaFlag DEFAULTPARAM( = FALSE ) , int TransColorNoMoveFlag DEFAULTPARAM( = FALSE ) ,
+											int Pal8ColorMatch DEFAULTPARAM( = FALSE ) ) ;
 
 
 // 色情報取得関係
@@ -4289,14 +4663,18 @@ extern	COLOR_F			GetColorF(               float Red, float Green, float Blue, fl
 extern	COLOR_U8		GetColorU8(              int Red, int Green, int Blue, int Alpha ) ;															// 符号なし整数８ビットのカラー値を作成する
 extern	unsigned int	GetColor(                int Red, int Green, int Blue ) ;																		// DrawPixel 等の描画関数で使用するカラー値を取得する
 extern	int				GetColor2(               unsigned int Color, int *Red, int *Green, int *Blue ) ;												// カラー値から赤、緑、青の値を取得する
-extern	unsigned int	GetColor3(               const COLORDATA *ColorData, int Red, int Green, int Blue, int Alpha = 255 ) ;							// 指定のピクセルフォーマットに対応したカラー値を得る
+extern	unsigned int	GetColor3(               const COLORDATA *ColorData, int Red, int Green, int Blue, int Alpha DEFAULTPARAM( = 255 ) ) ;			// 指定のピクセルフォーマットに対応したカラー値を得る
 extern	unsigned int	GetColor4(               const COLORDATA *DestColorData, const COLORDATA* SrcColorData, unsigned int SrcColor ) ;				// 指定のカラーフォーマットのカラー値を別のカラーフォーマットのカラー値に変換する
-extern	int				GetColor5(               const COLORDATA *ColorData, unsigned int Color, int *Red, int *Green, int *Blue, int *Alpha = NULL ) ;	// 指定のカラーフォーマットのカラー値を赤、緑、青、アルファの値を取得する
+extern	int				GetColor5(               const COLORDATA *ColorData, unsigned int Color, int *Red, int *Green, int *Blue, int *Alpha DEFAULTPARAM( = NULL ) ) ;	// 指定のカラーフォーマットのカラー値を赤、緑、青、アルファの値を取得する
 extern	int				CreatePaletteColorData(  COLORDATA *ColorDataBuf ) ;																			// パレットカラーのカラーフォーマットを構築する
 extern	int				CreateARGBF32ColorData(  COLORDATA *ColorDataBuf ) ;																			// ＡＲＧＢ各チャンネル 32bit 浮動小数点型カラーのカラーフォーマットを構築する
 extern	int				CreateARGBF16ColorData(  COLORDATA *ColorDataBuf ) ;																			// ＡＲＧＢ各チャンネル 16bit 浮動小数点型カラーのカラーフォーマットを構築する
 extern	int				CreateXRGB8ColorData(    COLORDATA *ColorDataBuf ) ;																			// ＸＲＧＢ８カラーのカラーフォーマットを構築する
 extern	int				CreateARGB8ColorData(    COLORDATA *ColorDataBuf ) ;																			// ＡＲＧＢ８カラーのカラーフォーマットを構築する
+extern	int				CreateRGBA8ColorData(    COLORDATA *ColorDataBuf ) ;																			// ＲＧＢＡ８カラーのカラーフォーマットを構築する
+extern	int				CreateABGR8ColorData(    COLORDATA *ColorDataBuf ) ;																			// ＡＢＧＲ８カラーのカラーフォーマットを構築する
+extern	int				CreateBGRA8ColorData(    COLORDATA *ColorDataBuf ) ;																			// ＢＧＲＡ８カラーのカラーフォーマットを構築する
+extern	int				CreateBGR8ColorData(     COLORDATA *ColorDataBuf ) ;																			// ＢＧＲ８カラーのカラーフォーマットを構築する
 extern	int				CreateARGB4ColorData(    COLORDATA *ColorDataBuf ) ;																			// ＡＲＧＢ４カラーのカラーフォーマットを構築する
 extern	int				CreateA1R5G5B5ColorData( COLORDATA *ColorDataBuf ) ;																			// Ａ１Ｒ５Ｇ５Ｂ５カラーのカラーフォーマットを構築する
 extern	int				CreateX1R5G5B5ColorData( COLORDATA *ColorDataBuf ) ;																			// Ｘ１Ｒ５Ｇ５Ｂ５カラーのカラーフォーマットを構築する
@@ -4304,10 +4682,10 @@ extern	int				CreateR5G5B5A1ColorData( COLORDATA *ColorDataBuf ) ;														
 extern	int				CreateR5G6B5ColorData(   COLORDATA *ColorDataBuf ) ;																			// Ｒ５Ｇ６Ｂ５カラーのカラーフォーマットを構築する
 extern	int				CreateFullColorData(     COLORDATA *ColorDataBuf ) ;																			// ２４ビットカラーのカラーフォーマットを構築する
 extern	int				CreateGrayColorData(     COLORDATA *ColorDataBuf ) ;																			// グレースケールのカラーフォーマットを構築する
-extern	int				CreatePal8ColorData(     COLORDATA *ColorDataBuf, int UseAlpha = FALSE ) ;														// パレット２５６色のカラーフォーマットを構築する
+extern	int				CreatePal8ColorData(     COLORDATA *ColorDataBuf, int UseAlpha DEFAULTPARAM( = FALSE ) ) ;										// パレット２５６色のカラーフォーマットを構築する
 extern	int				CreateColorData(         COLORDATA *ColorDataBuf, int ColorBitDepth,
 										         DWORD RedMask, DWORD GreenMask, DWORD BlueMask, DWORD AlphaMask,
-												 int ChannelNum = 0, int ChannelBitDepth = 0, int FloatTypeFlag = FALSE ) ;								// カラーフォーマットを作成する
+												 int ChannelNum DEFAULTPARAM( = 0 ), int ChannelBitDepth DEFAULTPARAM( = 0 ), int FloatTypeFlag DEFAULTPARAM( = FALSE ) ) ;				// カラーフォーマットを作成する
 extern	void			SetColorDataNoneMask(    COLORDATA *ColorData ) ;																				// NoneMask 以外の要素を埋めた COLORDATA 構造体の情報を元に NoneMask をセットする
 extern	int				CmpColorData(            const COLORDATA *ColorData1, const COLORDATA *ColorData2 ) ;											// 二つのカラーフォーマットが等しいかどうか調べる( 戻り値　TRUE:等しい  FALSE:等しくない )
 
@@ -4338,15 +4716,19 @@ extern	int			LoadXRGB8ColorSoftImageToMem(         const void *FileImage, int Fi
 extern	int			MakeSoftImage(                        int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( -1:エラー  -1以外:イメージハンドル )
 extern	int			MakeARGBF32ColorSoftImage(            int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( RGBA 各チャンネル 32bit 浮動小数点型 カラー )
 extern	int			MakeARGBF16ColorSoftImage(            int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( RGBA 各チャンネル 16bit 浮動小数点型 カラー )
-extern	int			MakeARGB8ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( RGBA8 カラー )
 extern	int			MakeXRGB8ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( XRGB8 カラー )
+extern	int			MakeARGB8ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( RGBA8 カラー )
+extern	int			MakeRGBA8ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( RGBA8 カラー )
+extern	int			MakeABGR8ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( ABGR8 カラー )
+extern	int			MakeBGRA8ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( BGRA8 カラー )
 extern	int			MakeARGB4ColorSoftImage(              int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( ARGB4 カラー )
 extern	int			MakeA1R5G5B5ColorSoftImage(           int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( A1R5G5B5 カラー )
 extern	int			MakeX1R5G5B5ColorSoftImage(           int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( X1R5G5B5 カラー )
 extern	int			MakeR5G5B5A1ColorSoftImage(           int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( R5G5B5A1 カラー )
 extern	int			MakeR5G6B5ColorSoftImage(             int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( R5G6B5 カラー )
 extern	int			MakeRGB8ColorSoftImage(               int SizeX, int SizeY ) ;															// ソフトウエアイメージハンドルの作成( RGB8 カラー )
-extern	int			MakePAL8ColorSoftImage(               int SizeX, int SizeY, int UseAlpha = FALSE ) ;									// ソフトウエアイメージハンドルの作成( パレット２５６色 カラー )
+extern	int			MakePAL8ColorSoftImage(               int SizeX, int SizeY, int UseAlpha DEFAULTPARAM( = FALSE ) ) ;					// ソフトウエアイメージハンドルの作成( パレット２５６色 カラー )
+extern	int			MakeColorDataSoftImage(               int SizeX, int SizeY, const COLORDATA *ColorData ) ;								// ソフトウエアイメージハンドルの作成( COLORDATA でフォーマット指定 )
 
 extern	int			DeleteSoftImage(                      int SIHandle ) ;																	// ソフトウエアイメージハンドルの削除する
 
@@ -4374,19 +4756,21 @@ extern	int			GetPixelSoftImageF(                   int SIHandle, int x, int y, f
 extern	void		GetPixelSoftImage_Unsafe_XRGB8(       int SIHandle, int x, int y, int   *r, int   *g, int   *b ) ;						// ソフトウエアイメージハンドルの指定座標の色を取得する(各色要素は０～２５５)、エラーチェックをしない代わりに高速ですが、範囲外の座標や XRGB8 以外のフォーマットのソフトハンドルを渡すと不正なメモリアクセスで強制終了します
 extern	void		GetPixelSoftImage_Unsafe_ARGB8(       int SIHandle, int x, int y, int   *r, int   *g, int   *b, int   *a ) ;			// ソフトウエアイメージハンドルの指定座標の色を取得する(各色要素は０～２５５)、エラーチェックをしない代わりに高速ですが、範囲外の座標や ARGB8 以外のフォーマットのソフトハンドルを渡すと不正なメモリアクセスで強制終了します
 extern	int			DrawLineSoftImage(                    int SIHandle, int x1, int y1, int x2, int y2, int r, int g, int b, int a ) ;		// ソフトウエアイメージハンドルの指定座標に線を描画する(各色要素は０～２５５)
-extern	int			DrawCircleSoftImage(                  int SIHandle, int x, int y, int radius, int r, int g, int b, int a, int FillFlag = TRUE ) ;	// ソフトウエアイメージハンドルの指定座標に円を描画する(各色要素は０～２５５)
-extern	int			BltSoftImage(                         int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int SrcSIHandle, int DestX, int DestY, int DestSIHandle ) ;									// ソフトウエアイメージハンドルを別のソフトウエアイメージハンドルに転送する
-extern	int			BltSoftImageWithTransColor(           int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int SrcSIHandle, int DestX, int DestY, int DestSIHandle, int Tr, int Tg, int Tb, int Ta ) ;	// ソフトウエアイメージハンドルを別のソフトウエアイメージハンドルに透過色処理付きで転送する
-extern	int			BltSoftImageWithAlphaBlend(           int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int SrcSIHandle, int DestX, int DestY, int DestSIHandle, int Opacity = 255 ) ;				// ソフトウエアイメージハンドルを別のソフトウエアイメージハンドルにアルファ値のブレンドを考慮した上で転送する( Opacity は透明度 : 0( 完全透明 ) ～ 255( 完全不透明 ) )( 出力先が ARGB8 形式以外の場合はエラーになります )
+extern	int			DrawCircleSoftImage(                  int SIHandle, int x, int y, int radius, int r, int g, int b, int a, int FillFlag DEFAULTPARAM( = TRUE ) ) ;	// ソフトウエアイメージハンドルの指定座標に円を描画する(各色要素は０～２５５)
+extern	int			BltSoftImage(                         int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int SrcSIHandle, int DestX, int DestY, int DestSIHandle ) ;										// ソフトウエアイメージハンドルを別のソフトウエアイメージハンドルに転送する
+extern	int			BltSoftImageWithTransColor(           int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int SrcSIHandle, int DestX, int DestY, int DestSIHandle, int Tr, int Tg, int Tb, int Ta ) ;		// ソフトウエアイメージハンドルを別のソフトウエアイメージハンドルに透過色処理付きで転送する
+extern	int			BltSoftImageWithAlphaBlend(           int SrcX, int SrcY, int SrcSizeX, int SrcSizeY, int SrcSIHandle, int DestX, int DestY, int DestSIHandle, int Opacity DEFAULTPARAM( = 255 ) ) ;	// ソフトウエアイメージハンドルを別のソフトウエアイメージハンドルにアルファ値のブレンドを考慮した上で転送する( Opacity は透明度 : 0( 完全透明 ) ～ 255( 完全不透明 ) )( 出力先が ARGB8 形式以外の場合はエラーになります )
 extern	int			ReverseSoftImageH(                    int SIHandle ) ;																	// ソフトウエアイメージハンドルを左右反転する
 extern	int			ReverseSoftImageV(                    int SIHandle ) ;																	// ソフトウエアイメージハンドルを上下反転する
 extern	int			ReverseSoftImage(                     int SIHandle ) ;																	// ソフトウエアイメージハンドルを上下左右反転する
+extern	int			ConvertPremulAlphaSoftImage(          int SIHandle ) ;																	// 通常のαチャンネル付き画像を乗算済みαチャンネル付き画像に変換する( ピクセルフォーマットが ARGB8 以外の場合は ARGB8 に変換されます )
+extern	int			ConvertInterpAlphaSoftImage(          int SIHandle ) ;																	// 乗算済みαチャンネル付き画像を通常のαチャンネル付き画像に変換する( ピクセルフォーマットが ARGB8 以外の場合は ARGB8 に変換されます )
 
 #ifndef DX_NON_FONT
-extern	int			BltStringSoftImage(                   int x, int y, const TCHAR *StrData,                       int DestSIHandle, int DestEdgeSIHandle = -1 ,                                        int VerticalFlag = FALSE ) ;		// ソフトウエアイメージハンドルに文字列を描画する( デフォルトフォントハンドルを使用する )
-extern	int			BltStringSoftImageWithStrLen(         int x, int y, const TCHAR *StrData, size_t StrDataLength, int DestSIHandle, int DestEdgeSIHandle = -1 ,                                        int VerticalFlag = FALSE ) ;		// ソフトウエアイメージハンドルに文字列を描画する( デフォルトフォントハンドルを使用する )
-extern	int			BltStringSoftImageToHandle(           int x, int y, const TCHAR *StrData,                       int DestSIHandle, int DestEdgeSIHandle /* 縁が必要ない場合は -1 */ , int FontHandle, int VerticalFlag = FALSE ) ;		// ソフトウエアイメージハンドルに文字列を描画する( フォントハンドル使用版 )
-extern	int			BltStringSoftImageToHandleWithStrLen( int x, int y, const TCHAR *StrData, size_t StrDataLength, int DestSIHandle, int DestEdgeSIHandle /* 縁が必要ない場合は -1 */ , int FontHandle, int VerticalFlag = FALSE ) ;		// ソフトウエアイメージハンドルに文字列を描画する( フォントハンドル使用版 )
+extern	int			BltStringSoftImage(                   int x, int y, const TCHAR *StrData,                       int DestSIHandle, int DestEdgeSIHandle DEFAULTPARAM( = -1 ) ,                        int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;		// ソフトウエアイメージハンドルに文字列を描画する( デフォルトフォントハンドルを使用する )
+extern	int			BltStringSoftImageWithStrLen(         int x, int y, const TCHAR *StrData, size_t StrDataLength, int DestSIHandle, int DestEdgeSIHandle DEFAULTPARAM( = -1 ) ,                        int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;		// ソフトウエアイメージハンドルに文字列を描画する( デフォルトフォントハンドルを使用する )
+extern	int			BltStringSoftImageToHandle(           int x, int y, const TCHAR *StrData,                       int DestSIHandle, int DestEdgeSIHandle /* 縁が必要ない場合は -1 */ , int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;		// ソフトウエアイメージハンドルに文字列を描画する( フォントハンドル使用版 )
+extern	int			BltStringSoftImageToHandleWithStrLen( int x, int y, const TCHAR *StrData, size_t StrDataLength, int DestSIHandle, int DestEdgeSIHandle /* 縁が必要ない場合は -1 */ , int FontHandle, int VerticalFlag DEFAULTPARAM( = FALSE ) ) ;		// ソフトウエアイメージハンドルに文字列を描画する( フォントハンドル使用版 )
 #endif // DX_NON_FONT
 
 extern	int			DrawSoftImage(                        int x, int y, int SIHandle ) ;														// ソフトウエアイメージハンドルを画面に描画する
@@ -4432,21 +4816,21 @@ extern	int			SaveSoftImageToJpegWithStrLen(        const TCHAR *FilePath, size_t
 // DxSound.cpp関数プロトタイプ宣言
 
 // サウンドデータ管理系関数
-extern	int			InitSoundMem(                        int LogOutFlag = FALSE ) ;																	// 全てのサウンドハンドルを削除する
+extern	int			InitSoundMem(                        int LogOutFlag DEFAULTPARAM( = FALSE ) ) ;																	// 全てのサウンドハンドルを削除する
 
-extern	int			AddSoundData(                        int Handle = -1 ) ;																											// サウンドハンドルを作成する
-extern	int			AddStreamSoundMem(                   STREAMDATA *Stream, int LoopNum,  int SoundHandle, int StreamDataType, int *CanStreamCloseFlag, int UnionHandle = -1 ) ;		// ストリーム再生タイプのサウンドハンドルにストリームデータを再生対象に追加する
-extern	int			AddStreamSoundMemToMem(              const void *FileImage, int FileImageSize, int LoopNum,  int SoundHandle, int StreamDataType, int UnionHandle = -1 ) ;			// ストリーム再生タイプのサウンドハンドルにメモリ上に展開したサウンドファイルイメージを再生対象に追加する
-extern	int			AddStreamSoundMemToFile(             const TCHAR *WaveFile,                            int LoopNum,  int SoundHandle, int StreamDataType, int UnionHandle = -1 ) ;	// ストリーム再生タイプのサウンドハンドルにサウンドファイルを再生対象に追加する
-extern	int			AddStreamSoundMemToFileWithStrLen(   const TCHAR *WaveFile, size_t WaveFilePathLength, int LoopNum,  int SoundHandle, int StreamDataType, int UnionHandle = -1 ) ;	// ストリーム再生タイプのサウンドハンドルにサウンドファイルを再生対象に追加する
+extern	int			AddSoundData(                        int Handle DEFAULTPARAM( = -1 ) ) ;																											// サウンドハンドルを作成する
+extern	int			AddStreamSoundMem(                   STREAMDATA *Stream, int LoopNum,  int SoundHandle, int StreamDataType, int *CanStreamCloseFlag, int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// ストリーム再生タイプのサウンドハンドルにストリームデータを再生対象に追加する
+extern	int			AddStreamSoundMemToMem(              const void *FileImage, size_t FileImageSize, int LoopNum,  int SoundHandle, int StreamDataType, int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// ストリーム再生タイプのサウンドハンドルにメモリ上に展開したサウンドファイルイメージを再生対象に追加する
+extern	int			AddStreamSoundMemToFile(             const TCHAR *WaveFile,                            int LoopNum,  int SoundHandle, int StreamDataType, int UnionHandle DEFAULTPARAM( = -1 ) ) ;	// ストリーム再生タイプのサウンドハンドルにサウンドファイルを再生対象に追加する
+extern	int			AddStreamSoundMemToFileWithStrLen(   const TCHAR *WaveFile, size_t WaveFilePathLength, int LoopNum,  int SoundHandle, int StreamDataType, int UnionHandle DEFAULTPARAM( = -1 ) ) ;	// ストリーム再生タイプのサウンドハンドルにサウンドファイルを再生対象に追加する
 extern	int			SetupStreamSoundMem(                 int SoundHandle ) ;																		// ストリーム再生タイプのサウンドハンドルの再生準備をする
-extern	int			PlayStreamSoundMem(                  int SoundHandle, int PlayType = DX_PLAYTYPE_LOOP , int TopPositionFlag = TRUE ) ;			// ストリーム再生タイプのサウンドハンドルの再生を開始する
+extern	int			PlayStreamSoundMem(                  int SoundHandle, int PlayType DEFAULTPARAM( = DX_PLAYTYPE_LOOP ) , int TopPositionFlag DEFAULTPARAM( = TRUE ) ) ;	// ストリーム再生タイプのサウンドハンドルの再生を開始する
 extern	int			CheckStreamSoundMem(                 int SoundHandle ) ;																		// ストリーム再生タイプのサウンドハンドルの再生状態を取得する
-extern	int			StopStreamSoundMem(                  int SoundHandle ) ;																		// ストリーム再生タイプのサウンドハンドルの再生を停止する
-extern	int			SetStreamSoundCurrentPosition(       int Byte, int SoundHandle ) ;																// サウンドハンドルの再生位置をバイト単位で変更する(再生が止まっている時のみ有効)
-extern	int			GetStreamSoundCurrentPosition(       int SoundHandle ) ;																		// サウンドハンドルの再生位置をバイト単位で取得する
-extern	int			SetStreamSoundCurrentTime(           int Time, int SoundHandle ) ;																// サウンドハンドルの再生位置をミリ秒単位で設定する(圧縮形式の場合は正しく設定されない場合がある)
-extern	int			GetStreamSoundCurrentTime(           int SoundHandle ) ;																		// サウンドハンドルの再生位置をミリ秒単位で取得する(圧縮形式の場合は正しい値が返ってこない場合がある)
+extern	int			StopStreamSoundMem(                  int SoundHandle, int IsNextLoopEnd DEFAULTPARAM( = FALSE ) ) ;								// ストリーム再生タイプのサウンドハンドルの再生を停止する
+extern	int			SetStreamSoundCurrentPosition(       LONGLONG Byte, int SoundHandle ) ;															// サウンドハンドルの再生位置をバイト単位で変更する(再生が止まっている時のみ有効)
+extern	LONGLONG	GetStreamSoundCurrentPosition(       int SoundHandle ) ;																		// サウンドハンドルの再生位置をバイト単位で取得する
+extern	int			SetStreamSoundCurrentTime(           LONGLONG Time, int SoundHandle ) ;															// サウンドハンドルの再生位置をミリ秒単位で設定する(圧縮形式の場合は正しく設定されない場合がある)
+extern	LONGLONG	GetStreamSoundCurrentTime(           int SoundHandle ) ;																		// サウンドハンドルの再生位置をミリ秒単位で取得する(圧縮形式の場合は正しい値が返ってこない場合がある)
 extern	int			ProcessStreamSoundMem(               int SoundHandle ) ;																		// ストリーム再生タイプのサウンドハンドルの周期的な処理を行う関数( 内部で自動的に呼ばれます )
 extern	int			ProcessStreamSoundMemAll(            void ) ;																					// 有効なストリーム再生タイプのサウンドハンドルに対して ProcessStreamSoundMem を実行する( 内部で自動的に呼ばれます )
 
@@ -4456,25 +4840,25 @@ extern	int			LoadSoundMem2WithStrLen(             const TCHAR *FileName1, size_t
 extern	int			LoadBGM(                             const TCHAR *FileName                        ) ;													// 主にＢＧＭを読み込みサウンドハンドルを作成するのに適した関数
 extern	int			LoadBGMWithStrLen(                   const TCHAR *FileName, size_t FileNameLength ) ;													// 主にＢＧＭを読み込みサウンドハンドルを作成するのに適した関数
 
-extern	int			LoadSoundMemBase(                    const TCHAR *FileName,                        int BufferNum,      int UnionHandle = -1 ) ;			// サウンドファイルからサウンドハンドルを作成する
-extern	int			LoadSoundMemBaseWithStrLen(          const TCHAR *FileName, size_t FileNameLength, int BufferNum,      int UnionHandle = -1 ) ;			// サウンドファイルからサウンドハンドルを作成する
-extern	int			LoadSoundMem(                        const TCHAR *FileName,                        int BufferNum = 3 , int UnionHandle = -1 ) ;			// LoadSoundMemBase の別名関数
-extern	int			LoadSoundMemWithStrLen(              const TCHAR *FileName, size_t FileNameLength, int BufferNum = 3 , int UnionHandle = -1 ) ;			// LoadSoundMemBase の別名関数
+extern	int			LoadSoundMemBase(                    const TCHAR *FileName,                        int BufferNum,                      int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// サウンドファイルからサウンドハンドルを作成する
+extern	int			LoadSoundMemBaseWithStrLen(          const TCHAR *FileName, size_t FileNameLength, int BufferNum,                      int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// サウンドファイルからサウンドハンドルを作成する
+extern	int			LoadSoundMem(                        const TCHAR *FileName,                        int BufferNum DEFAULTPARAM( = 3 ) , int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// LoadSoundMemBase の別名関数
+extern	int			LoadSoundMemWithStrLen(              const TCHAR *FileName, size_t FileNameLength, int BufferNum DEFAULTPARAM( = 3 ) , int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// LoadSoundMemBase の別名関数
 extern	int			LoadSoundMemToBufNumSitei(           const TCHAR *FileName,                        int BufferNum ) ;									// LoadSoundMem を使用して下さい
 extern	int			LoadSoundMemToBufNumSiteiWithStrLen( const TCHAR *FileName, size_t FileNameLength, int BufferNum ) ;									// LoadSoundMem を使用して下さい
-extern	int			DuplicateSoundMem(                   int SrcSoundHandle, int BufferNum = 3 ) ;															// 同じサウンドデータを使用するサウンドハンドルを作成する( DX_SOUNDDATATYPE_MEMNOPRESS タイプのサウンドハンドルのみ可能 )
+extern	int			DuplicateSoundMem(                   int SrcSoundHandle, int BufferNum DEFAULTPARAM( = 3 ) ) ;											// 同じサウンドデータを使用するサウンドハンドルを作成する( DX_SOUNDDATATYPE_MEMNOPRESS タイプのサウンドハンドルのみ可能 )
 
-extern	int			LoadSoundMemByMemImageBase(          const void *FileImage, int FileImageSize, int BufferNum,      int UnionHandle = -1 ) ;				// メモリ上に展開されたサウンドファイルイメージからサウンドハンドルを作成する
-extern	int			LoadSoundMemByMemImage(              const void *FileImage, int FileImageSize, int BufferNum = 3 , int UnionHandle = -1 ) ;				// LoadSoundMemByMemImageBase の別名関数
-extern	int			LoadSoundMemByMemImage2(             const void *WaveImage, int WaveImageSize, const WAVEFORMATEX *WaveFormat, int WaveHeaderSize ) ;	// メモリ上に展開されたＰＣＭデータからサウンドハンドルを作成する
-extern	int			LoadSoundMemByMemImageToBufNumSitei( const void *FileImage, int FileImageSize, int BufferNum ) ;										// LoadSoundMemByMemImageBase を使用して下さい
-extern	int			LoadSoundMem2ByMemImage(             const void *FileImage1, int FileImageSize1, const void *FileImage2, int FileImageSize2 ) ;			// 前奏部とループ部に分かれた二つのメモリ上に展開されたサウンドファイルイメージからサウンドハンドルを作成する
-extern	int			LoadSoundMemFromSoftSound(           int SoftSoundHandle, int BufferNum = 3 ) ;															// ソフトウエアサウンドハンドルが持つサウンドデータからサウンドハンドルを作成する
+extern	int			LoadSoundMemByMemImageBase(          const void *FileImage, size_t FileImageSize, int BufferNum,                      int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// メモリ上に展開されたサウンドファイルイメージからサウンドハンドルを作成する
+extern	int			LoadSoundMemByMemImage(              const void *FileImage, size_t FileImageSize, int BufferNum DEFAULTPARAM( = 3 ) , int UnionHandle DEFAULTPARAM( = -1 ) ) ;		// LoadSoundMemByMemImageBase の別名関数
+extern	int			LoadSoundMemByMemImage2(             const void *WaveImage, size_t WaveImageSize, const WAVEFORMATEX *WaveFormat, size_t WaveHeaderSize ) ;	// メモリ上に展開されたＰＣＭデータからサウンドハンドルを作成する
+extern	int			LoadSoundMemByMemImageToBufNumSitei( const void *FileImage, size_t FileImageSize, int BufferNum ) ;										// LoadSoundMemByMemImageBase を使用して下さい
+extern	int			LoadSoundMem2ByMemImage(             const void *FileImage1, size_t FileImageSize1, const void *FileImage2, size_t FileImageSize2 ) ;	// 前奏部とループ部に分かれた二つのメモリ上に展開されたサウンドファイルイメージからサウンドハンドルを作成する
+extern	int			LoadSoundMemFromSoftSound(           int SoftSoundHandle, int BufferNum DEFAULTPARAM( = 3 ) ) ;											// ソフトウエアサウンドハンドルが持つサウンドデータからサウンドハンドルを作成する
 
-extern	int			DeleteSoundMem(                      int SoundHandle, int LogOutFlag = FALSE ) ;												// サウンドハンドルを削除する
+extern	int			DeleteSoundMem(                      int SoundHandle, int LogOutFlag DEFAULTPARAM( = FALSE ) ) ;												// サウンドハンドルを削除する
 
-extern	int			PlaySoundMem(                        int SoundHandle, int PlayType, int TopPositionFlag = TRUE ) ;								// サウンドハンドルを再生する
-extern	int			StopSoundMem(                                                                        int SoundHandle ) ;						// サウンドハンドルの再生を停止する
+extern	int			PlaySoundMem(                        int SoundHandle, int PlayType, int TopPositionFlag DEFAULTPARAM( = TRUE ) ) ;				// サウンドハンドルを再生する
+extern	int			StopSoundMem(                                                                        int SoundHandle, int IsNextLoopEnd DEFAULTPARAM( = FALSE ) ) ;	// サウンドハンドルの再生を停止する( IsNextLoopEnd を TRUE にすると次回のループ終了のタイミングで音を止める )
 extern	int			CheckSoundMem(                                                                       int SoundHandle ) ;						// サウンドハンドルが再生中かどうかを取得する
 extern	int			SetPanSoundMem(                      int PanPal,                                     int SoundHandle ) ;						// サウンドハンドルのパンを設定する( 100分の1デシベル単位 0 ～ 10000 )
 extern	int			ChangePanSoundMem(                   int PanPal,                                     int SoundHandle ) ;						// サウンドハンドルのパンを設定する( -255 ～ 255 )
@@ -4499,33 +4883,33 @@ extern	int			SetNextPlayChannelVolumeSoundMem(    int Channel, int VolumePal,   
 extern	int			ChangeNextPlayChannelVolumeSoundMem( int Channel, int VolumePal,                     int SoundHandle ) ;						// サウンドハンドルの次の再生にのみ使用するチャンネルのボリュームを設定する( 0 ～ 255 )
 extern	int			SetNextPlayFrequencySoundMem(        int FrequencyPal,                               int SoundHandle ) ;						// サウンドハンドルの次の再生にのみ使用する再生周波数を設定する
 
-extern	int			SetCurrentPositionSoundMem(          int SamplePosition,                             int SoundHandle ) ;						// サウンドハンドルの再生位置をサンプル単位で設定する(再生が止まっている時のみ有効)
-extern	int			GetCurrentPositionSoundMem(                                                          int SoundHandle ) ;						// サウンドハンドルの再生位置をサンプル単位で取得する
-extern	int			SetSoundCurrentPosition(             int Byte,                                       int SoundHandle ) ;						// サウンドハンドルの再生位置をバイト単位で設定する(再生が止まっている時のみ有効)
-extern	int			GetSoundCurrentPosition(                                                             int SoundHandle ) ;						// サウンドハンドルの再生位置をバイト単位で取得する
-extern	int			SetSoundCurrentTime(                 int Time,                                       int SoundHandle ) ;						// サウンドハンドルの再生位置をミリ秒単位で設定する(圧縮形式の場合は正しく設定されない場合がある)
-extern	int			GetSoundCurrentTime(                                                                 int SoundHandle ) ;						// サウンドハンドルの再生位置をミリ秒単位で取得する(圧縮形式の場合は正しい値が返ってこない場合がある)
-extern	int			GetSoundTotalSample(                                                                 int SoundHandle ) ;						// サウンドハンドルの音の総時間をサンプル単位で取得する
-extern	int			GetSoundTotalTime(                                                                   int SoundHandle ) ;						// サウンドハンドルの音の総時間をミリ秒単位で取得する
+extern	int			SetCurrentPositionSoundMem(          LONGLONG SamplePosition,                        int SoundHandle ) ;						// サウンドハンドルの再生位置をサンプル単位で設定する(再生が止まっている時のみ有効)
+extern	LONGLONG	GetCurrentPositionSoundMem(                                                          int SoundHandle ) ;						// サウンドハンドルの再生位置をサンプル単位で取得する
+extern	int			SetSoundCurrentPosition(             LONGLONG Byte,                                  int SoundHandle ) ;						// サウンドハンドルの再生位置をバイト単位で設定する(再生が止まっている時のみ有効)
+extern	LONGLONG	GetSoundCurrentPosition(                                                             int SoundHandle ) ;						// サウンドハンドルの再生位置をバイト単位で取得する
+extern	int			SetSoundCurrentTime(                 LONGLONG Time,                                  int SoundHandle ) ;						// サウンドハンドルの再生位置をミリ秒単位で設定する(圧縮形式の場合は正しく設定されない場合がある)
+extern	LONGLONG	GetSoundCurrentTime(                                                                 int SoundHandle ) ;						// サウンドハンドルの再生位置をミリ秒単位で取得する(圧縮形式の場合は正しい値が返ってこない場合がある)
+extern	LONGLONG	GetSoundTotalSample(                                                                 int SoundHandle ) ;						// サウンドハンドルの音の総時間をサンプル単位で取得する
+extern	LONGLONG	GetSoundTotalTime(                                                                   int SoundHandle ) ;						// サウンドハンドルの音の総時間をミリ秒単位で取得する
 
-extern	int			SetLoopPosSoundMem(                  int LoopTime,                                   int SoundHandle ) ;						// SetLoopTimePosSoundMem の別名関数
-extern	int			SetLoopTimePosSoundMem(              int LoopTime,                                   int SoundHandle ) ;						// サウンドハンドルにループ位置を設定する(ミリ秒単位)
-extern	int			SetLoopSamplePosSoundMem(            int LoopSamplePosition,                         int SoundHandle ) ;						// サウンドハンドルにループ位置を設定する(サンプル単位)
+extern	int			SetLoopPosSoundMem(                  LONGLONG LoopTime,                              int SoundHandle ) ;						// SetLoopTimePosSoundMem の別名関数
+extern	int			SetLoopTimePosSoundMem(              LONGLONG LoopTime,                              int SoundHandle ) ;						// サウンドハンドルにループ位置を設定する(ミリ秒単位)
+extern	int			SetLoopSamplePosSoundMem(            LONGLONG LoopSamplePosition,                    int SoundHandle ) ;						// サウンドハンドルにループ位置を設定する(サンプル単位)
 
-extern	int			SetLoopStartTimePosSoundMem(         int LoopStartTime,                              int SoundHandle ) ;						// サウンドハンドルにループ開始位置を設定する(ミリ秒単位)
-extern	int			SetLoopStartSamplePosSoundMem(       int LoopStartSamplePosition,                    int SoundHandle ) ;						// サウンドハンドルにループ開始位置を設定する(サンプル単位)
+extern	int			SetLoopStartTimePosSoundMem(         LONGLONG LoopStartTime,                         int SoundHandle ) ;						// サウンドハンドルにループ開始位置を設定する(ミリ秒単位)
+extern	int			SetLoopStartSamplePosSoundMem(       LONGLONG LoopStartSamplePosition,               int SoundHandle ) ;						// サウンドハンドルにループ開始位置を設定する(サンプル単位)
 
-extern	int			SetLoopAreaTimePosSoundMem(          int  LoopStartTime, int  LoopEndTime,                     int SoundHandle ) ;				// サウンドハンドルにループ範囲を設定する(ミリ秒単位)
-extern	int			GetLoopAreaTimePosSoundMem(          int *LoopStartTime, int *LoopEndTime,                     int SoundHandle ) ;				// サウンドハンドルにループ範囲を取得する(ミリ秒単位)
-extern	int			SetLoopAreaSamplePosSoundMem(        int  LoopStartSamplePosition, int  LoopEndSamplePosition, int SoundHandle ) ;				// サウンドハンドルにループ範囲を設定する(サンプル単位)
-extern	int			GetLoopAreaSamplePosSoundMem(        int *LoopStartSamplePosition, int *LoopEndSamplePosition, int SoundHandle ) ;				// サウンドハンドルにループ範囲を取得する(サンプル単位)
+extern	int			SetLoopAreaTimePosSoundMem(          LONGLONG  LoopStartTime, LONGLONG  LoopEndTime,                     int SoundHandle ) ;	// サウンドハンドルにループ範囲を設定する(ミリ秒単位)
+extern	int			GetLoopAreaTimePosSoundMem(          LONGLONG *LoopStartTime, LONGLONG *LoopEndTime,                     int SoundHandle ) ;	// サウンドハンドルにループ範囲を取得する(ミリ秒単位)
+extern	int			SetLoopAreaSamplePosSoundMem(        LONGLONG  LoopStartSamplePosition, LONGLONG  LoopEndSamplePosition, int SoundHandle ) ;	// サウンドハンドルにループ範囲を設定する(サンプル単位)
+extern	int			GetLoopAreaSamplePosSoundMem(        LONGLONG *LoopStartSamplePosition, LONGLONG *LoopEndSamplePosition, int SoundHandle ) ;	// サウンドハンドルにループ範囲を取得する(サンプル単位)
 
 extern	int			SetPlayFinishDeleteSoundMem(         int DeleteFlag,                                 int SoundHandle ) ;						// サウンドハンドルの再生が終了したら自動的にハンドルを削除するかどうかを設定する
 
 extern	int			Set3DReverbParamSoundMem(            const SOUND3D_REVERB_PARAM *Param,              int SoundHandle ) ;						// サウンドハンドルの３Ｄサウンド用のリバーブパラメータを設定する
 extern	int			Set3DPresetReverbParamSoundMem(      int PresetNo /* DX_REVERB_PRESET_DEFAULT 等 */ , int SoundHandle ) ;						// サウンドハンドルの３Ｄサウンド用のリバーブパラメータをプリセットを使用して設定する
-extern	int			Set3DReverbParamSoundMemAll(         const SOUND3D_REVERB_PARAM *Param, int PlaySoundOnly = FALSE ) ;							// 全ての３Ｄサウンドのサウンドハンドルにリバーブパラメータを設定する( PlaySoundOnly TRUE:再生中のサウンドにのみ設定する  FALSE:再生していないサウンドにも設定する )
-extern	int			Set3DPresetReverbParamSoundMemAll(   int PresetNo /* DX_REVERB_PRESET_DEFAULT 等 */ , int PlaySoundOnly = FALSE  ) ;			// 全ての３Ｄサウンドのサウンドハンドルにリバーブパラメータをプリセットを使用して設定する( PlaySoundOnly TRUE:再生中のサウンドにのみ設定する  FALSE:再生していないサウンドにも設定する )
+extern	int			Set3DReverbParamSoundMemAll(         const SOUND3D_REVERB_PARAM *Param, int PlaySoundOnly DEFAULTPARAM( = FALSE ) ) ;					// 全ての３Ｄサウンドのサウンドハンドルにリバーブパラメータを設定する( PlaySoundOnly TRUE:再生中のサウンドにのみ設定する  FALSE:再生していないサウンドにも設定する )
+extern	int			Set3DPresetReverbParamSoundMemAll(   int PresetNo /* DX_REVERB_PRESET_DEFAULT 等 */ , int PlaySoundOnly DEFAULTPARAM( = FALSE )  ) ;	// 全ての３Ｄサウンドのサウンドハンドルにリバーブパラメータをプリセットを使用して設定する( PlaySoundOnly TRUE:再生中のサウンドにのみ設定する  FALSE:再生していないサウンドにも設定する )
 extern	int			Get3DReverbParamSoundMem(            SOUND3D_REVERB_PARAM *ParamBuffer,              int SoundHandle ) ;						// サウンドハンドルに設定されている３Ｄサウンド用のリバーブパラメータを取得する
 extern	int			Get3DPresetReverbParamSoundMem(      SOUND3D_REVERB_PARAM *ParamBuffer, int PresetNo /* DX_REVERB_PRESET_DEFAULT 等 */ ) ;		// プリセットの３Ｄサウンド用のリバーブパラメータを取得する
 
@@ -4537,6 +4921,18 @@ extern	int			SetNextPlay3DPositionSoundMem(       VECTOR Position,              
 extern	int			SetNextPlay3DRadiusSoundMem(         float Radius,                                   int SoundHandle ) ;						// サウンドハンドルの次の再生のみに使用する３Ｄサウンド用の音が聞こえる距離を設定する
 extern	int			SetNextPlay3DVelocitySoundMem(       VECTOR Velocity,                                int SoundHandle ) ;						// サウンドハンドルの次の再生のみに使用する３Ｄサウンド用の移動速度を設定する
 
+
+// 特殊関数
+extern	int			GetMP3TagInfo(           const TCHAR *FileName,                        TCHAR *TitleBuffer, size_t TitleBufferBytes, TCHAR *ArtistBuffer, size_t ArtistBufferBytes, TCHAR *AlbumBuffer, size_t AlbumBufferBytes, TCHAR *YearBuffer, size_t YearBufferBytes, TCHAR *CommentBuffer, size_t CommentBufferBytes, TCHAR *TrackBuffer, size_t TrackBufferBytes, TCHAR *GenreBuffer, size_t GenreBufferBytes, int *PictureGrHandle ) ;		// MP3ファイルのタグ情報を取得する
+extern	int			GetMP3TagInfoWithStrLen( const TCHAR *FileName, size_t FileNameLength, TCHAR *TitleBuffer, size_t TitleBufferBytes, TCHAR *ArtistBuffer, size_t ArtistBufferBytes, TCHAR *AlbumBuffer, size_t AlbumBufferBytes, TCHAR *YearBuffer, size_t YearBufferBytes, TCHAR *CommentBuffer, size_t CommentBufferBytes, TCHAR *TrackBuffer, size_t TrackBufferBytes, TCHAR *GenreBuffer, size_t GenreBufferBytes, int *PictureGrHandle ) ;		// MP3ファイルのタグ情報を取得する
+#ifndef DX_NON_OGGVORBIS
+extern	int			GetOggCommentNum(           const TCHAR *FileName                        ) ;																																	// Oggファイルのコメント情報の数を取得する
+extern	int			GetOggCommentNumWithStrLen( const TCHAR *FileName, size_t FileNameLength ) ;																																	// Oggファイルのコメント情報の数を取得する
+extern	int			GetOggComment(              const TCHAR *FileName,                        int CommentIndex, TCHAR *CommentNameBuffer, size_t CommentNameBufferBytes, TCHAR *CommentBuffer, size_t CommentBufferBytes ) ;		// Oggファイルのコメント情報を取得する
+extern	int			GetOggCommentWithStrLen(    const TCHAR *FileName, size_t FileNameLength, int CommentIndex, TCHAR *CommentNameBuffer, size_t CommentNameBufferBytes, TCHAR *CommentBuffer, size_t CommentBufferBytes ) ;		// Oggファイルのコメント情報を取得する
+#endif // DX_NON_OGGVORBIS
+						
+
 // 設定関係関数
 extern	int			SetCreateSoundDataType(              int SoundDataType ) ;																		// 作成するサウンドハンドルの再生タイプを設定する( DX_SOUNDDATATYPE_MEMNOPRESS 等 )
 extern	int			GetCreateSoundDataType(              void ) ;																					// 作成するサウンドハンドルの再生タイプを取得する( DX_SOUNDDATATYPE_MEMNOPRESS 等 )
@@ -4544,16 +4940,18 @@ extern	int			SetCreateSoundPitchRate(             float Cents ) ;															
 extern	float		GetCreateSoundPitchRate(             void ) ;																					// 作成するサウンドハンドルのピッチ( 音の長さを変えずに音程を変更する )レートを取得する( 単位はセント( 100.0fで半音、1200.0fで１オクターヴ )、プラスの値で音程が高く、マイナスの値で音程が低くなります )
 extern	int			SetCreateSoundTimeStretchRate(       float Rate ) ;																				// 作成するサウンドハンドルのタイムストレッチ( 音程を変えずに音の長さを変更する )レートを設定する( 単位は倍率、2.0f で音の長さが２倍に、0.5f で音の長さが半分になります )
 extern	float		GetCreateSoundTimeStretchRate(       void ) ;																					// 作成するサウンドハンドルのタイムストレッチ( 音程を変えずに音の長さを変更する )レートを取得する( 単位は倍率、2.0f で音の長さが２倍に、0.5f で音の長さが半分になります )
-extern	int			SetCreateSoundLoopAreaTimePos(       int  LoopStartTime,           int  LoopEndTime ) ;											// 作成するサウンドハンドルのループ範囲を設定する( ミリ秒単位 )
-extern	int			GetCreateSoundLoopAreaTimePos(       int *LoopStartTime,           int *LoopEndTime ) ;											// 作成するサウンドハンドルのループ範囲を取得する( ミリ秒単位 )
-extern	int			SetCreateSoundLoopAreaSamplePos(     int  LoopStartSamplePosition, int  LoopEndSamplePosition ) ;								// 作成するサウンドハンドルのループ範囲を設定する( サンプル単位 )
-extern	int			GetCreateSoundLoopAreaSamplePos(     int *LoopStartSamplePosition, int *LoopEndSamplePosition ) ;								// 作成するサウンドハンドルのループ範囲を取得する( サンプル単位 )
+extern	int			SetCreateSoundLoopAreaTimePos(       LONGLONG  LoopStartTime,           LONGLONG  LoopEndTime ) ;								// 作成するサウンドハンドルのループ範囲を設定する( ミリ秒単位 )
+extern	int			GetCreateSoundLoopAreaTimePos(       LONGLONG *LoopStartTime,           LONGLONG *LoopEndTime ) ;								// 作成するサウンドハンドルのループ範囲を取得する( ミリ秒単位 )
+extern	int			SetCreateSoundLoopAreaSamplePos(     LONGLONG  LoopStartSamplePosition, LONGLONG  LoopEndSamplePosition ) ;						// 作成するサウンドハンドルのループ範囲を設定する( サンプル単位 )
+extern	int			GetCreateSoundLoopAreaSamplePos(     LONGLONG *LoopStartSamplePosition, LONGLONG *LoopEndSamplePosition ) ;						// 作成するサウンドハンドルのループ範囲を取得する( サンプル単位 )
 extern	int			SetCreateSoundIgnoreLoopAreaInfo(    int IgnoreFlag ) ;																			// LoadSoundMem などで読み込むサウンドデータにループ範囲情報があっても無視するかどうかを設定する( TRUE:無視する  FALSE:無視しない( デフォルト ) )
 extern	int			GetCreateSoundIgnoreLoopAreaInfo(    void ) ;																					// LoadSoundMem などで読み込むサウンドデータにループ範囲情報があっても無視するかどうかを取得する( TRUE:無視する  FALSE:無視しない( デフォルト ) )
 extern	int			SetDisableReadSoundFunctionMask(     int Mask ) ;																				// 使用しないサウンドデータ読み込み処理のマスクを設定する( DX_READSOUNDFUNCTION_PCM 等 )
 extern	int			GetDisableReadSoundFunctionMask(     void ) ;																					// 使用しないサウンドデータ読み込み処理のマスクを取得する( DX_READSOUNDFUNCTION_PCM 等 )
 extern	int			SetEnableSoundCaptureFlag(           int Flag ) ;																				// サウンドキャプチャを前提とした動作をするかどうかを設定する
 extern	int			SetUseOldVolumeCalcFlag(             int Flag ) ;																				// ChangeVolumeSoundMem, ChangeNextPlayVolumeSoundMem, ChangeMovieVolumeToGraph の音量計算式を Ver3.10c以前のものを使用するかどうかを設定する( TRUE:Ver3.10c以前の計算式を使用  FALSE:3.10d以降の計算式を使用( デフォルト ) )
+extern	int			SetSoundCurrentTimeType(             int Type /* DX_SOUNDCURRENTTIME_TYPE_LOW_LEVEL など */ ) ;									// GetSoundCurrentTime などを使用した場合に取得できる再生時間のタイプを設定する
+extern	int			GetSoundCurrentTimeType(             void ) ;																					// GetSoundCurrentTime などを使用した場合に取得できる再生時間のタイプを取得する
 
 extern	int			SetCreate3DSoundFlag(                     int Flag ) ;																			// 次に作成するサウンドハンドルを３Ｄサウンド用にするかどうかを設定する( TRUE:３Ｄサウンド用にする  FALSE:３Ｄサウンド用にしない( デフォルト ) )
 extern	int			Set3DSoundOneMetre(                       float Distance ) ;																	// ３Ｄ空間の１メートルに相当する距離を設定する、DxLib_Init を呼び出す前でのみ呼び出し可能( デフォルト:1.0f )
@@ -4573,8 +4971,12 @@ extern	int			StopBeep(							void ) ;																					// ビープ音を止�
 // ラッパー関数
 extern	int			PlaySoundFile(						const TCHAR *FileName,                        int PlayType ) ;								// サウンドファイルを再生する
 extern	int			PlaySoundFileWithStrLen(			const TCHAR *FileName, size_t FileNameLength, int PlayType ) ;								// サウンドファイルを再生する
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
 extern	int			PlaySound(							const TCHAR *FileName,                        int PlayType ) ;								// PlaySoundFile の旧名称
 extern	int			PlaySoundWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int PlayType ) ;								// PlaySoundFile の旧名称
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			PlaySoundDX(						const TCHAR *FileName,                        int PlayType ) ;								// PlaySoundFile の旧名称
+extern	int			PlaySoundDXWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int PlayType ) ;								// PlaySoundFile の旧名称
 extern	int			CheckSoundFile(						void ) ;																					// サウンドファイルの再生中かどうかを取得する
 extern	int			CheckSound(							void ) ;																					// CheckSoundFile の旧名称
 extern	int			StopSoundFile(						void ) ;																					// サウンドファイルの再生を停止する
@@ -4586,32 +4988,33 @@ extern	int			SetVolumeSound(						int VolumePal ) ;																			// SetVolu
 extern	int			InitSoftSound(						void ) ;																					// ソフトウエアで扱う波形データハンドルをすべて削除する
 extern	int			LoadSoftSound(						const TCHAR *FileName                        ) ;											// ソフトウエアで扱う波形データハンドルをサウンドファイルから作成する
 extern	int			LoadSoftSoundWithStrLen(			const TCHAR *FileName, size_t FileNameLength ) ;											// ソフトウエアで扱う波形データハンドルをサウンドファイルから作成する
-extern	int			LoadSoftSoundFromMemImage(			const void *FileImage, int FileImageSize ) ;												// ソフトウエアで扱う波形データハンドルをメモリ上に展開されたサウンドファイルイメージから作成する
-extern	int			MakeSoftSound(						int UseFormat_SoftSoundHandle, int SampleNum ) ;											// ソフトウエアで扱う空の波形データハンドルを作成する( フォーマットは引数のソフトウエアサウンドハンドルと同じものにする )
-extern	int			MakeSoftSound2Ch16Bit44KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数:16bit サンプリング周波数:44.1KHz )
-extern	int			MakeSoftSound2Ch16Bit22KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数:16bit サンプリング周波数:22KHz )
-extern	int			MakeSoftSound2Ch8Bit44KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数: 8bit サンプリング周波数:44.1KHz )
-extern	int			MakeSoftSound2Ch8Bit22KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数: 8bit サンプリング周波数:22KHz )
-extern	int			MakeSoftSound1Ch16Bit44KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数:16bit サンプリング周波数:44.1KHz )
-extern	int			MakeSoftSound1Ch16Bit22KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数:16bit サンプリング周波数:22KHz )
-extern	int			MakeSoftSound1Ch8Bit44KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数: 8bit サンプリング周波数:44.1KHz )
-extern	int			MakeSoftSound1Ch8Bit22KHz(			int SampleNum ) ;																			// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数: 8bit サンプリング周波数:22KHz )
-extern	int			MakeSoftSoundCustom(				int ChannelNum, int BitsPerSample, int SamplesPerSec, int SampleNum, int IsFloatType = 0 ) ;	// ソフトウエアで扱う空の波形データハンドルを作成する
+extern	int			LoadSoftSoundFromMemImage(			const void *FileImage, size_t FileImageSize ) ;												// ソフトウエアで扱う波形データハンドルをメモリ上に展開されたサウンドファイルイメージから作成する
+extern	int			MakeSoftSound(						int UseFormat_SoftSoundHandle, LONGLONG SampleNum ) ;										// ソフトウエアで扱う空の波形データハンドルを作成する( フォーマットは引数のソフトウエアサウンドハンドルと同じものにする )
+extern	int			MakeSoftSound2Ch16Bit44KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数:16bit サンプリング周波数:44.1KHz )
+extern	int			MakeSoftSound2Ch16Bit22KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数:16bit サンプリング周波数:22KHz )
+extern	int			MakeSoftSound2Ch8Bit44KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数: 8bit サンプリング周波数:44.1KHz )
+extern	int			MakeSoftSound2Ch8Bit22KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:2 量子化ビット数: 8bit サンプリング周波数:22KHz )
+extern	int			MakeSoftSound1Ch16Bit44KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数:16bit サンプリング周波数:44.1KHz )
+extern	int			MakeSoftSound1Ch16Bit22KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数:16bit サンプリング周波数:22KHz )
+extern	int			MakeSoftSound1Ch8Bit44KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数: 8bit サンプリング周波数:44.1KHz )
+extern	int			MakeSoftSound1Ch8Bit22KHz(			LONGLONG SampleNum ) ;																		// ソフトウエアで扱う空の波形データハンドルを作成する( チャンネル数:1 量子化ビット数: 8bit サンプリング周波数:22KHz )
+extern	int			MakeSoftSoundCustom(				int ChannelNum, int BitsPerSample, int SamplesPerSec, LONGLONG SampleNum, int IsFloatType DEFAULTPARAM( = 0 ) ) ;	// ソフトウエアで扱う空の波形データハンドルを作成する
 extern	int			DeleteSoftSound(					int SoftSoundHandle ) ;																		// ソフトウエアで扱う波形データハンドルを削除する
 #ifndef DX_NON_SAVEFUNCTION
 extern	int			SaveSoftSound(						int SoftSoundHandle, const TCHAR *FileName                        ) ;						// ソフトウエアで扱う波形データハンドルをWAVEファイル(PCM)形式で保存する
 extern	int			SaveSoftSoundWithStrLen(			int SoftSoundHandle, const TCHAR *FileName, size_t FileNameLength ) ;						// ソフトウエアで扱う波形データハンドルをWAVEファイル(PCM)形式で保存する
 #endif // DX_NON_SAVEFUNCTION
-extern	int			GetSoftSoundSampleNum(				int SoftSoundHandle ) ;																		// ソフトウエアで扱う波形データハンドルのサンプル数を取得する
-extern	int			GetSoftSoundFormat(					int SoftSoundHandle, int *Channels, int *BitsPerSample, int *SamplesPerSec, int *IsFloatType = NULL ) ;				// ソフトウエアで扱う波形データハンドルのフォーマットを取得する
-extern	int			ReadSoftSoundData(					int SoftSoundHandle, int SamplePosition, int *Channel1, int *Channel2 ) ;					// ソフトウエアで扱う波形データハンドルのサンプルを読み取る
-extern	int			ReadSoftSoundDataF(					int SoftSoundHandle, int SamplePosition, float *Channel1, float *Channel2 ) ;				// ソフトウエアで扱う波形データハンドルのサンプルを読み取る( float型版 )
-extern	int			WriteSoftSoundData(					int SoftSoundHandle, int SamplePosition, int Channel1, int Channel2 ) ;						// ソフトウエアで扱う波形データハンドルのサンプルを書き込む
-extern	int			WriteSoftSoundDataF(				int SoftSoundHandle, int SamplePosition, float Channel1, float Channel2 ) ;					// ソフトウエアで扱う波形データハンドルのサンプルを書き込む( float型版 )
+extern	LONGLONG	GetSoftSoundSampleNum(				int SoftSoundHandle ) ;																		// ソフトウエアで扱う波形データハンドルのサンプル数を取得する
+extern	int			GetSoftSoundFormat(					int SoftSoundHandle, int *Channels, int *BitsPerSample, int *SamplesPerSec, int *IsFloatType DEFAULTPARAM( = NULL ) ) ;				// ソフトウエアで扱う波形データハンドルのフォーマットを取得する
+extern	int			ReadSoftSoundData(					int SoftSoundHandle, LONGLONG SamplePosition, int   *Channel1, int   *Channel2 ) ;			// ソフトウエアで扱う波形データハンドルのサンプルを読み取る
+extern	int			ReadSoftSoundDataF(					int SoftSoundHandle, LONGLONG SamplePosition, float *Channel1, float *Channel2 ) ;			// ソフトウエアで扱う波形データハンドルのサンプルを読み取る( float型版 )
+extern	int			WriteSoftSoundData(					int SoftSoundHandle, LONGLONG SamplePosition, int    Channel1, int    Channel2 ) ;			// ソフトウエアで扱う波形データハンドルのサンプルを書き込む
+extern	int			WriteSoftSoundDataF(				int SoftSoundHandle, LONGLONG SamplePosition, float  Channel1, float  Channel2 ) ;			// ソフトウエアで扱う波形データハンドルのサンプルを書き込む( float型版 )
 extern	int			WriteTimeStretchSoftSoundData(		int SrcSoftSoundHandle, int DestSoftSoundHandle ) ;											// ソフトウエアで扱う波形データハンドルの波形データを音程を変えずにデータの長さを変更する
 extern	int			WritePitchShiftSoftSoundData(		int SrcSoftSoundHandle, int DestSoftSoundHandle ) ;											// ソフトウエアで扱う波形データハンドルの波形データの長さを変更する
 extern	void*		GetSoftSoundDataImage(				int SoftSoundHandle ) ;																		// ソフトウエアで扱う波形データハンドルの波形イメージが格納されているメモリアドレスを取得する
-extern	int			GetFFTVibrationSoftSound(			int SoftSoundHandle, int Channel, int SamplePosition, int SampleNum, float *Buffer_Array, int BufferLength ) ;		// ソフトウエアで扱う波形データハンドルの指定の範囲を高速フーリエ変換を行い、各周波数域の振幅を取得する( SampleNum は 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536 の何れかである必要があります、Channel を -1 にすると二つのチャンネルを合成した結果になります )
+extern	int			GetFFTVibrationSoftSound(			int SoftSoundHandle, int Channel, LONGLONG SamplePosition, int SampleNum, float *Buffer_Array, int BufferLength ) ;									// ソフトウエアで扱う波形データハンドルの指定の範囲を高速フーリエ変換を行い、各周波数域の振幅を取得する( SampleNum は 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536 の何れかである必要があります、Channel を -1 にすると二つのチャンネルを合成した結果になります )
+extern	int			GetFFTVibrationSoftSoundBase(		int SoftSoundHandle, int Channel, LONGLONG SamplePosition, int SampleNum, float *RealBuffer_Array, float *ImagBuffer_Array, int BufferLength ) ;	// ソフトウエアで扱う波形データハンドルの指定の範囲を高速フーリエ変換を行い、各周波数域の振幅を取得する、結果の実数と虚数を別々に取得することができるバージョン( SampleNum は 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536 の何れかである必要があります、Channel を -1 にすると二つのチャンネルを合成した結果になります )
 
 extern	int			InitSoftSoundPlayer(				void ) ;																					// ソフトウエアで扱う波形データのプレイヤーハンドルをすべて解放する
 extern	int			MakeSoftSoundPlayer(				int UseFormat_SoftSoundHandle ) ;															// ソフトウエアで扱う波形データのプレイヤーハンドルを作成する( フォーマットは引数のソフトウエアサウンドハンドルと同じものにする )
@@ -4625,7 +5028,7 @@ extern	int			MakeSoftSoundPlayer1Ch8Bit44KHz(	void ) ;																					// �
 extern	int			MakeSoftSoundPlayer1Ch8Bit22KHz(	void ) ;																					// ソフトウエアで扱う波形データのプレイヤーハンドルを作成する( チャンネル数:1 量子化ビット数: 8bit サンプリング周波数:22KHz )
 extern	int			MakeSoftSoundPlayerCustom(			int ChannelNum, int BitsPerSample, int SamplesPerSec ) ;									// ソフトウエアで扱う波形データのプレイヤーハンドルを作成する
 extern	int			DeleteSoftSoundPlayer(				int SSoundPlayerHandle ) ;																	// ソフトウエアで扱う波形データのプレイヤーハンドルを削除する
-extern	int			AddDataSoftSoundPlayer(				int SSoundPlayerHandle, int SoftSoundHandle, int AddSamplePosition, int AddSampleNum ) ;	// ソフトウエアで扱う波形データのプレイヤーハンドルに波形データを追加する( フォーマットが同じではない場合はエラー )
+extern	int			AddDataSoftSoundPlayer(				int SSoundPlayerHandle, int SoftSoundHandle, LONGLONG AddSamplePosition, int AddSampleNum ) ;	// ソフトウエアで扱う波形データのプレイヤーハンドルに波形データを追加する( フォーマットが同じではない場合はエラー )
 extern	int			AddDirectDataSoftSoundPlayer(		int SSoundPlayerHandle, const void *SoundData, int AddSampleNum ) ;							// ソフトウエアで扱う波形データのプレイヤーハンドルにプレイヤーが対応したフォーマットの生波形データを追加する
 extern	int			AddOneDataSoftSoundPlayer(			int SSoundPlayerHandle, int Channel1, int Channel2 ) ;										// ソフトウエアで扱う波形データのプレイヤーハンドルに波形データを一つ追加する
 extern	int			GetSoftSoundPlayerFormat(			int SSoundPlayerHandle, int *Channels, int *BitsPerSample, int *SamplesPerSec ) ;			// ソフトウエアで扱う波形データのプレイヤーハンドルが扱うデータフォーマットを取得する
@@ -4633,7 +5036,7 @@ extern	int			StartSoftSoundPlayer(				int SSoundPlayerHandle ) ;																
 extern	int			CheckStartSoftSoundPlayer(			int SSoundPlayerHandle ) ;																	// ソフトウエアで扱う波形データのプレイヤーハンドルの再生処理が開始されているか取得する( TRUE:開始している  FALSE:停止している )
 extern	int			StopSoftSoundPlayer(				int SSoundPlayerHandle ) ;																	// ソフトウエアで扱う波形データのプレイヤーハンドルの再生処理を停止する
 extern	int			ResetSoftSoundPlayer(				int SSoundPlayerHandle ) ;																	// ソフトウエアで扱う波形データのプレイヤーハンドルの状態を初期状態に戻す( 追加された波形データは削除され、再生状態だった場合は停止する )
-extern	int			GetStockDataLengthSoftSoundPlayer(	int SSoundPlayerHandle ) ;																	// ソフトウエアで扱う波形データのプレイヤーハンドルに追加した波形データでまだ再生用サウンドバッファに転送されていない波形データのサンプル数を取得する
+extern	int			GetStockDataLengthSoftSoundPlayer(	int SSoundPlayerHandle, int *SoundBufferStockSamples DEFAULTPARAM( = NULL ) ) ;					// ソフトウエアで扱う波形データのプレイヤーハンドルに追加した波形データでまだ再生用サウンドバッファに転送されていない波形データのサンプル数を取得する、SoundBufferStockSamples を指定すると再生用サウンドバッファで未再生のサウンドデータのサンプル数が代入されます
 extern	int			CheckSoftSoundPlayerNoneData(		int SSoundPlayerHandle ) ;																	// ソフトウエアで扱う波形データのプレイヤーハンドルに再生用サウンドバッファに転送していない波形データが無く、再生用サウンドバッファにも無音データ以外無いかどうかを取得する( TRUE:無音データ以外無い  FALSE:有効データがある )
 
 
@@ -4643,7 +5046,7 @@ extern	int			CheckSoftSoundPlayerNoneData(		int SSoundPlayerHandle ) ;										
 extern	int			DeleteMusicMem(						int MusicHandle ) ;																			// ＭＩＤＩハンドルを削除する
 extern	int			LoadMusicMem(						const TCHAR *FileName                        ) ;											// ＭＩＤＩファイルを読み込みＭＩＤＩハンドルを作成する
 extern	int			LoadMusicMemWithStrLen(				const TCHAR *FileName, size_t FileNameLength ) ;											// ＭＩＤＩファイルを読み込みＭＩＤＩハンドルを作成する
-extern	int			LoadMusicMemByMemImage(				const void *FileImage, int FileImageSize ) ;												// メモリ上に展開されたＭＩＤＩファイルイメージからＭＩＤＩハンドルを作成する
+extern	int			LoadMusicMemByMemImage(				const void *FileImage, size_t FileImageSize ) ;												// メモリ上に展開されたＭＩＤＩファイルイメージからＭＩＤＩハンドルを作成する
 extern	int			PlayMusicMem(						int MusicHandle, int PlayType ) ;															// ＭＩＤＩハンドルの演奏を開始する
 extern	int			StopMusicMem(						int MusicHandle ) ;																			// ＭＩＤＩハンドルの演奏を停止する
 extern	int			CheckMusicMem(						int MusicHandle ) ;																			// ＭＩＤＩハンドルが演奏中かどうかを取得する( TRUE:演奏中  FALSE:停止中 )
@@ -4654,7 +5057,7 @@ extern	int			ProcessMusicMem(					void ) ;																					// ＭＩＤＩ�
 
 extern	int			PlayMusic(							const TCHAR *FileName,                        int PlayType ) ;								// ＭＩＤＩファイルを演奏する
 extern	int			PlayMusicWithStrLen(				const TCHAR *FileName, size_t FileNameLength, int PlayType ) ;								// ＭＩＤＩファイルを演奏する
-extern	int			PlayMusicByMemImage(				const void *FileImage, int FileImageSize, int PlayType ) ;									// メモリ上に展開されているＭＩＤＩファイルを演奏する
+extern	int			PlayMusicByMemImage(				const void *FileImage, size_t FileImageSize,  int PlayType ) ;								// メモリ上に展開されているＭＩＤＩファイルを演奏する
 extern	int			SetVolumeMusic(						int Volume ) ;																				// ＭＩＤＩの再生音量をセットする
 extern	int			StopMusic(							void ) ;																					// ＭＩＤＩファイルの演奏停止
 extern	int			CheckMusic(							void ) ;																					// ＭＩＤＩファイルが演奏中か否か情報を取得する
@@ -4675,25 +5078,25 @@ extern	int			SelectMidiMode(						int Mode ) ;																				// ＭＩＤ�
 
 // DxArchive_.cpp 関数 プロトタイプ宣言
 extern	int			SetUseDXArchiveFlag(				int Flag ) ;															// ＤＸアーカイブファイルの読み込み機能を使うかどうかを設定する( FALSE:使用しない  TRUE:使用する )
-extern	int			SetDXArchivePriority(				int Priority = 0 ) ;													// 同名のＤＸアーカイブファイルとフォルダが存在した場合、どちらを優先させるかを設定する( 1:フォルダを優先　 0:ＤＸアーカイブファイルを優先( デフォルト ) )
-extern	int			SetDXArchiveExtension(				const TCHAR *Extension = NULL ) ;										// 検索するＤＸアーカイブファイルの拡張子を設定する( Extension:拡張子名文字列 )
-extern	int			SetDXArchiveExtensionWithStrLen(	const TCHAR *Extension = NULL , size_t ExtensionLength = 0 ) ;			// 検索するＤＸアーカイブファイルの拡張子を設定する( Extension:拡張子名文字列 )
-extern	int			SetDXArchiveKeyString(				const TCHAR *KeyString = NULL ) ;										// ＤＸアーカイブファイルの鍵文字列を設定する( KeyString:鍵文字列 )
-extern	int			SetDXArchiveKeyStringWithStrLen(	const TCHAR *KeyString = NULL , size_t KeyStringLength = 0 ) ;			// ＤＸアーカイブファイルの鍵文字列を設定する( KeyString:鍵文字列 )
+extern	int			SetDXArchivePriority(				int Priority DEFAULTPARAM( = 0 ) ) ;													// 同名のＤＸアーカイブファイルとフォルダが存在した場合、どちらを優先させるかを設定する( 1:フォルダを優先　 0:ＤＸアーカイブファイルを優先( デフォルト ) )
+extern	int			SetDXArchiveExtension(				const TCHAR *Extension DEFAULTPARAM( = NULL ) ) ;										// 検索するＤＸアーカイブファイルの拡張子を設定する( Extension:拡張子名文字列 )
+extern	int			SetDXArchiveExtensionWithStrLen(	const TCHAR *Extension DEFAULTPARAM( = NULL ) , size_t ExtensionLength DEFAULTPARAM( = 0 ) ) ;			// 検索するＤＸアーカイブファイルの拡張子を設定する( Extension:拡張子名文字列 )
+extern	int			SetDXArchiveKeyString(				const TCHAR *KeyString DEFAULTPARAM( = NULL ) ) ;										// ＤＸアーカイブファイルの鍵文字列を設定する( KeyString:鍵文字列 )
+extern	int			SetDXArchiveKeyStringWithStrLen(	const TCHAR *KeyString DEFAULTPARAM( = NULL ) , size_t KeyStringLength DEFAULTPARAM( = 0 ) ) ;			// ＤＸアーカイブファイルの鍵文字列を設定する( KeyString:鍵文字列 )
 
-extern	int			DXArchivePreLoad(					const TCHAR *FilePath,                        int ASync = FALSE ) ;		// 指定のＤＸＡファイルを丸ごとメモリに読み込む( 戻り値  -1:エラー  0:成功 )
-extern	int			DXArchivePreLoadWithStrLen(			const TCHAR *FilePath, size_t FilePathLength, int ASync = FALSE ) ;		// 指定のＤＸＡファイルを丸ごとメモリに読み込む( 戻り値  -1:エラー  0:成功 )
+extern	int			DXArchivePreLoad(					const TCHAR *FilePath,                        int ASync DEFAULTPARAM( = FALSE ) ) ;		// 指定のＤＸＡファイルを丸ごとメモリに読み込む( 戻り値  -1:エラー  0:成功 )
+extern	int			DXArchivePreLoadWithStrLen(			const TCHAR *FilePath, size_t FilePathLength, int ASync DEFAULTPARAM( = FALSE ) ) ;		// 指定のＤＸＡファイルを丸ごとメモリに読み込む( 戻り値  -1:エラー  0:成功 )
 extern	int			DXArchiveCheckIdle(					const TCHAR *FilePath                        ) ;						// 指定のＤＸＡファイルの事前読み込みが完了したかどうかを取得する( 戻り値  TRUE:完了した FALSE:まだ )
 extern	int			DXArchiveCheckIdleWithStrLen(		const TCHAR *FilePath, size_t FilePathLength ) ;						// 指定のＤＸＡファイルの事前読み込みが完了したかどうかを取得する( 戻り値  TRUE:完了した FALSE:まだ )
 extern	int			DXArchiveRelease(					const TCHAR *FilePath                        ) ;						// 指定のＤＸＡファイルをメモリから解放する
 extern	int			DXArchiveReleaseWithStrLen(			const TCHAR *FilePath, size_t FilePathLength ) ;						// 指定のＤＸＡファイルをメモリから解放する
 extern	int			DXArchiveCheckFile(					const TCHAR *FilePath,                        const TCHAR *TargetFilePath                              ) ;	// ＤＸＡファイルの中に指定のファイルが存在するかどうかを調べる、TargetFilePath はＤＸＡファイルをカレントフォルダとした場合のパス( 戻り値:  -1=エラー  0:無い  1:ある )
 extern	int			DXArchiveCheckFileWithStrLen(		const TCHAR *FilePath, size_t FilePathLength, const TCHAR *TargetFilePath, size_t TargetFilePathLength ) ;	// ＤＸＡファイルの中に指定のファイルが存在するかどうかを調べる、TargetFilePath はＤＸＡファイルをカレントフォルダとした場合のパス( 戻り値:  -1=エラー  0:無い  1:ある )
-extern	int			DXArchiveSetMemImage(				void *ArchiveImage, int ArchiveImageSize, const TCHAR *EmulateFilePath,                               int ArchiveImageCopyFlag = FALSE , int ArchiveImageReadOnly = TRUE ) ;	// メモリ上に展開されたＤＸＡファイルを指定のファイルパスにあることにする( EmulateFilePath は見立てる dxa ファイルのパス、例えばＤＸＡファイルイメージを Image.dxa というファイル名で c:\Temp にあることにしたい場合は EmulateFilePath に "c:\\Temp\\Image.dxa" を渡す、SetDXArchiveExtension で拡張子を変更している場合は EmulateFilePath に渡すファイルパスの拡張子もそれに合わせる必要あり )
-extern	int			DXArchiveSetMemImageWithStrLen(		void *ArchiveImage, int ArchiveImageSize, const TCHAR *EmulateFilePath, size_t EmulateFilePathLength, int ArchiveImageCopyFlag = FALSE , int ArchiveImageReadOnly = TRUE ) ;	// メモリ上に展開されたＤＸＡファイルを指定のファイルパスにあることにする( EmulateFilePath は見立てる dxa ファイルのパス、例えばＤＸＡファイルイメージを Image.dxa というファイル名で c:\Temp にあることにしたい場合は EmulateFilePath に "c:\\Temp\\Image.dxa" を渡す、SetDXArchiveExtension で拡張子を変更している場合は EmulateFilePath に渡すファイルパスの拡張子もそれに合わせる必要あり )
+extern	int			DXArchiveSetMemImage(				void *ArchiveImage, int ArchiveImageSize, const TCHAR *EmulateFilePath,                               int ArchiveImageCopyFlag DEFAULTPARAM( = FALSE ) , int ArchiveImageReadOnly DEFAULTPARAM( = TRUE ) ) ;	// メモリ上に展開されたＤＸＡファイルを指定のファイルパスにあることにする( EmulateFilePath は見立てる dxa ファイルのパス、例えばＤＸＡファイルイメージを Image.dxa というファイル名で c:\Temp にあることにしたい場合は EmulateFilePath に "c:\\Temp\\Image.dxa" を渡す、SetDXArchiveExtension で拡張子を変更している場合は EmulateFilePath に渡すファイルパスの拡張子もそれに合わせる必要あり )
+extern	int			DXArchiveSetMemImageWithStrLen(		void *ArchiveImage, int ArchiveImageSize, const TCHAR *EmulateFilePath, size_t EmulateFilePathLength, int ArchiveImageCopyFlag DEFAULTPARAM( = FALSE ) , int ArchiveImageReadOnly DEFAULTPARAM( = TRUE ) ) ;	// メモリ上に展開されたＤＸＡファイルを指定のファイルパスにあることにする( EmulateFilePath は見立てる dxa ファイルのパス、例えばＤＸＡファイルイメージを Image.dxa というファイル名で c:\Temp にあることにしたい場合は EmulateFilePath に "c:\\Temp\\Image.dxa" を渡す、SetDXArchiveExtension で拡張子を変更している場合は EmulateFilePath に渡すファイルパスの拡張子もそれに合わせる必要あり )
 extern	int			DXArchiveReleaseMemImage(			void *ArchiveImage ) ;													// DXArchiveSetMemImage の設定を解除する
 
-extern	void		HashSha256(							const void *SrcData, size_t SrcDataSize, void *DestBuffer ) ;			// バイナリデータを元に SHA-256 のハッシュ値を計算する( DestBuffer の示すアドレスを先頭に 32byte ハッシュ値が書き込まれます )
+extern	DWORD		HashCRC32(							const void *SrcData, size_t SrcDataSize ) ;								// バイナリデータを元に CRC32 のハッシュ値を計算する
 
 
 
@@ -4722,7 +5125,7 @@ extern	void		HashSha256(							const void *SrcData, size_t SrcDataSize, void *De
 // モデルの読み込み・複製関係
 extern	int			MV1LoadModel(						const TCHAR *FileName ) ;											// モデルの読み込み( -1:エラー  0以上:モデルハンドル )
 extern	int			MV1LoadModelWithStrLen(				const TCHAR *FileName, size_t FileNameLength ) ;					// モデルの読み込み( -1:エラー  0以上:モデルハンドル )
-extern	int			MV1LoadModelFromMem(				const void *FileImage, int FileSize, int (* FileReadFunc )( const TCHAR *FilePath, void **FileImageAddr, int *FileSize, void *FileReadFuncData ), int (* FileReleaseFunc )( void *MemoryAddr, void *FileReadFuncData ), void *FileReadFuncData = NULL ) ;	// メモリ上のモデルファイルイメージと独自の読み込みルーチンを使用してモデルを読み込む
+extern	int			MV1LoadModelFromMem(				const void *FileImage, int FileSize, int (* FileReadFunc )( const TCHAR *FilePath, void **FileImageAddr, int *FileSize, void *FileReadFuncData ), int (* FileReleaseFunc )( void *MemoryAddr, void *FileReadFuncData ), void *FileReadFuncData DEFAULTPARAM( = NULL ) ) ;	// メモリ上のモデルファイルイメージと独自の読み込みルーチンを使用してモデルを読み込む
 extern	int			MV1DuplicateModel(					int SrcMHandle ) ;													// 指定のモデルと同じモデル基本データを使用してモデルを作成する( -1:エラー  0以上:モデルハンドル )
 extern	int			MV1CreateCloneModel(				int SrcMHandle ) ;													// 指定のモデルをモデル基本データも含め複製する( MV1DuplicateModel はモデル基本データは共有しますが、こちらは複製元のモデルとは一切共有データの無いモデルハンドルを作成します )( -1:エラー  0以上:モデルハンドル )
 
@@ -4730,13 +5133,15 @@ extern	int			MV1DeleteModel(						int MHandle ) ;														// モデルを�
 extern	int			MV1InitModel(						void ) ;															// すべてのモデルを削除する
 
 extern	int			MV1SetLoadModelReMakeNormal(						int Flag ) ;														// モデルを読み込む際に法線の再計算を行うかどうかを設定する( TRUE:行う  FALSE:行わない( デフォルト ) )
-extern	int			MV1SetLoadModelReMakeNormalSmoothingAngle(			float SmoothingAngle = 1.562069f ) ;								// モデルを読み込む際に行う法泉の再計算で使用するスムージング角度を設定する( 単位はラジアン )
+extern	int			MV1SetLoadModelReMakeNormalSmoothingAngle(			float SmoothingAngle DEFAULTPARAM( = 1.562069f ) ) ;				// モデルを読み込む際に行う法泉の再計算で使用するスムージング角度を設定する( 単位はラジアン )
 extern	int			MV1SetLoadModelIgnoreScaling(						int Flag ) ;														// モデルを読み込む際にスケーリングデータを無視するかどうかを設定する( TRUE:無視する  FALSE:無視しない( デフォルト ) )
 extern	int			MV1SetLoadModelPositionOptimize(					int Flag ) ;														// モデルを読み込む際に座標データの最適化を行うかどうかを設定する( TRUE:行う  FALSE:行わない( デフォルト ) )
 extern	int			MV1SetLoadModelNotEqNormalSide_AddZeroAreaPolygon(	int Flag ) ;														// モデルを読み込む際にポリゴンの辺が接していて、且つ法線の方向が異なる辺に面積０のポリゴンを埋め込むかどうかを設定する( TRUE:埋め込む　FALSE:埋め込まない( デフォルト ) )、( MV1ファイルの読み込みではこの関数の設定は無視され、ポリゴンの埋め込みは実行されません )
 extern	int			MV1SetLoadModelUsePhysicsMode(						int PhysicsMode /* DX_LOADMODEL_PHYSICS_LOADCALC 等 */ ) ;			// 読み込むモデルの物理演算モードを設定する
 extern	int			MV1SetLoadModelPhysicsWorldGravity(					float Gravity ) ;													// 読み込むモデルの物理演算に適用する重力パラメータを設定する
+extern	float		MV1GetLoadModelPhysicsWorldGravity(					void ) ;															// 読み込むモデルの物理演算に適用する重力パラメータを取得する
 extern	int			MV1SetLoadCalcPhysicsWorldGravity(					int GravityNo, VECTOR Gravity ) ;									// 読み込むモデルの物理演算モードが事前計算( DX_LOADMODEL_PHYSICS_LOADCALC )だった場合に適用される重力の設定をする
+extern	VECTOR		MV1GetLoadCalcPhysicsWorldGravity(					int GravityNo ) ;													// 読み込むモデルの物理演算モードが事前計算( DX_LOADMODEL_PHYSICS_LOADCALC )だった場合に適用される重力を取得する
 extern	int			MV1SetLoadModelPhysicsCalcPrecision(				int Precision ) ;													// 読み込むモデルの物理演算モードが事前計算( DX_LOADMODEL_PHYSICS_LOADCALC )だった場合に適用される物理演算の時間進行の精度を設定する( 0:60FPS  1:120FPS  2:240FPS  3:480FPS  4:960FPS  5:1920FPS )
 extern	int			MV1SetLoadModel_PMD_PMX_AnimationFPSMode(			int FPSMode /* DX_LOADMODEL_PMD_PMX_ANIMATION_FPSMODE_30 等 */ ) ;	// PMD, PMX ファイルを読み込んだ際のアニメーションの FPS モードを設定する
 extern	int			MV1AddLoadModelDisablePhysicsNameWord(				const TCHAR *NameWord ) ;											// 読み込むモデルの物理演算を特定の剛体のみ無効にするための名前のワードを追加する、追加できるワード文字列の最大長は 63 文字、追加できるワードの数は最大 256 個
@@ -4747,13 +5152,15 @@ extern	int			MV1SetLoadModelAnimFilePath(						const TCHAR *FileName ) ;								
 extern	int			MV1SetLoadModelAnimFilePathWithStrLen(				const TCHAR *FileName, size_t FileNameLength ) ;					// 読み込むモデルに適用するアニメーションファイルのパスを設定する、NULLを渡すと設定リセット( 現在は PMD,PMX のみに効果あり )
 extern	int			MV1SetLoadModelUsePackDraw(							int Flag ) ;														// 読み込むモデルを同時複数描画に対応させるかどうかを設定する( TRUE:対応させる  FALSE:対応させない( デフォルト ) )、( 「対応させる」にすると描画が高速になる可能性がある代わりに消費VRAMが増えます )
 extern	int			MV1SetLoadModelTriangleListUseMaxBoneNum(			int UseMaxBoneNum ) ;												// 読み込むモデルのひとつのトライアングルリストで使用できる最大ボーン数を設定する( UseMaxBoneNum で指定できる値の範囲は 8 ～ 54、 0 を指定するとデフォルト動作に戻る )
+extern	int			MV1SetLoadModelTextureLoad(							int Flag ) ;														// 読み込むモデルで使用するテクスチャファイルを読み込むかどうかを設定する( TRUE:読み込む(デフォルト) FALSE:読み込まない )
+extern	int			MV1SetLoadModelIgnoreIK(							int IgnoreFlag ) ;													// 読み込むモデルのIK情報を無視するかどうかを設定する( TRUE:無視する  FALSE:無視しない(デフォルト) )
 
 // モデル保存関係
-extern	int			MV1SaveModelToMV1File(				int MHandle, const TCHAR *FileName,                        int SaveType = MV1_SAVETYPE_NORMAL , int AnimMHandle = -1 , int AnimNameCheck = TRUE , int Normal8BitFlag = 1 , int Position16BitFlag = 1 , int Weight8BitFlag = 0 , int Anim16BitFlag = 1 ) ;		// 指定のパスにモデルを保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
-extern	int			MV1SaveModelToMV1FileWithStrLen(	int MHandle, const TCHAR *FileName, size_t FileNameLength, int SaveType = MV1_SAVETYPE_NORMAL , int AnimMHandle = -1 , int AnimNameCheck = TRUE , int Normal8BitFlag = 1 , int Position16BitFlag = 1 , int Weight8BitFlag = 0 , int Anim16BitFlag = 1 ) ;		// 指定のパスにモデルを保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
+extern	int			MV1SaveModelToMV1File(				int MHandle, const TCHAR *FileName,                        int SaveType DEFAULTPARAM( = MV1_SAVETYPE_NORMAL ) , int AnimMHandle DEFAULTPARAM( = -1 ) , int AnimNameCheck DEFAULTPARAM( = TRUE ) , int Normal8BitFlag DEFAULTPARAM( = 1 ) , int Position16BitFlag DEFAULTPARAM( = 1 ) , int Weight8BitFlag DEFAULTPARAM( = 0 ) , int Anim16BitFlag DEFAULTPARAM( = 1 ) ) ;		// 指定のパスにモデルを保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
+extern	int			MV1SaveModelToMV1FileWithStrLen(	int MHandle, const TCHAR *FileName, size_t FileNameLength, int SaveType DEFAULTPARAM( = MV1_SAVETYPE_NORMAL ) , int AnimMHandle DEFAULTPARAM( = -1 ) , int AnimNameCheck DEFAULTPARAM( = TRUE ) , int Normal8BitFlag DEFAULTPARAM( = 1 ) , int Position16BitFlag DEFAULTPARAM( = 1 ) , int Weight8BitFlag DEFAULTPARAM( = 0 ) , int Anim16BitFlag DEFAULTPARAM( = 1 ) ) ;		// 指定のパスにモデルを保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
 #ifndef DX_NON_SAVEFUNCTION
-extern	int			MV1SaveModelToXFile(				int MHandle, const TCHAR *FileName,                        int SaveType = MV1_SAVETYPE_NORMAL , int AnimMHandle = -1 , int AnimNameCheck = TRUE ) ;	// 指定のパスにモデルをＸファイル形式で保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
-extern	int			MV1SaveModelToXFileWithStrLen(		int MHandle, const TCHAR *FileName, size_t FileNameLength, int SaveType = MV1_SAVETYPE_NORMAL , int AnimMHandle = -1 , int AnimNameCheck = TRUE ) ;	// 指定のパスにモデルをＸファイル形式で保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
+extern	int			MV1SaveModelToXFile(				int MHandle, const TCHAR *FileName,                        int SaveType DEFAULTPARAM( = MV1_SAVETYPE_NORMAL ) , int AnimMHandle DEFAULTPARAM( = -1 ) , int AnimNameCheck DEFAULTPARAM( = TRUE ) ) ;	// 指定のパスにモデルをＸファイル形式で保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
+extern	int			MV1SaveModelToXFileWithStrLen(		int MHandle, const TCHAR *FileName, size_t FileNameLength, int SaveType DEFAULTPARAM( = MV1_SAVETYPE_NORMAL ) , int AnimMHandle DEFAULTPARAM( = -1 ) , int AnimNameCheck DEFAULTPARAM( = TRUE ) ) ;	// 指定のパスにモデルをＸファイル形式で保存する( 戻り値  0:成功  -1:メモリ不足  -2:使われていないアニメーションがあった )
 #endif // DX_NON_SAVEFUNCTION
 
 // モデル描画関係
@@ -4765,6 +5172,7 @@ extern	int			MV1DrawModelDebug(					int MHandle, unsigned int Color, int IsNorma
 
 // 描画設定関係
 extern	int			MV1SetUseOrigShader(				int UseFlag ) ;														// モデルの描画に SetUseVertexShader, SetUsePixelShader で指定したシェーダーを使用するかどうかを設定する( TRUE:使用する  FALSE:使用しない( デフォルト ) )
+extern	int			MV1SetDrawMode(						int DrawMode /* DX_MV1_DRAWMODE_NORMAL 等 */ ) ;					// モデルの描画モードの設定
 extern	int			MV1SetSemiTransDrawMode(			int DrawMode /* DX_SEMITRANSDRAWMODE_ALWAYS 等 */ ) ;				// モデルの半透明要素がある部分についての描画モードを設定する
 
 // モデル基本制御関係
@@ -4816,19 +5224,22 @@ extern	int			MV1RefreshVertColorFromMaterial(	int MHandle ) ;														// �
 extern	int			MV1SetPhysicsWorldGravity(			int MHandle, VECTOR Gravity ) ;										// モデルの物理演算の重力を設定する
 extern	int			MV1PhysicsCalculation(				int MHandle, float MillisecondTime ) ;								// モデルの物理演算を指定時間分経過したと仮定して計算する( MillisecondTime で指定する時間の単位はミリ秒 )
 extern	int			MV1PhysicsResetState(				int MHandle ) ;														// モデルの物理演算の状態をリセットする( 位置がワープしたとき用 )
+extern	int			MV1SetPrioritizePhysicsOverAnimFlag( int MHandle, int Flag ) ;											// モデルの物理演算をアニメーションより優先するかどうかを設定する( TRUE:物理演算を優先する  FALSE:アニメーションを優先する( デフォルト ) )
 extern	int			MV1SetUseShapeFlag(					int MHandle, int UseFlag ) ;										// モデルのシェイプ機能を使用するかどうかを設定する( UseFlag  TRUE:使用する( デフォルト )  FALSE:使用しない )
 extern	int			MV1GetMaterialNumberOrderFlag(		int MHandle ) ;														// モデルのマテリアル番号順にメッシュを描画するかどうかのフラグを取得する( TRUE:マテリアル番号順に描画  FALSE:不透明メッシュの後半透明メッシュ )
 
 // アニメーション関係
-extern	int			MV1AttachAnim(						int MHandle, int AnimIndex, int AnimSrcMHandle = -1 , int NameCheck = TRUE ) ;		// アニメーションをアタッチする( 戻り値  -1:エラー  0以上:アタッチインデックス )
+extern	int			MV1AttachAnim(						int MHandle, int AnimIndex, int AnimSrcMHandle DEFAULTPARAM( = -1 ) , int NameCheck DEFAULTPARAM( = TRUE ) ) ;		// アニメーションをアタッチする( 戻り値  -1:エラー  0以上:アタッチインデックス )
 extern	int			MV1DetachAnim(						int MHandle, int AttachIndex ) ;													// アニメーションをデタッチする
 extern	int			MV1SetAttachAnimTime(				int MHandle, int AttachIndex, float Time ) ;										// アタッチしているアニメーションの再生時間を設定する
 extern	float		MV1GetAttachAnimTime(				int MHandle, int AttachIndex ) ;													// アタッチしているアニメーションの再生時間を取得する
 extern	float		MV1GetAttachAnimTotalTime(			int MHandle, int AttachIndex ) ;													// アタッチしているアニメーションの総時間を得る
-extern	int			MV1SetAttachAnimBlendRate(			int MHandle, int AttachIndex, float Rate = 1.0f ) ;									// アタッチしているアニメーションのブレンド率を設定する
+extern	int			MV1SetAttachAnimBlendRate(			int MHandle, int AttachIndex, float Rate DEFAULTPARAM( = 1.0f ) ) ;					// アタッチしているアニメーションのブレンド率を設定する
 extern	float		MV1GetAttachAnimBlendRate(			int MHandle, int AttachIndex ) ;													// アタッチしているアニメーションのブレンド率を取得する
-extern	int			MV1SetAttachAnimBlendRateToFrame(	int MHandle, int AttachIndex, int FrameIndex, float Rate, int SetChild = TRUE ) ;	// アタッチしているアニメーションのブレンド率を設定する( フレーム単位 )
-extern	float		MV1GetAttachAnimBlendRateToFrame(	int MHandle, int AttachIndex, int FrameIndex ) ;									// アタッチしているアニメーションのブレンド率を設定する( フレーム単位 )
+extern	int			MV1SetAttachAnimBlendRateToFrame(	int MHandle, int AttachIndex, int FrameIndex, float Rate, int SetChild DEFAULTPARAM( = TRUE ) ) ;	// アタッチしているアニメーションのブレンド率を設定する( フレーム単位 )
+extern	float		MV1GetAttachAnimBlendRateToFrame(	int MHandle, int AttachIndex, int FrameIndex ) ;									// アタッチしているアニメーションのブレンド率を取得する( フレーム単位 )
+extern	int			MV1SetAttachAnimTimeToFrame(		int MHandle, int AttachIndex, int FrameIndex, float Time, int SetChild DEFAULTPARAM( = TRUE ) ) ;	// アタッチしているアニメーションの再生時間を設定する( フレーム単位 )( Time にマイナスの値を渡すと設定を解除 )
+extern	float		MV1GetAttachAnimTimeToFrame(		int MHandle, int AttachIndex, int FrameIndex ) ;									// アタッチしているアニメーションの再生時間を取得する( フレーム単位 )
 extern	int			MV1GetAttachAnim(					int MHandle, int AttachIndex ) ;													// アタッチしているアニメーションのアニメーションインデックスを取得する
 extern	int			MV1SetAttachAnimUseShapeFlag(		int MHandle, int AttachIndex, int UseFlag ) ;										// アタッチしているアニメーションのシェイプを使用するかどうかを設定する( UseFlag  TRUE:使用する( デフォルト )  FALSE:使用しない )
 extern	int			MV1GetAttachAnimUseShapeFlag(		int MHandle, int AttachIndex ) ;													// アタッチしているアニメーションのシェイプを使用するかどうかを取得する
@@ -4892,6 +5303,8 @@ extern	int			MV1SetMaterialSpcPower( 			int MHandle, int MaterialIndex, float Po
 extern	float		MV1GetMaterialSpcPower( 			int MHandle, int MaterialIndex ) ;										// 指定のマテリアルのスペキュラの強さを取得する
 extern	int			MV1SetMaterialDifMapTexture(		int MHandle, int MaterialIndex, int TexIndex ) ;						// 指定のマテリアルでディフューズマップとして使用するテクスチャを指定する
 extern	int			MV1GetMaterialDifMapTexture(		int MHandle, int MaterialIndex ) ;										// 指定のマテリアルでディフューズマップとして使用されているテクスチャのインデックスを取得する
+extern	int			MV1SetMaterialSubDifMapTexture(		int MHandle, int MaterialIndex, int TexIndex ) ;						// 指定のマテリアルでサブディフューズマップとして使用するテクスチャを指定する
+extern	int			MV1GetMaterialSubDifMapTexture(		int MHandle, int MaterialIndex ) ;										// 指定のマテリアルでサブディフューズマップとして使用されているテクスチャのインデックスを取得する
 extern	int			MV1SetMaterialSpcMapTexture(		int MHandle, int MaterialIndex, int TexIndex ) ;						// 指定のマテリアルでスペキュラマップとして使用するテクスチャを指定する
 extern	int			MV1GetMaterialSpcMapTexture(		int MHandle, int MaterialIndex ) ;										// 指定のマテリアルでスペキュラマップとして使用されているテクスチャのインデックスを取得する
 extern	int			MV1GetMaterialNormalMapTexture(		int MHandle, int MaterialIndex ) ;										// 指定のマテリアルで法線マップとして使用されているテクスチャのインデックスを取得する
@@ -4930,6 +5343,9 @@ extern	int			MV1SetMaterialDrawAlphaTest(		int MHandle, int MaterialIndex,	int E
 extern	int			MV1GetMaterialDrawAlphaTestEnable(	int MHandle, int MaterialIndex ) ;										// 指定のマテリアルの描画時のアルファテストを行うかどうかを取得する( 戻り値  TRUE:アルファテストを行う  FALSE:アルファテストを行わない )
 extern	int			MV1GetMaterialDrawAlphaTestMode(	int MHandle, int MaterialIndex ) ;										// 指定のマテリアルの描画時のアルファテストのテストモードを取得する( 戻り値  テストモード( DX_CMP_GREATER等 ) )
 extern	int			MV1GetMaterialDrawAlphaTestParam(	int MHandle, int MaterialIndex ) ;										// 指定のマテリアルの描画時のアルファテストの描画アルファ地との比較に使用する値( 0～255 )を取得する
+extern	int			MV1SetMaterialDrawAddColorAll(		int MHandle,                    int Red, int Green, int Blue ) ;		// 全てのマテリアルの描画時の加算カラーを設定する
+extern	int			MV1SetMaterialDrawAddColor(			int MHandle, int MaterialIndex, int Red, int Green, int Blue ) ;		// 指定のマテリアルの描画時の加算カラーを設定する
+extern	int			MV1GetMaterialDrawAddColor(			int MHandle, int MaterialIndex, int *Red, int *Green, int *Blue ) ;		// 指定のマテリアルの描画時の加算カラーを取得する
 
 // テクスチャ関係
 extern	int			MV1GetTextureNum(						int MHandle ) ;														// テクスチャの数を取得
@@ -4961,13 +5377,13 @@ extern	int			MV1LoadTextureWithStrLen(				const TCHAR *FilePath, size_t FilePath
 extern	int			MV1GetFrameNum(						int MHandle ) ;															// フレームの数を取得する
 extern	int			MV1SearchFrame(						int MHandle, const TCHAR *FrameName                         ) ;			// フレームの名前からモデル中のフレームのフレームインデックスを取得する( 無かった場合は戻り値が-1 )
 extern	int			MV1SearchFrameWithStrLen(			int MHandle, const TCHAR *FrameName, size_t FrameNameLength ) ;			// フレームの名前からモデル中のフレームのフレームインデックスを取得する( 無かった場合は戻り値が-1 )
-extern	int			MV1SearchFrameChild(				int MHandle, int FrameIndex = -1 , const TCHAR *ChildName = NULL                              ) ;	// フレームの名前から指定のフレームの子フレームのフレームインデックスを取得する( 名前指定版 )( FrameIndex を -1 にすると親を持たないフレームを ChildIndex で指定する )( 無かった場合は戻り値が-1 )
-extern	int			MV1SearchFrameChildWithStrLen(		int MHandle, int FrameIndex = -1 , const TCHAR *ChildName = NULL , size_t ChildNameLength = 0 ) ;	// フレームの名前から指定のフレームの子フレームのフレームインデックスを取得する( 名前指定版 )( FrameIndex を -1 にすると親を持たないフレームを ChildIndex で指定する )( 無かった場合は戻り値が-1 )
+extern	int			MV1SearchFrameChild(				int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) , const TCHAR *ChildName DEFAULTPARAM( = NULL )                              ) ;	// フレームの名前から指定のフレームの子フレームのフレームインデックスを取得する( 名前指定版 )( FrameIndex を -1 にすると親を持たないフレームを ChildIndex で指定する )( 無かった場合は戻り値が-1 )
+extern	int			MV1SearchFrameChildWithStrLen(		int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) , const TCHAR *ChildName DEFAULTPARAM( = NULL ) , size_t ChildNameLength DEFAULTPARAM( = 0 ) ) ;	// フレームの名前から指定のフレームの子フレームのフレームインデックスを取得する( 名前指定版 )( FrameIndex を -1 にすると親を持たないフレームを ChildIndex で指定する )( 無かった場合は戻り値が-1 )
 extern	const TCHAR *MV1GetFrameName(					int MHandle, int FrameIndex ) ;											// 指定のフレームの名前を取得する( エラーの場合は戻り値が NULL )
 extern	int			MV1GetFrameName2(					int MHandle, int FrameIndex, TCHAR *StrBuffer ) ;						// 指定のフレームの名前を取得する( 戻り値   -1:エラー  -1以外:文字列のサイズ )
 extern	int			MV1GetFrameParent(					int MHandle, int FrameIndex ) ;											// 指定のフレームの親フレームのインデックスを得る( 親がいない場合は -2 が返る )
-extern	int			MV1GetFrameChildNum(				int MHandle, int FrameIndex = -1 ) ;									// 指定のフレームの子フレームの数を取得する( FrameIndex を -1 にすると親を持たないフレームの数が返ってくる )
-extern	int			MV1GetFrameChild(					int MHandle, int FrameIndex = -1 , int ChildIndex = 0 ) ;				// 指定のフレームの子フレームのフレームインデックスを取得する( 番号指定版 )( FrameIndex を -1 にすると親を持たないフレームを ChildIndex で指定する )( エラーの場合は戻り値が-1 )
+extern	int			MV1GetFrameChildNum(				int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) ) ;											// 指定のフレームの子フレームの数を取得する( FrameIndex を -1 にすると親を持たないフレームの数が返ってくる )
+extern	int			MV1GetFrameChild(					int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) , int ChildIndex DEFAULTPARAM( = 0 ) ) ;		// 指定のフレームの子フレームのフレームインデックスを取得する( 番号指定版 )( FrameIndex を -1 にすると親を持たないフレームを ChildIndex で指定する )( エラーの場合は戻り値が-1 )
 extern	VECTOR		MV1GetFramePosition(				int MHandle, int FrameIndex ) ;											// 指定のフレームの座標を取得する
 extern	VECTOR_D	MV1GetFramePositionD(				int MHandle, int FrameIndex ) ;											// 指定のフレームの座標を取得する
 extern	MATRIX		MV1GetFrameBaseLocalMatrix(			int MHandle, int FrameIndex ) ;											// 指定のフレームの初期状態での座標変換行列を取得する
@@ -4988,6 +5404,7 @@ extern	VECTOR		MV1GetFrameMinVertexLocalPosition(	int MHandle, int FrameIndex ) 
 extern	VECTOR_D	MV1GetFrameMinVertexLocalPositionD(	int MHandle, int FrameIndex ) ;											// 指定のフレームが持つメッシュ頂点のローカル座標での最小値を得る
 extern	VECTOR		MV1GetFrameAvgVertexLocalPosition(	int MHandle, int FrameIndex ) ;											// 指定のフレームが持つメッシュ頂点のローカル座標での平均値を得る
 extern	VECTOR_D	MV1GetFrameAvgVertexLocalPositionD(	int MHandle, int FrameIndex ) ;											// 指定のフレームが持つメッシュ頂点のローカル座標での平均値を得る
+extern	int			MV1GetFrameVertexNum(				int MHandle, int FrameIndex ) ;											// 指定のフレームに含まれる頂点の数を取得する
 extern	int			MV1GetFrameTriangleNum(				int MHandle, int FrameIndex ) ;											// 指定のフレームに含まれるポリゴンの数を取得する
 extern	int			MV1GetFrameMeshNum(					int MHandle, int FrameIndex ) ;											// 指定のフレームが持つメッシュの数を取得する
 extern	int			MV1GetFrameMesh(					int MHandle, int FrameIndex, int Index ) ;								// 指定のフレームが持つメッシュのメッシュインデックスを取得する
@@ -5013,6 +5430,7 @@ extern	int			MV1ResetFrameTextureAddressTransform( int MHandle, int FrameIndex )
 // メッシュ関係
 extern	int			MV1GetMeshNum(						int MHandle ) ;															// モデルに含まれるメッシュの数を取得する
 extern	int			MV1GetMeshMaterial(					int MHandle, int MeshIndex ) ;											// 指定メッシュが使用しているマテリアルのインデックスを取得する
+extern	int			MV1GetMeshVertexNum(				int MHandle, int MeshIndex ) ;											// 指定メッシュに含まれる頂点の数を取得する
 extern	int			MV1GetMeshTriangleNum(				int MHandle, int MeshIndex ) ;											// 指定メッシュに含まれる三角形ポリゴンの数を取得する
 extern	int			MV1SetMeshVisible(					int MHandle, int MeshIndex, int VisibleFlag ) ;							// 指定メッシュの表示、非表示状態を変更する( TRUE:表示  FALSE:非表示 )
 extern	int			MV1GetMeshVisible(					int MHandle, int MeshIndex ) ;											// 指定メッシュの表示、非表示状態を取得する( TRUE:表示  FALSE:非表示 )
@@ -5052,8 +5470,9 @@ extern	int			MV1SearchShapeWithStrLen(			int MHandle, const TCHAR *ShapeName, si
 extern	const TCHAR *MV1GetShapeName(					int MHandle, int ShapeIndex ) ;											// 指定シェイプの名前を取得する
 extern	int			MV1GetShapeTargetMeshNum(			int MHandle, int ShapeIndex ) ;											// 指定シェイプが対象としているメッシュの数を取得する
 extern	int			MV1GetShapeTargetMesh(				int MHandle, int ShapeIndex, int Index ) ;								// 指定シェイプが対象としているメッシュのメッシュインデックスを取得する
-extern	int			MV1SetShapeRate(					int MHandle, int ShapeIndex, float Rate ) ;								// 指定シェイプの有効率を設定する( Rate  0.0f:0% ～ 1.0f:100% )
+extern	int			MV1SetShapeRate(					int MHandle, int ShapeIndex, float Rate, int Type DEFAULTPARAM( = DX_MV1_SHAPERATE_ADD ) ) ;	// 指定シェイプの有効率を設定する( Rate  0.0f:0% ～ 1.0f:100% )
 extern	float		MV1GetShapeRate(					int MHandle, int ShapeIndex ) ;											// 指定シェイプの有効率を取得する( 戻り値  0.0f:0% ～ 1.0f:100% )
+extern	float		MV1GetShapeApplyRate(				int MHandle, int ShapeIndex ) ;											// 指定シェイプの有効率を取得する( 戻り値  0.0f:0% ～ 1.0f:100% )( MV1SetShapeRate で指定した値がそのまま戻り値となる MV1GetShapeRate と異なりアニメーションのシェイプ情報なども加味した値が戻り値となります )
 
 // トライアングルリスト関係
 extern	int			MV1GetTriangleListNum(						int MHandle ) ;																		// モデルに含まれるトライアングルリストの数を取得する
@@ -5062,32 +5481,141 @@ extern	int			MV1GetTriangleListPolygonNum(				int MHandle, int TListIndex ) ;			
 extern	int			MV1GetTriangleListVertexNum(				int MHandle, int TListIndex ) ;														// 指定のトライアングルリストに含まれる頂点データの数を取得する
 extern	int			MV1GetTriangleListLocalWorldMatrixNum(		int MHandle, int TListIndex ) ;														// 指定のトライアングルリストが使用する座標変換行列の数を取得する
 extern	MATRIX		MV1GetTriangleListLocalWorldMatrix(			int MHandle, int TListIndex, int LWMatrixIndex ) ;									// 指定のトライアングルリストが使用する座標変換行列( ローカル→ワールド )を取得する
-extern	int			MV1GetTriangleListPolygonVertexPosition(	int MHandle, int TListIndex, int PolygonIndex, VECTOR *VertexPositionArray = NULL , float *MatrixWeightArray = NULL ) ;	// 指定のトライアングルリストの指定のポリゴンが使用している頂点の座標を取得する( 戻り値  エラー：-1  0以上：ポリゴンが使用している頂点の数 )
+extern	int			MV1GetTriangleListPolygonVertexPosition(	int MHandle, int TListIndex, int PolygonIndex, VECTOR *VertexPositionArray DEFAULTPARAM( = NULL ) , float *MatrixWeightArray DEFAULTPARAM( = NULL ) ) ;	// 指定のトライアングルリストの指定のポリゴンが使用している頂点の座標を取得する( 戻り値  エラー：-1  0以上：ポリゴンが使用している頂点の数 )
 extern	int			MV1GetTriangleListUseMaterial(				int MHandle, int TListIndex ) ;														// 指定のトライアングルリストが使用しているマテリアルのインデックスを取得する
 
 // コリジョン関係
-extern	int							MV1SetupCollInfo(				int MHandle, int FrameIndex = -1 , int XDivNum = 32 , int YDivNum = 8 , int ZDivNum = 32 ) ;	// コリジョン情報を構築する
-extern	int							MV1TerminateCollInfo(			int MHandle, int FrameIndex = -1 ) ;															// コリジョン情報の後始末
-extern	int							MV1RefreshCollInfo(				int MHandle, int FrameIndex = -1 ) ;															// コリジョン情報を更新する
-extern	MV1_COLL_RESULT_POLY		MV1CollCheck_Line(				int MHandle, int FrameIndex, VECTOR PosStart, VECTOR PosEnd ) ;									// 線とモデルの当たり判定
-extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_LineDim(			int MHandle, int FrameIndex, VECTOR PosStart, VECTOR PosEnd ) ;									// 線とモデルの当たり判定( 戻り値が MV1_COLL_RESULT_POLY_DIM )
-extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_Sphere(			int MHandle, int FrameIndex, VECTOR CenterPos, float r ) ;										// 球とモデルの当たり判定
-extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_Capsule(			int MHandle, int FrameIndex, VECTOR Pos1, VECTOR Pos2, float r ) ;								// カプセルとモデルの当たり判定
-extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_Triangle(			int MHandle, int FrameIndex, VECTOR Pos1, VECTOR Pos2, VECTOR Pos3 ) ;							// 三角形とモデルの当たり判定
-extern	MV1_COLL_RESULT_POLY		MV1CollCheck_GetResultPoly(		MV1_COLL_RESULT_POLY_DIM ResultPolyDim, int PolyNo ) ;											// コリジョン結果ポリゴン配列から指定番号のポリゴン情報を取得する
-extern	int							MV1CollResultPolyDimTerminate(	MV1_COLL_RESULT_POLY_DIM ResultPolyDim ) ;														// コリジョン結果ポリゴン配列の後始末をする
+extern	int							MV1SetupCollInfo(				int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) , int XDivNum DEFAULTPARAM( = 32 ) , int YDivNum DEFAULTPARAM( = 8 ) , int ZDivNum DEFAULTPARAM( = 32 ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;		// コリジョン情報を構築する
+extern	int							MV1TerminateCollInfo(			int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;																// コリジョン情報の後始末
+extern	int							MV1RefreshCollInfo(				int MHandle, int FrameIndex DEFAULTPARAM( = -1 ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;																// コリジョン情報を更新する
+extern	MV1_COLL_RESULT_POLY		MV1CollCheck_Line(				int MHandle, int FrameIndex, VECTOR PosStart, VECTOR PosEnd , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// 線とモデルの当たり判定
+extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_LineDim(			int MHandle, int FrameIndex, VECTOR PosStart, VECTOR PosEnd , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// 線とモデルの当たり判定( 戻り値が MV1_COLL_RESULT_POLY_DIM )
+extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_Sphere(			int MHandle, int FrameIndex, VECTOR CenterPos, float r , int MeshIndex DEFAULTPARAM( = -1 ) ) ;							// 球とモデルの当たり判定
+extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_Capsule(			int MHandle, int FrameIndex, VECTOR Pos1, VECTOR Pos2, float r , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// カプセルとモデルの当たり判定
+extern	MV1_COLL_RESULT_POLY_DIM	MV1CollCheck_Triangle(			int MHandle, int FrameIndex, VECTOR Pos1, VECTOR Pos2, VECTOR Pos3 , int MeshIndex DEFAULTPARAM( = -1 ) ) ;				// 三角形とモデルの当たり判定
+extern	MV1_COLL_RESULT_POLY		MV1CollCheck_GetResultPoly(		MV1_COLL_RESULT_POLY_DIM ResultPolyDim, int PolyNo ) ;																	// コリジョン結果ポリゴン配列から指定番号のポリゴン情報を取得する
+extern	int							MV1CollResultPolyDimTerminate(	MV1_COLL_RESULT_POLY_DIM ResultPolyDim ) ;																				// コリジョン結果ポリゴン配列の後始末をする
 
 // 参照用メッシュ関係
-extern	int					MV1SetupReferenceMesh(		int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly = FALSE ) ;						// 参照用メッシュのセットアップ
-extern	int					MV1TerminateReferenceMesh(	int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly = FALSE ) ;						// 参照用メッシュの後始末
-extern	int					MV1RefreshReferenceMesh(	int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly = FALSE ) ;						// 参照用メッシュの更新
-extern	MV1_REF_POLYGONLIST	MV1GetReferenceMesh(		int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly = FALSE ) ;						// 参照用メッシュを取得する
+extern	int					MV1SetupReferenceMesh(		int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly DEFAULTPARAM( = FALSE ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// 参照用メッシュのセットアップ
+extern	int					MV1TerminateReferenceMesh(	int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly DEFAULTPARAM( = FALSE ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// 参照用メッシュの後始末
+extern	int					MV1RefreshReferenceMesh(	int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly DEFAULTPARAM( = FALSE ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// 参照用メッシュの更新
+extern	MV1_REF_POLYGONLIST	MV1GetReferenceMesh(		int MHandle, int FrameIndex, int IsTransform, int IsPositionOnly DEFAULTPARAM( = FALSE ) , int MeshIndex DEFAULTPARAM( = -1 ) ) ;					// 参照用メッシュを取得する
 
 #endif // DX_NON_MODEL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DxLive2DCubism4.cpp 関数 プロトタイプ宣言
+
+#ifndef DX_NON_LIVE2D_CUBISM4
+
+extern	int			Live2D_SetCubism4CoreDLLPath(           const TCHAR *CoreDLLFilePath ) ;								// Live2DCubismCore.dll のファイルパスを設定する
+extern	int			Live2D_SetCubism4CoreDLLPathWithStrLen( const TCHAR *CoreDLLFilePath, size_t CoreDLLFilePathLength ) ;	// Live2DCubismCore.dll のファイルパスを設定する
+extern	int			Live2D_SetCubism3CoreDLLPath(           const TCHAR *CoreDLLFilePath ) ;								// Live2DCubismCore.dll のファイルパスを設定する
+extern	int			Live2D_SetCubism3CoreDLLPathWithStrLen( const TCHAR *CoreDLLFilePath, size_t CoreDLLFilePathLength ) ;	// Live2DCubismCore.dll のファイルパスを設定する
+
+extern	int			Live2D_RenderBegin( void ) ;																			// Live2D の描画処理を開始する
+extern	int			Live2D_RenderEnd( void ) ;																				// Live2D の描画処理を終了する
+
+extern	int			Live2D_LoadModel(			const TCHAR *FilePath ) ;													// Live2D のモデルファイルを読み込む( 0以上:Live2Dモデルハンドル  マイナス値:エラー発生 )
+extern	int			Live2D_LoadModelWithStrLen(	const TCHAR *FilePath, size_t FilePathLength ) ;							// Live2D のモデルファイルを読み込む( 0以上:Live2Dモデルハンドル  マイナス値:エラー発生 )
+extern	int			Live2D_DeleteModel(			int Live2DModelHandle ) ;													// Live2D のモデルを削除する
+extern	int			Live2D_InitModel(			void ) ;																	// すべての Live2D のモデルを削除する
+
+extern	int			Live2D_SetUserShader( int TargetShader /* DX_LIVE2D_SHADER_NORMAL_PIXEL 等 */ , int ShaderHandle DEFAULTPARAM( = -1 ) ) ;		// Live2D のモデル描画で使用するシェーダーを設定する( ShaderHandle に -1 を渡すと設定を解除 )
+extern	int			Live2D_DrawCallback( void ( *Callback )( int Live2DModelHandle, int TextureIndex, void *UserData ), void *UserData ) ;			// Live2D のモデル描画の前に呼ばれるコールバック関数を設定する Callback に NULL を渡すと設定を解除 )
+extern	int			Live2D_SetUseAutoScaling( int UseFlag ) ;																// Live2D のモデル描画をする際に、画面サイズに応じたスケーリングを行うかを設定する( UseFlag  TRUE:スケーリングを行う( デフォルト )  FALSE:スケーリングを行わない )
+extern	int			Live2D_SetUseAutoCentering( int UseFlag ) ;																// Live2D のモデルを画面の中心に描画するかを設定する( UseFlag   TRUE:画面の中心に描画する( デフォルト )   FALSE:画面の中心に描画しない )
+extern	int			Live2D_SetUseReverseYAxis( int UseFlag ) ;																// Live2D_Model_SetTranslate で指定する平行移動値の y の向きを反転するかを設定する( UseFlag   TRUE:反転する( デフォルト )   FALSE:反転しない )
+
+extern	int			Live2D_Model_Update(			int Live2DModelHandle, float DeltaTimeSeconds ) ;						// Live2D のモデルの状態を更新する
+extern	int			Live2D_Model_SetTranslate(		int Live2DModelHandle, float x, float y ) ;								// Live2D のモデルの位置を設定する
+extern	int			Live2D_Model_SetExtendRate(		int Live2DModelHandle, float ExRateX, float ExRateY ) ;					// Live2D のモデルの拡大率を設定する
+extern	int			Live2D_Model_SetRotate(			int Live2DModelHandle, float RotAngle ) ;								// Live2D のモデルの回転を設定する
+extern	int			Live2D_Model_Draw(				int Live2DModelHandle ) ;												// Live2D のモデルを描画する
+
+extern	int			Live2D_Model_StartMotion(				int Live2DModelHandle, const TCHAR *group,						int no ) ;							// Live2D のモデルの指定のモーションを再生する
+extern	int			Live2D_Model_StartMotionWithStrLen(		int Live2DModelHandle, const TCHAR *group, size_t groupLength,	int no ) ;							// Live2D のモデルの指定のモーションを再生する
+extern	int			Live2D_Model_GetLastPlayMotionNo(		int Live2DModelHandle ) ;																			// Live2D のモデルで最後に再生したモーションのグループ内の番号を取得する
+extern	int			Live2D_Model_IsMotionFinished(			int Live2DModelHandle ) ;																			// Live2D のモデルのモーション再生が終了しているかを取得する( 戻り値  TRUE:再生が終了している  FALSE:再生中 )
+extern	float		Live2D_Model_GetMotionPlayTime(			int Live2DModelHandle ) ;																			// Live2D のモデルのモーション再生時間を取得する
+extern	int			Live2D_Model_SetExpression(				int Live2DModelHandle, const TCHAR *expressionID ) ;												// Live2D のモデルの指定の表情モーションを設定する
+extern	int			Live2D_Model_SetExpressionWithStrLen(	int Live2DModelHandle, const TCHAR *expressionID, size_t expressionIDLength ) ;						// Live2D のモデルの指定の表情モーションを設定する
+extern	int			Live2D_Model_HitTest(					int Live2DModelHandle, const TCHAR *hitAreaName,							float x, float y ) ;	// 指定の座標が Live2D のモデルの指定の当たり判定の矩形範囲内か判定する( TRUE:矩形範囲内  FALSE:矩形範囲外 )
+extern	int			Live2D_Model_HitTestWithStrLen(			int Live2DModelHandle, const TCHAR *hitAreaName, size_t hitAreaNameLength,	float x, float y ) ;	// 指定の座標が Live2D のモデルの指定の当たり判定の矩形範囲内か判定する( TRUE:矩形範囲内  FALSE:矩形範囲外 )
+
+extern	int			Live2D_Model_GetParameterCount(						int Live2DModelHandle ) ;																// Live2D のモデルに設定されているパラメータの数を取得する
+extern	const TCHAR *Live2D_Model_GetParameterId(						int Live2DModelHandle, int index ) ;													// Live2D のモデルに設定されているパラメータのIDを取得する
+extern	float		Live2D_Model_GetParameterValue(						int Live2DModelHandle, const TCHAR *parameterId ) ;										// Live2D のモデルに設定されているパラメータを取得する
+extern	float		Live2D_Model_GetParameterValueWithStrLen(			int Live2DModelHandle, const TCHAR *parameterId, size_t parameterIdLength ) ;			// Live2D のモデルに設定されているパラメータを取得する
+extern	int			Live2D_Model_SetParameterValue(						int Live2DModelHandle, const TCHAR *parameterId,                           float value ) ;	// Live2D のモデルに設定されているパラメータを設定する
+extern	int			Live2D_Model_SetParameterValueWithStrLen(			int Live2DModelHandle, const TCHAR *parameterId, size_t parameterIdLength, float value ) ;	// Live2D のモデルに設定されているパラメータを設定する
+
+extern	int			Live2D_Model_GetHitAreasCount(						int Live2DModelHandle ) ;																// Live2D のモデルに設定された当たり判定の数を取得する
+extern	const TCHAR *Live2D_Model_GetHitAreaName(						int Live2DModelHandle, int index ) ;													// Live2D のモデルの当たり判定に設定された名前を取得する
+extern	const TCHAR *Live2D_Model_GetPhysicsFileName(					int Live2DModelHandle ) ;																// Live2D のモデルの物理演算設定ファイルの名前を取得する
+extern	const TCHAR *Live2D_Model_GetPoseFileName(						int Live2DModelHandle ) ;																// Live2D のモデルのパーツ切り替え設定ファイルの名前を取得する
+extern	int			Live2D_Model_GetExpressionCount(					int Live2DModelHandle ) ;																// Live2D のモデルの表情設定ファイルの数を取得する
+extern	const TCHAR *Live2D_Model_GetExpressionName(					int Live2DModelHandle, int index ) ;													// Live2D のモデルの表情設定ファイルを識別するIDを取得する
+extern	const TCHAR *Live2D_Model_GetExpressionFileName(				int Live2DModelHandle, int index ) ;													// Live2D のモデルの表情設定ファイルの名前を取得する
+extern	int			Live2D_Model_GetMotionGroupCount(					int Live2DModelHandle ) ;																// Live2D のモデルのモーショングループの数を取得する
+extern	const TCHAR *Live2D_Model_GetMotionGroupName(					int Live2DModelHandle, int index ) ;													// Live2D のモデルのモーショングループの名前を取得する
+extern	int			Live2D_Model_GetMotionCount(						int Live2DModelHandle, const TCHAR *groupName ) ;										// Live2D のモデルのモーショングループに含まれるモーションの数を取得する
+extern	int			Live2D_Model_GetMotionCountWithStrLen(				int Live2DModelHandle, const TCHAR *groupName, size_t groupNameLength ) ;				// Live2D のモデルのモーショングループに含まれるモーションの数を取得する
+extern	const TCHAR *Live2D_Model_GetMotionFileName(					int Live2DModelHandle, const TCHAR *groupName,							int index ) ;	// Live2D のモデルのグループ名とインデックス値からモーションファイルの名前を取得する
+extern	const TCHAR *Live2D_Model_GetMotionFileNameWithStrLen(			int Live2DModelHandle, const TCHAR *groupName, size_t groupNameLength,	int index ) ;	// Live2D のモデルのグループ名とインデックス値からモーションファイルの名前を取得する
+extern	const TCHAR *Live2D_Model_GetMotionSoundFileName(				int Live2DModelHandle, const TCHAR *groupName,							int index ) ;	// Live2D のモデルのモーションに対応するサウンドファイルの名前を取得する
+extern	const TCHAR *Live2D_Model_GetMotionSoundFileNameWithStrLen(		int Live2DModelHandle, const TCHAR *groupName, size_t groupNameLength,	int index ) ;	// Live2D のモデルのモーションに対応するサウンドファイルの名前を取得する
+extern	float		Live2D_Model_GetMotionFadeInTimeValue(				int Live2DModelHandle, const TCHAR *groupName,							int index ) ;	// Live2D のモデルのモーション開始時のフェードイン処理時間を取得する
+extern	float		Live2D_Model_GetMotionFadeInTimeValueWithStrLen(	int Live2DModelHandle, const TCHAR *groupName, size_t groupNameLength,	int index ) ;	// Live2D のモデルのモーション開始時のフェードイン処理時間を取得する
+extern	float		Live2D_Model_GetMotionFadeOutTimeValue(				int Live2DModelHandle, const TCHAR *groupName,							int index ) ;	// Live2D のモデルのモーション終了時のフェードアウト処理時間を取得する
+extern	float		Live2D_Model_GetMotionFadeOutTimeValueWithStrLen(	int Live2DModelHandle, const TCHAR *groupName, size_t groupNameLength,	int index ) ;	// Live2D のモデルのモーション終了時のフェードアウト処理時間を取得する
+extern	const TCHAR *Live2D_Model_GetUserDataFile(						int Live2DModelHandle ) ;																// Live2D のモデルのユーザデータのファイル名を取得する
+extern	int			Live2D_Model_GetEyeBlinkParameterCount(				int Live2DModelHandle ) ;																// Live2D のモデルの目パチに関連付けられたパラメータの数を取得する
+extern	const TCHAR *Live2D_Model_GetEyeBlinkParameterId(				int Live2DModelHandle, int index ) ;													// Live2D のモデルの目パチに関連付けられたパラメータのIDを取得する
+extern	int			Live2D_Model_GetLipSyncParameterCount(				int Live2DModelHandle ) ;																// Live2D のモデルのリップシンクに関連付けられたパラメータの数を取得する
+extern	const TCHAR *Live2D_Model_GetLipSyncParameterId(				int Live2DModelHandle, int index ) ;													// Live2D のモデルのリップシンクに関連付けられたパラメータのIDを取得する
+extern	float		Live2D_Model_GetCanvasWidth(						int Live2DModelHandle ) ;																// Live2D のモデルのキャンバスの横幅を取得する
+extern	float		Live2D_Model_GetCanvasHeight(						int Live2DModelHandle ) ;																// Live2D のモデルのキャンバスの縦幅を取得する
+
+#endif // DX_NON_LIVE2D_CUBISM4
+
+
+
+
+
+
+
 
 #undef DX_FUNCTION_START
 #define DX_FUNCTION_END
 #undef DX_FUNCTION_END
+
+#if defined( __cplusplus ) && defined( DX_COMPILE_TYPE_C_LANGUAGE )
+}
+#endif
 
 #ifndef DX_NON_NAMESPACE
 
@@ -5106,10 +5634,10 @@ using namespace DxLib ;
 
 // ＤＸライブラリ内部でのみ使用するヘッダファイルのインクルード -------------------------
 
-#ifdef __DX_MAKE
+#ifdef DX_MAKE
 //	#include "DxStatic.h"
 #endif
 
-#endif
+#endif // DX_LIB_H
 
 
